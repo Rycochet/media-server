@@ -1,0 +1,43 @@
+services:
+  kometa:
+    container_name: kometa
+    image: lscr.io/linuxserver/kometa:latest
+    profiles: ["quality"]
+    # restart: unless-stopped
+    restart: no
+    network_mode: service:vpn
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    depends_on:
+      vpn:
+        condition: service_started
+        restart: true
+      plex:
+        condition: service_started
+      sonarr:
+        condition: service_started
+      radarr:
+        condition: service_started
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+      KOMETA_TIMES: "06:30" # Run at this time every day
+      # KOMETA_RUN: "True" # Run once
+      # KOMETA_IGNORE_SCHEDULES: "True"
+    volumes:
+      - "./config:/config"
+      - "./logs:/config/logs"
+      - "./backup:/data/backup"
+      - "$PATH_MOVIES:/data/movies:ro"
+      - "$PATH_TV:/data/tv:ro"
+    labels:
+      - "traefik.enable=false"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "deunhealth.restart.on.unhealthy=false"

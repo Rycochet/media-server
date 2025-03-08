@@ -1,0 +1,48 @@
+services:
+  lidarr:
+    container_name: lidarr
+    image: lscr.io/linuxserver/lidarr:develop
+    profiles: ["disabled-media"]
+    restart: unless-stopped
+    network_mode: service:vpn
+    depends_on:
+      vpn:
+        condition: service_started
+        restart: true
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./config/custom-services.d:/custom-services.d"
+      - "./config/custom-cont-init.d:/custom-cont-init.d"
+      - "./backup:/config/Backups"
+      - "./logs:/config/logs"
+      - "$PATH_MUSIC:/data/Music"
+      - "$PATH_DOWNLOADS:/data/Downloads"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lidarr.rule=Host(`lidarr.$DOMAIN`)"
+      - "traefik.http.routers.lidarr.middlewares=oauth,error-pages"
+      - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8686/"

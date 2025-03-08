@@ -1,0 +1,53 @@
+services:
+  windows:
+    container_name: windows
+    image: dockurr/windows:latest
+    profiles: ["disabled-desktop"]
+    restart: unless-stopped
+    network_mode: service:vpn
+    depends_on:
+      vpn:
+        condition: service_started
+        restart: true
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    # cap_add:
+    #   - "NET_ADMIN"
+    # devices:
+    #   - /dev/net/tun
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+      VERSION: "11"
+      DISK_SIZE: "64G"
+      # RAM_SIZE: "8G"
+      # CPU_CORES: "4"
+      REGION: "en-UK"
+      KEYBOARD: "en-UK"
+      KVM: "N"
+      # testing
+      CONSOLE: "Y"
+      HV: "N"
+      # BOOT_MODE: "windows_plain"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/storage"
+      # - "media:/data"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.windows.rule=Host(`windows.$DOMAIN`)"
+      - "traefik.http.routers.windows.middlewares=oauth,error-pages"
+      - "traefik.http.services.windows.loadbalancer.server.port=8006"

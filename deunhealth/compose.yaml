@@ -1,0 +1,26 @@
+services:
+  autoheal:
+    container_name: autoheal
+    image: qmcgaw/deunhealth:latest
+    profiles: ["infrastructure"]
+    restart: unless-stopped
+    network_mode: none
+    depends_on:
+      - socket-proxy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      # Docker
+      DOCKER_HOST: "tcp://socket-proxy:2375"
+      # Image
+      LOG_LEVEL: "info"
+      HEALTH_SERVER_ADDRESS: "127.0.0.1:9999"
+    labels:
+      - "traefik.enable=false"
+      - "com.centurylinklabs.watchtower.monitor-only=true"
+      - "deunhealth.restart.on.unhealthy=false"

@@ -1,0 +1,39 @@
+services:
+  vpn:
+    container_name: vpn
+    image: ghcr.io/bubuntux/nordlynx:latest
+    profiles: ["network"]
+    restart: unless-stopped
+    networks:
+      - default
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    cap_add:
+      - "NET_ADMIN"
+      - "NET_RAW"
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1 # ipv4 only
+    ports:
+      - "51414:51414" # Torrent
+      - "6881:6881/udp" # Torrent
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+      PRIVATE_KEY: "$VPN_PRIVATE_KEY"
+      CONNECT: "United_States"
+      DNS: "8.8.8.8,1.1.1.1"
+      NET_LOCAL: "192.168.0.0/24"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+    labels:
+      - "traefik.enable=false"
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "deunhealth.restart.on.unhealthy=true"

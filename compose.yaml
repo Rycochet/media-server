@@ -1,0 +1,94 @@
+# version: "3.8"
+
+name: rycochet
+
+include:
+  # INFRASTRUCTURE
+    # Bring unhealthy containers back up
+  - deunhealth/compose.yaml
+    # Secure access to the docker socket
+  - socket-proxy/compose.yaml
+    # Auto-update containers
+  - watchtower/compose.yaml
+
+  # NETWORK
+    # Cloudflare tunnel
+  - cloudflared/compose.yaml
+    # Error pages
+  - error-pages/compose.yaml
+    # OAuth via Google
+  - oauth/compose.yaml
+    # HTTP routing
+  - traefik/compose.yaml
+    # NordVPN
+  - vpn/compose.yaml
+
+  # LIBRARY
+    # Media library
+  - jellyfin/compose.yaml
+    # Media library
+  - plex/compose.yaml
+
+  # QUALITY
+    # Cleanup Plex images
+  - imagemaid/compose.yaml
+    # Images and Collections for Plex
+  - kometa/compose.yaml
+    # Transcoding / format shifting / audio normalisation
+  - tdarr/compose.yaml
+    # Episode thumbnails for Plex
+  - titlecardmaker/compose.yaml
+    # Finds mismatches between tvdb/tmdb/imdb and Plex
+  - plex-find-mismatch/compose.yaml
+
+  # ACCESS
+    # Front-end
+  - dashy/compose.yaml
+    # Docker status
+  - dozzle/compose.yaml
+    # Front-end
+  - organizr/compose.yaml
+    # System status
+  - glances/compose.yaml
+
+  # DESKTOP
+    # Linux desktop
+  - webtop/compose.yaml
+    # Windows desktop
+  - windows/compose.yaml
+
+  # DOWNLOAD
+    # Torrent / NNTP search proxy
+  - prowlarr/compose.yaml
+    # Torrent downloader
+  - qbittorrent/compose.yaml
+    # NNTP downloader
+  - sabnzbd/compose.yaml
+
+  # MEDIA
+    # eBooks / Audiobooks
+  - readarr/compose.yaml
+    # Comics
+  - komga/compose.yaml
+    # Comics
+  - mylar/compose.yaml
+    # Comics
+  - ubooquity/compose.yaml
+    # TV Shows
+  - sonarr/compose.yaml
+    # Movies
+  - radarr/compose.yaml
+    # Subtitles
+  - bazarr/compose.yaml
+    # Music
+  - lidarr/compose.yaml
+
+networks:
+  default: # Internet access
+    driver: bridge
+  internal: # No internet access
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: "172.30.0.0/24"

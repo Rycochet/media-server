@@ -1,0 +1,66 @@
+services:
+  jellyfin:
+    container_name: jellyfin
+    image: lscr.io/linuxserver/jellyfin:latest
+    profiles: ["disabled-library"]
+    restart: unless-stopped
+    networks:
+      - default
+      - internal
+    depends_on:
+      - traefik
+      - error-pages
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "8096:8096"
+      - "8920:8920" #optional
+      - "7359:7359/udp" #optional
+      - "1900:1900/udp" #optional
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # GPU
+      NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
+      NVIDIA_VISIBLE_DEVICES: "all"
+      # Image
+      JELLYFIN_PublishedServerUrl: "http://192.168.0.2" #optional
+    volumes:
+      - "./config:/config"
+      - "./config/logs:/config/log"
+      - "$PATH_ADULT:/data/Adult:ro"
+      - "$PATH_AUDIOBOOKS:/data/Audiobooks:ro"
+      - "$PATH_CONCERTS:/data/Concerts:ro"
+      - "$PATH_MOVIES:/data/movies:ro"
+      - "$PATH_MUSIC:/data/Music:ro"
+      - "$PATH_ONLYFANS:/data/OnlyFans:ro"
+      - "$PATH_PICTURES:/data/Pictures:ro"
+      - "$PATH_TV:/data/tv:ro"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.$DOMAIN`)"
+      - "traefik.http.routers.jellyfin.middlewares=oauth,error-pages"
+      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8096/health"

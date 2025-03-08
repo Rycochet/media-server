@@ -1,0 +1,32 @@
+services:
+  organizr:
+    container_name: organizr
+    image: organizr/organizr:latest
+    profiles: ["access"]
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+    depends_on:
+      - traefik
+      - error-pages
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./logs:/config/log"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.organizr.rule=Host(`$DOMAIN`)"
+      - "traefik.http.routers.organizr.middlewares=oauth,error-pages"
+      - "traefik.http.services.organizr.loadbalancer.server.port=80"

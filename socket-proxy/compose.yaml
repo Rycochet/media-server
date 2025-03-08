@@ -1,0 +1,50 @@
+services:
+  socket-proxy:
+    container_name: socket-proxy
+    image: lscr.io/linuxserver/socket-proxy:latest
+    profiles: ["infrastructure"]
+    restart: unless-stopped
+    networks:
+      - internal
+    security_opt:
+      - no-new-privileges=true
+    read_only: true
+    environment:
+      ALLOW_START: "1"
+      ALLOW_STOP: "1"
+      ALLOW_RESTARTS: "1"
+      AUTH: "0"
+      BUILD: "0"
+      COMMIT: "0"
+      CONFIGS: "0"
+      CONTAINERS: "1"
+      DISABLE_IPV6: "0"
+      DISTRIBUTION: "0"
+      EVENTS: "1"
+      EXEC: "0"
+      IMAGES: "1"
+      INFO: "1"
+      NETWORKS: "1"
+      NODES: "0"
+      PING: "1"
+      PLUGINS: "0"
+      POST: "1"
+      PROXY_READ_TIMEOUT: "240"
+      SECRETS: "0"
+      SERVICES: "1"
+      SESSION: "0"
+      SWARM: "0"
+      SYSTEM: "0"
+      TASKS: "1"
+      VERSION: "1"
+      VOLUMES: "1"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    tmpfs:
+      - "/run"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: wget --spider http://localhost:2375/_ping || exit 1

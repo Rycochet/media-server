@@ -1,0 +1,43 @@
+services:
+  titlecardmaker:
+    container_name: titlecardmaker
+    image: collinheist/titlecardmaker:latest # ghcr.io/titlecardmaker/titlecardmaker-webui:latest
+    profiles: ["quality"]
+    restart: unless-stopped
+    network_mode: service:vpn
+    depends_on:
+      vpn:
+        condition: service_started
+        restart: true
+      plex:
+        condition: service_started
+      sonarr:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+      TCM_LOG: "INFO"
+      TCM_MISSING: "/config/missing.yml"
+      TCM_RUNTIME: "00:15"
+      TCM_FREQUENCY: "24h"
+    volumes:
+      - "./config:/config"
+      - "./logs:/maker/logs"
+      - "$PATH_TV:/data/tv"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=false"
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.titlecardmaker.rule=Host(`titlecardmaker.$DOMAIN`)"
+      # - "traefik.http.routers.titlecardmaker.middlewares=oauth,error-pages"
+      # - "traefik.http.services.titlecardmaker.loadbalancer.server.port=4242"

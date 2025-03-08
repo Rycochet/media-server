@@ -1,0 +1,115 @@
+services:
+  tdarr:
+    container_name: tdarr
+    image: haveagitgat/tdarr:latest
+    profiles: ["quality"]
+    restart: unless-stopped
+    networks:
+      - default
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    depends_on:
+      - traefik
+      - error-pages
+    ports:
+    #   - "8265:8265" # webUI port
+      - "8266:8266" # server port
+      - "8267:8267" # node port. It should be mapped on this container because
+                    # the node container use the network from the main container
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # GPU
+      NVIDIA_DRIVER_CAPABILITIES: "all"
+      NVIDIA_VISIBLE_DEVICES: "all"
+      # Image
+      serverIP: "0.0.0.0"
+      serverPort: "8266"
+      webUIPort: "8265"
+      UMASK_SET: "000"
+      internalNode: "true"
+      inContainer: "true"
+    volumes:
+      - "./config/server:/app/server"
+      - "./config/config:/app/configs"
+      - "./config/logs:/app/logs"
+      - "./tmp:/tmp"
+      - "$PATH_CONCERTS:/data/Concerts"
+      - "$PATH_MOVIES:/data/movies"
+      - "$PATH_TV:/data/tv"
+    labels:
+      - "com.centurylinklabs.watchtower.monitor-only=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.tdarr.rule=Host(`tdarr.$DOMAIN`)"
+      - "traefik.http.routers.tdarr.middlewares=oauth,error-pages"
+      - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8265/"
+
+#   tdarr-node:
+#     container_name: tdarr-node
+#     image: haveagitgat/tdarr_node:latest
+#     profiles: ["quality"]
+#     restart: unless-stopped
+#     logging:
+#       driver: "json-file"
+#       options:
+#         max-size: "1m"
+#         max-file: "3"
+#     deploy:
+#       resources:
+#         limits:
+#           cpus: "0.80"
+#     network_mode: service:tdarr
+#     deploy:
+#       resources:
+#         reservations:
+#           devices:
+#             - driver: nvidia
+#               count: all
+#               capabilities: [gpu]
+#     depends_on
+#       - tdarr
+#     environment:
+#       # Default
+#       TZ: "Europe/London"
+#       PUID: "$PUID"
+#       PGID: "$PGID"
+#       UMASK: "000"
+#       # GPU
+#       NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
+#       NVIDIA_VISIBLE_DEVICES: "all"
+#       # Image
+#       nodePort: "8267"
+#       serverIP: "0.0.0.0"
+#       serverPort: "8266"
+#       UMASK_SET: "000"
+#     volumes:
+#       - "./config/config:/app/configs"
+#       - "./logs:/app/logs"
+#       - "./tmp:/tmp"
+#       - "$PATH_CONCERTS:/data/Concerts"
+#       - "$PATH_MOVIES:/data/movies"
+#       - "$PATH_TV:/data/tv"
+#     labels:
+#       - "com.centurylinklabs.watchtower.monitor-only=true"

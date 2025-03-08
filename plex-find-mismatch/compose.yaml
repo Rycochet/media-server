@@ -1,0 +1,30 @@
+services:
+  plex-find-mismatch:
+    container_name: plex-find-mismatch
+    image: rycochet/plex-find-mismatch:latest
+    build: ./plex-find-mismatch
+    profiles: ["quality"]
+    restart: unless-stopped
+    networks:
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      # Image
+      PLEX_TOKEN: "$PLEX_TOKEN"
+      PLEX_URL: "http://plex:32400/"
+      CHECK_LIBRARY: "Movies,TV Shows"
+    volumes:
+      - "$PATH_MOVIES:/data/movies:ro"
+      - "$PATH_TV:/data/tv:ro"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "deunhealth.restart.on.unhealthy=false"
+      - "traefik.enable=false"

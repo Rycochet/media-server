@@ -1,0 +1,46 @@
+services:
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:develop
+    profiles: ["media"]
+    restart: unless-stopped
+    network_mode: service:vpn
+    depends_on:
+      vpn:
+        condition: service_started
+        restart: true
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./backup:/config/Backups"
+      - "./logs:/config/logs"
+      - "$PATH_MOVIES:/data/movies"
+      - "$PATH_DOWNLOADS:/data/Downloads"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.$DOMAIN`)"
+      - "traefik.http.routers.radarr.middlewares=oauth,error-pages"
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:7878/"

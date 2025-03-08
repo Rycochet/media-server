@@ -1,0 +1,48 @@
+services:
+  webtop:
+    container_name: webtop
+    image: lscr.io/linuxserver/webtop:latest
+    profiles: ["desktop"]
+    restart: unless-stopped
+    network_mode: service:vpn
+    depends_on:
+      vpn:
+        condition: service_started
+        restart: true
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    # security_opt:
+    #   - seccomp:unconfined #optional
+    shm_size: "1gb"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+      TITLE: "Webtop"
+      PASSWORD: ""
+      NO_DECOR: true
+      DOCKER_MODS: "linuxserver/mods:universal-package-install"
+      INSTALL_PACKAGES: "mkvtoolnix|bento4"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "$PATH_DOWNLOADS:/data/Downloads"
+      - "$PATH_MOVIES:/data/movies"
+      - "$PATH_TV:/data/tv"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.webtop.rule=Host(`webtop.$DOMAIN`)"
+      - "traefik.http.routers.webtop.middlewares=oauth,error-pages"
+      - "traefik.http.services.webtop.loadbalancer.server.port=3000"

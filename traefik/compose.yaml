@@ -1,0 +1,76 @@
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v3.3.3
+    profiles: ["network"]
+    restart: unless-stopped
+    networks:
+      - default
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    depends_on:
+      - socket-proxy
+      - oauth
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Cloudflare
+      CF_DNS_API_TOKEN: "${CLOUDFLARE_API}"
+      # Image
+      # GODEBUG: "http2xconnect=0"
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--log.level=INFO"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.endpoint=tcp://socket-proxy:2375"
+      - "--providers.file=true"
+      - "--providers.file.filename=/etc/traefik/rules.yml"
+      - "--providers.file.watch=true"
+      - "--certificatesResolvers.letsencrypt.acme.email=$EMAIL"
+      - "--certificatesResolvers.letsencrypt.acme.storage=/etc/traefik/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.propagation.delayBeforeChecks=10"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=8.8.8.8:53"
+      - "--entryPoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.websecure.http.tls.certresolver=letsencrypt"
+      - "--entryPoints.websecure.http.tls.domains[0].main=$DOMAIN"
+      - "--entryPoints.websecure.http.tls.domains[0].sans=*.$DOMAIN"
+      - "--entryPoints.websecure.http.tls.domains[1].main=nidiya.uk"
+      - "--entryPoints.websecure.http.tls.domains[1].sans=*.nidiya.uk"
+      # - "--entrypoints.websecure.http.middlewares=websecure,oauth"
+      - "--serverstransport.insecureskipverify=true"
+      - "--ping"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./.ssl/key.pem:/run/secrets/key.pem:ro"
+      - "./.ssl/cert.pem:/run/secrets/cert.pem:ro"
+      - "./config:/etc/traefik"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`traefik.$DOMAIN`)"
+      - "traefik.http.routers.api.middlewares=oauth,error-pages"
+      - "traefik.http.services.api.loadbalancer.server.port=8080"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "traefik healthcheck --ping"

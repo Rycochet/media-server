@@ -1,0 +1,37 @@
+services:
+  mylar:
+    container_name: mylar
+    image: lscr.io/linuxserver/mylar:latest
+    profiles: ["disabled-media"]
+    restart: unless-stopped
+    network_mode: service:vpn
+    depends_on:
+      vpn:
+        condition: service_started
+        restart: true
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./logs:/config/mylar/logs"
+      - "$PATH_COMICS:/data/Comics"
+      - "$PATH_DOWNLOADS:/data/Downloads"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mylar.rule=Host(`mylar.$DOMAIN`)"
+      - "traefik.http.routers.mylar.middlewares=oauth,error-pages"
+      - "traefik.http.services.mylar.loadbalancer.server.port=8090"

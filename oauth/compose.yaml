@@ -1,0 +1,38 @@
+services:
+  oauth:
+    container_name: oauth
+    image: ghcr.io/jordemort/traefik-forward-auth:latest # thomseddon/traefik-forward-auth:latest
+    profiles: ["network"]
+    restart: unless-stopped
+    networks:
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+      PROVIDERS_GOOGLE_CLIENT_ID: "$GOOGLE_CLIENT_ID"
+      PROVIDERS_GOOGLE_CLIENT_SECRET: "$GOOGLE_CLIENT_SECRET"
+      SECRET: "$OAUTH_SECRET"
+      COOKIE_DOMAIN: "$DOMAIN"
+      WHITELIST: "$WHITELIST"
+      # INSECURE_COOKIE: "false"
+      AUTH_HOST: "oauth.$DOMAIN"
+      LOG_LEVEL: "info"
+      LOG_FORMAT: "text"
+      LIFETIME: "2592000" # 30 days
+      DEFAULT_ACTION: "auth"
+      DEFAULT_PROVIDER: "google"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.oauth.rule=Host(`oauth.$DOMAIN`)"
+      - "traefik.http.middlewares.oauth.forwardauth.address=http://oauth:4181"
+      - "traefik.http.middlewares.oauth.forwardauth.authResponseHeaders=X-Forwarded-User"
+      - "traefik.http.services.oauth.loadbalancer.server.port=4181"

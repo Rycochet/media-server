@@ -1,0 +1,43 @@
+services:
+  dashy:
+    container_name: dashy
+    image: lissy93/dashy:latest
+    profiles: ["access"]
+    restart: unless-stopped
+    networks:
+      - default
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+      NODE_ENV: "production"
+    depends_on:
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/app/user-data"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashy.rule=Host(`dashy.$DOMAIN`)"
+      - "traefik.http.routers.dashy.middlewares=oauth,error-pages"
+      - "traefik.http.services.dashy.loadbalancer.server.port=8080"
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

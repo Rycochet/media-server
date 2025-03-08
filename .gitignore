@@ -1,0 +1,9 @@
+.env
+
+/aquota.user
+/.vscode
+
+/*/backup
+/*/config
+/*/logs
+/*/tmp

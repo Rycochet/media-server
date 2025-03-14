@@ -30,6 +30,7 @@ services:
       # Image
       KOMETA_TIMES: "06:30" # Run at this time every day
       # KOMETA_RUN: "True" # Run once
+      # KOMETA_RUN_LIBRARIES: "TV Shows" # Single library
       # KOMETA_IGNORE_SCHEDULES: "True"
     volumes:
       - "./config:/config"

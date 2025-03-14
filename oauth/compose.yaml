@@ -5,6 +5,7 @@ services:
     profiles: ["network"]
     restart: unless-stopped
     networks:
+      - default
       - internal
     logging:
       driver: "json-file"
@@ -33,6 +34,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.oauth.rule=Host(`oauth.$DOMAIN`)"
+      - "traefik.http.services.oauth.loadbalancer.server.port=4181"
       - "traefik.http.middlewares.oauth.forwardauth.address=http://oauth:4181"
       - "traefik.http.middlewares.oauth.forwardauth.authResponseHeaders=X-Forwarded-User"
-      - "traefik.http.services.oauth.loadbalancer.server.port=4181"

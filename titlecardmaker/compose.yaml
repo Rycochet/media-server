@@ -1,7 +1,7 @@
 services:
   titlecardmaker:
     container_name: titlecardmaker
-    image: collinheist/titlecardmaker:latest # ghcr.io/titlecardmaker/titlecardmaker-webui:latest
+    image: ghcr.io/titlecardmaker/titlecardmaker-webui:latest
     profiles: ["quality"]
     restart: unless-stopped
     network_mode: service:vpn
@@ -18,6 +18,10 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
     environment:
       # Default
       TZ: "Europe/London"
@@ -36,8 +40,7 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
-      - "traefik.enable=false"
-      # - "traefik.enable=true"
-      # - "traefik.http.routers.titlecardmaker.rule=Host(`titlecardmaker.$DOMAIN`)"
-      # - "traefik.http.routers.titlecardmaker.middlewares=oauth,error-pages"
-      # - "traefik.http.services.titlecardmaker.loadbalancer.server.port=4242"
+      - "traefik.enable=true"
+      - "traefik.http.routers.titlecardmaker.rule=Host(`titlecardmaker.$DOMAIN`)"
+      - "traefik.http.routers.titlecardmaker.middlewares=oauth,error-pages"
+      - "traefik.http.services.titlecardmaker.loadbalancer.server.port=4242"

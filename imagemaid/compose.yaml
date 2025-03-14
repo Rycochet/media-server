@@ -17,6 +17,12 @@ services:
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"
+      # Image
+      PLEX_URL: "$PLEX_URL"
+      PLEX_TOKEN: "$PLEX_TOKEN"
+      PLEX_PATH: "/plex"
+      TIMEOUT: "1000"
+      SCHEDULE: "00:00|weekly(monday)|mode=clear,01:00|weekly(monday)|mode=move"
     volumes:
       - "./config:/config"
       - "./logs:/config/logs"

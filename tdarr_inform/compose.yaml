@@ -1,0 +1,32 @@
+services:
+  tdarr-inform:
+    container_name: tdarr-inform
+    # image: ghcr.io/deathbybandaid/tdarr_inform:latest
+    build: tdarr_inform/
+    profiles: ["quality"]
+    # restart: unless-stopped
+    network_mode: service:vpn
+    depends_on:
+      vpn:
+        condition: service_started
+        restart: true
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+      tdarr:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    volumes:
+      - "./config:/config"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.tdarr-inform.rule=Host(`tdarr-inform.$DOMAIN`)"
+      - "traefik.http.routers.tdarr-inform.middlewares=oauth,error-pages"
+      - "traefik.http.services.tdarr-inform.loadbalancer.server.port=5004"

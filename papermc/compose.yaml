@@ -1,0 +1,36 @@
+services:
+  papermc:
+    container_name: papermc
+    image: marctv/minecraft-papermc-server:latest
+    profiles: ["game"]
+    restart: unless-stopped
+    ports:
+      - "25565:25565/tcp"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    # The following allow `docker attach minecraft` to work
+    stdin_open: true
+    tty: true
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      # Image
+      MEMORYSIZE: "1G"
+    depends_on:
+      - traefik
+      - error-pages
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/data"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.papermc.rule=Host(`minecraft.$DOMAIN`)"
+      - "traefik.http.routers.papermc.middlewares=error-pages"
+      - "traefik.http.services.papermc.loadbalancer.server.port=8080"

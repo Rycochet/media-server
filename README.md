@@ -1,6 +1,6 @@
 # Media Server with Docker Compose
 
-> [!IMPORANT]
+> [!IMPORTANT]
 > This uses Cloudflare for incoming connections, NordVPN for outgoing, and Google Auth for logging in. If you cannot figure those out with help from google then this might not be the setup for you!
 
 > [!NOTE]

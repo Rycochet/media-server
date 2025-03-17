@@ -8,14 +8,17 @@ services:
     network_mode: service:vpn
     depends_on:
       vpn:
-        condition: service_started
+        condition: service_healthy
         restart: true
       traefik:
         condition: service_started
+        restart: false
       error-pages:
         condition: service_started
+        restart: false
       tdarr:
         condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:
@@ -30,3 +33,9 @@ services:
       - "traefik.http.routers.tdarr-inform.rule=Host(`tdarr-inform.$DOMAIN`)"
       - "traefik.http.routers.tdarr-inform.middlewares=oauth,error-pages"
       - "traefik.http.services.tdarr-inform.loadbalancer.server.port=5004"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost:5004/ || exit 1"

@@ -9,6 +9,7 @@ services:
     depends_on:
       traefik:
         condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:

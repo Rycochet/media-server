@@ -7,6 +7,16 @@ services:
     networks:
       - default
       - internal
+    depends_on:
+      cloudflared:
+        condition: service_started
+        restart: false
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:
@@ -30,7 +40,7 @@ services:
       # NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
       # NVIDIA_VISIBLE_DEVICES: "all"
       # Image
-      ADVERTISE_IP: "$PLEX_URL"
+      ADVERTISE_IP: "https://plex.$DOMAIN:443/"
       PLEX_CLAIM: "$PLEX_CLAIM"
       PLEX_GID: "$PGID"
       PLEX_UID: "$PUID"

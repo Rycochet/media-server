@@ -11,6 +11,10 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
+    depends_on:
+      plex:
+        condition: service_healthy
+        restart: true
     environment:
       # Default
       TZ: "Europe/London"
@@ -18,7 +22,7 @@ services:
       PGID: "$PGID"
       # Image
       PLEX_TOKEN: "$PLEX_TOKEN"
-      PLEX_URL: "http://plex:32400/"
+      PLEX_URL: "https://plex.$DOMAIN:443/"
       CHECK_LIBRARY: "Movies,TV Shows"
     volumes:
       - "$PATH_MOVIES:/data/movies:ro"

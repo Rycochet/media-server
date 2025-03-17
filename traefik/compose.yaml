@@ -13,8 +13,12 @@ services:
         max-size: "1m"
         max-file: "3"
     depends_on:
-      - socket-proxy
-      - oauth
+      socket-proxy:
+        condition: service_healthy
+        restart: false
+      oauth:
+        condition: service_started
+        restart: false
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:

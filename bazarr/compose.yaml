@@ -7,12 +7,14 @@ services:
     network_mode: service:vpn
     depends_on:
       vpn:
-        condition: service_started
+        condition: service_healthy
         restart: true
       traefik:
         condition: service_started
+        restart: false
       error-pages:
         condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:
@@ -43,4 +45,4 @@ services:
       timeout: "5s"
       retries: 3
       start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:6767/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:6767/"

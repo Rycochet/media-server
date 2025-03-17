@@ -18,7 +18,7 @@ services:
       PGID: "$PGID"
       UMASK: "000"
       # Image
-      PLEX_URL: "$PLEX_URL"
+      PLEX_URL: "https://plex.$DOMAIN:443/"
       PLEX_TOKEN: "$PLEX_TOKEN"
       PLEX_PATH: "/plex"
       TIMEOUT: "1000"

@@ -7,7 +7,9 @@ services:
     networks:
       - internal
     depends_on:
-      - socket-proxy
+      socket-proxy:
+        condition: service_started
+        restart: true
     logging:
       driver: "json-file"
       options:

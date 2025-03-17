@@ -13,14 +13,17 @@ services:
         max-file: "3"
     depends_on:
       vpn:
-        condition: service_started
+        condition: service_healthy
         restart: true
       plex:
-        condition: service_started
+        condition: service_healthy
+        restart: false
       sonarr:
-        condition: service_started
+        condition: service_healthy
+        restart: false
       radarr:
-        condition: service_started
+        condition: service_healthy
+        restart: false
     environment:
       # Default
       TZ: "Europe/London"

@@ -17,8 +17,12 @@ services:
       UMASK: "000"
       # Image
     depends_on:
-      - traefik
-      - error-pages
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"

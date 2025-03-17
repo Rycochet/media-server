@@ -1,12 +1,14 @@
 services:
-  autoheal:
-    container_name: autoheal
+  deunhealth:
+    container_name: deunhealth
     image: qmcgaw/deunhealth:latest
     profiles: ["infrastructure"]
     restart: unless-stopped
     network_mode: none
     depends_on:
-      - socket-proxy
+      socket-proxy:
+        condition: service_healthy
+        restart: false
     logging:
       driver: "json-file"
       options:
@@ -19,7 +21,6 @@ services:
       DOCKER_HOST: "tcp://socket-proxy:2375"
       # Image
       LOG_LEVEL: "info"
-      HEALTH_SERVER_ADDRESS: "127.0.0.1:9999"
     labels:
       - "traefik.enable=false"
       - "com.centurylinklabs.watchtower.monitor-only=true"

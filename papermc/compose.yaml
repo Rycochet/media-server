@@ -22,8 +22,12 @@ services:
       # Image
       MEMORYSIZE: "1G"
     depends_on:
-      - traefik
-      - error-pages
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/data"

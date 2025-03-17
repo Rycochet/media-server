@@ -15,9 +15,15 @@ services:
     networks:
       - internal
     depends_on:
-      - traefik
-      - socket-proxy
-      - error-pages
+      socket-proxy:
+        condition: service_healthy
+        restart: false
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:
@@ -36,7 +42,6 @@ services:
       DOCKER_HOST: "tcp://socket-proxy:2375"
       GLANCES_OPT: "-w"
     volumes:
-      # - /var/run/docker.sock:/var/run/docker.sock
       - "/etc/os-release:/etc/os-release:ro"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
@@ -45,9 +50,9 @@ services:
       - "traefik.http.routers.glances.rule=Host(`glances.$DOMAIN`)"
       - "traefik.http.routers.glances.middlewares=oauth,error-pages"
       - "traefik.http.services.glances.loadbalancer.server.port=61208"
-    # healthcheck:
-    #   interval: "30s"
-    #   timeout: "5s"
-    #   retries: 3
-    #   start_period: "10s"
-    #   test: ["CMD", "/dozzle", "healthcheck"]
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "2s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:61208/"

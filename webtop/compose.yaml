@@ -7,12 +7,14 @@ services:
     network_mode: service:vpn
     depends_on:
       vpn:
-        condition: service_started
+        condition: service_healthy
         restart: true
       traefik:
         condition: service_started
+        restart: false
       error-pages:
         condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:
@@ -31,6 +33,7 @@ services:
       TITLE: "Webtop"
       PASSWORD: ""
       NO_DECOR: true
+      # Auto-install LSIO mods and packages
       DOCKER_MODS: "linuxserver/mods:universal-package-install"
       INSTALL_PACKAGES: "mkvtoolnix|bento4"
     volumes:
@@ -46,3 +49,9 @@ services:
       - "traefik.http.routers.webtop.rule=Host(`webtop.$DOMAIN`)"
       - "traefik.http.routers.webtop.middlewares=oauth,error-pages"
       - "traefik.http.services.webtop.loadbalancer.server.port=3000"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:3000/"

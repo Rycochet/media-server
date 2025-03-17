@@ -7,9 +7,15 @@ services:
     networks:
       - internal
     depends_on:
-      - traefik
-      - socket-proxy
-      - error-pages
+      socket-proxy:
+        condition: service_healthy
+        restart: false
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:

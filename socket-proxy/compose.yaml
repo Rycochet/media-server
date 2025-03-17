@@ -47,4 +47,4 @@ services:
       timeout: "5s"
       retries: 3
       start_period: "10s"
-      test: wget --spider http://localhost:2375/_ping || exit 1
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:2375/_ping"

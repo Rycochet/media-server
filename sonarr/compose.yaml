@@ -2,13 +2,14 @@ services:
   sonarr:
     container_name: sonarr
     image: lscr.io/linuxserver/sonarr:develop
-    profiles: ["media"]
+    profiles: ["${PROFILE_SONARR:-media}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
+      proxy:
+        condition: service_started
+        restart: false
       traefik:
         condition: service_started
         restart: false

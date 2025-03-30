@@ -2,7 +2,7 @@ services:
   socket-proxy:
     container_name: socket-proxy
     image: lscr.io/linuxserver/socket-proxy:latest
-    profiles: ["infrastructure"]
+    profiles: ["${PROFILE_SOCKET_PROXY:-infrastructure}"]
     restart: unless-stopped
     networks:
       - internal

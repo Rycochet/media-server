@@ -2,13 +2,12 @@ services:
   ubooquity:
     container_name: ubooquity
     image: lscr.io/linuxserver/ubooquity:latest
-    profiles: ["disabled-media"]
+    profiles: ["${PROFILE_UBOOQUITY:-media}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - external
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
       traefik:
         condition: service_started
         restart: false
@@ -38,8 +37,9 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.ubooquity.rule=Host(`ubooquity.$DOMAIN`)"
-      - "traefik.http.routers.ubooquity.middlewares=oauth,error-pages"
+      - "traefik.http.routers.ubooquity.middlewares=ubooquity,oauth,error-pages"
       - "traefik.http.services.ubooquity.loadbalancer.server.port=2202"
+      - "traefik.http.middlewares.ubooquity.headers.accessControlAllowOriginList=*"
     healthcheck:
       interval: "30s"
       timeout: "5s"

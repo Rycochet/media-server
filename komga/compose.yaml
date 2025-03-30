@@ -2,13 +2,12 @@ services:
   komga:
     container_name: komga
     image: gotson/komga:latest
-    profiles: ["media"]
+    profiles: ["${PROFILE_KOMGA:-library}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - external
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
       traefik:
         condition: service_started
         restart: false
@@ -38,9 +37,10 @@ services:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
-      - "traefik.http.routers.komga.rule=Host(`comics.$DOMAIN`)"
-      - "traefik.http.routers.komga.middlewares=oauth,error-pages"
+      - "traefik.http.routers.komga.rule=Host(`komga.$DOMAIN`)"
+      - "traefik.http.routers.komga.middlewares=komga,oauth,error-pages"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
+      - "traefik.http.middlewares.komga.headers.accessControlAllowOriginList=*"
     healthcheck:
       interval: "30s"
       timeout: "5s"

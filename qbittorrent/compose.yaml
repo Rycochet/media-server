@@ -2,13 +2,14 @@ services:
   qbittorrent:
     container_name: qbittorrent
     image: lscr.io/linuxserver/qbittorrent:latest
-    profiles: ["download"]
+    profiles: ["${PROFILE_QBITTORRENT:-download}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
+      proxy:
+        condition: service_started
+        restart: false
       traefik:
         condition: service_started
         restart: false
@@ -36,8 +37,9 @@ services:
       - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
       - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.$DOMAIN`)"
-      - "traefik.http.routers.qbittorrent.middlewares=oauth,error-pages"
+      - "traefik.http.routers.qbittorrent.middlewares=qbittorrent,oauth,error-pages"
       - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.qbittorrent.headers.accessControlAllowOriginList=*"
     healthcheck:
       interval: "30s"
       timeout: "5s"

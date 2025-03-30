@@ -2,7 +2,7 @@ services:
   papermc:
     container_name: papermc
     image: marctv/minecraft-papermc-server:latest
-    profiles: ["game"]
+    profiles: ["${PROFILE_PAPERMC:-games}"]
     restart: unless-stopped
     ports:
       - "25565:25565/tcp"
@@ -35,6 +35,12 @@ services:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
-      - "traefik.http.routers.papermc.rule=Host(`minecraft.$DOMAIN`)"
+      - "traefik.http.routers.papermc.rule=Host(`minecraft-map.$DOMAIN`)"
       - "traefik.http.routers.papermc.middlewares=error-pages"
       - "traefik.http.services.papermc.loadbalancer.server.port=8080"
+    healthcheck:
+      interval: "30s"
+      timeout: "1s"
+      retries: 3
+      start_period: "5m"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/25565'"

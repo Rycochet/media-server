@@ -2,13 +2,15 @@ services:
   webtop:
     container_name: webtop
     image: lscr.io/linuxserver/webtop:latest
-    profiles: ["desktop"]
+    profiles: ["${PROFILE_WEBTOP:-desktop}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - external
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
+      proxy:
+        condition: service_started
+        restart: false
       traefik:
         condition: service_started
         restart: false

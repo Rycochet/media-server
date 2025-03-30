@@ -1,4 +1,5 @@
 .env
+compose.override.yaml
 
 /aquota.user
 /.vscode
@@ -7,3 +8,5 @@
 /*/config
 /*/logs
 /*/tmp
+
+/homer/assets/config.yml

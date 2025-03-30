@@ -2,11 +2,18 @@ services:
   tdarr:
     container_name: tdarr
     image: haveagitgat/tdarr:latest
-    profiles: ["quality"]
+    profiles: ["${PROFILE_TDARR:-quality}"]
     restart: unless-stopped
     networks:
-      - default
+      - external
       - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:
@@ -21,18 +28,11 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    depends_on:
-      traefik:
-        condition: service_started
-        restart: false
-      error-pages:
-        condition: service_started
-        restart: false
-    ports:
-    #   - "8265:8265" # webUI port
-      - "8266:8266" # server port
-      - "8267:8267" # node port. It should be mapped on this container because
-                    # the node container use the network from the main container
+    # ports:
+    # #   - "8265:8265" # webUI port
+    #   - "8266:8266" # server port
+    #   - "8267:8267" # node port. It should be mapped on this container because
+    #                 # the node container use the network from the main container
     environment:
       # Default
       TZ: "Europe/London"
@@ -52,9 +52,8 @@ services:
     volumes:
       - "./config/server:/app/server"
       - "./config/config:/app/configs"
-      - "./config/logs:/app/logs"
+      - "./logs:/app/logs"
       - "./tmp:/tmp"
-      - "$PATH_CONCERTS:/data/Concerts"
       - "$PATH_MOVIES:/data/movies"
       - "$PATH_TV:/data/tv"
     labels:
@@ -67,7 +66,7 @@ services:
       interval: "30s"
       timeout: "5s"
       retries: 3
-      start_period: "10s"
+      start_period: "2m30s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8265/"
 
 #   tdarr-node:

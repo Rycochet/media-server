@@ -2,10 +2,10 @@ services:
   vpn:
     container_name: vpn
     image: ghcr.io/bubuntux/nordlynx:latest
-    profiles: ["network"]
+    profiles: ["${PROFILE_VPN:-network}"]
     restart: unless-stopped
     networks:
-      - default
+      - external
       - internal
     logging:
       driver: "json-file"
@@ -18,8 +18,10 @@ services:
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=1 # ipv4 only
     ports:
-      - "51414:51414" # Torrent
-      - "6881:6881/udp" # Torrent
+      - "1080:1080" # Allow proxy connections from outside docker
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     environment:
       # Default
       TZ: "Europe/London"
@@ -27,13 +29,14 @@ services:
       PGID: "$PGID"
       UMASK: "000"
       # Image
-      PRIVATE_KEY: "$VPN_PRIVATE_KEY"
+      PRIVATE_KEY: "${NORDLYNX_PRIVATE_KEY:?You must set the NordLynx private key to use this}"
       CONNECT: "United_States"
-      DNS: "8.8.8.8,1.1.1.1"
+      DNS: "1.1.1.1,8.8.8.8"
       NET_LOCAL: "192.168.0.0/24"
+      PRE_UP: "sleep 3" # Delay startup to prevent race conditions
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
     labels:
-      - "traefik.enable=false"
       - "com.centurylinklabs.watchtower.enable=false"
       - "deunhealth.restart.on.unhealthy=true"
+      - "traefik.enable=false"

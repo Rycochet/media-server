@@ -2,10 +2,10 @@ services:
   plex:
     container_name: plex
     image: plexinc/pms-docker:plexpass
-    profiles: ["library"]
+    profiles: ["${PROFILE_PLEX:-library}"]
     restart: unless-stopped
     networks:
-      - default
+      - external
       - internal
     depends_on:
       cloudflared:
@@ -49,25 +49,19 @@ services:
       - "./backup:/data/backup" # TODO: Fix this - /config/Library/Application Support/Plex Media Server/Plug-in Support/Databases ...?
       - "./logs:/config/Library/Application Support/Plex Media Server/Logs"
       - "./tmp:/tmp"
-      - "$PATH_ADULT:/data/Adult:ro"
-      - "$PATH_AUDIOBOOKS:/data/Audiobooks:ro"
-      - "$PATH_CONCERTS:/data/Concerts:ro"
       - "$PATH_MOVIES:/data/movies:ro"
       - "$PATH_MUSIC:/data/Music:ro"
-      - "$PATH_ONLYFANS:/data/OnlyFans:ro"
-      - "$PATH_PICTURES:/data/Pictures:ro"
       - "$PATH_TV:/data/tv:ro"
-      - "$PATH_TEST:/data/test:ro"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.plex.rule=Host(`plex.$DOMAIN`)"
-      - "traefik.http.routers.plex.middlewares=error-pages"
+      - "traefik.http.routers.plex.middlewares=plex,error-pages"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
       - "traefik.http.services.plex.loadbalancer.server.scheme=https"
-      # - "traefik.http.middlewares.plex.stripprefix.prefixes=/web/index.html"
-      # - "traefik.http.middlewares.plex.addprefix.prefix=/web/index.html"
+      - "traefik.http.middlewares.plex.replacepathregex.regex=^/$"
+      - "traefik.http.middlewares.plex.replacepathregex.replacement=/web/index.html"
     healthcheck:
       interval: "30s"
       timeout: "5s"

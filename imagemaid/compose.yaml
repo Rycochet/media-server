@@ -2,10 +2,11 @@ services:
   imagemaid:
     container_name: imagemaid
     image: kometateam/imagemaid:latest
-    profiles: ["quality"]
+    profiles: ["${PROFILE_IMAGEMAID:-quality}"]
     restart: unless-stopped
     networks:
-      - default
+      - external
+      - internal
     logging:
       driver: "json-file"
       options:

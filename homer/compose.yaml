@@ -1,0 +1,41 @@
+services:
+  homer:
+    container_name: homer
+    image: b4bz/homer:latest
+    profiles: ["${PROFILE_HOMER:-information}"]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    # user: $PGID:$PUID
+    environment:
+      # Default
+      TZ: "Europe/London"
+      # Image
+      DOMAIN: "$DOMAIN"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./assets:/www/assets"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.homer.rule=Host(`$DOMAIN`)"
+      - "traefik.http.routers.homer.middlewares=oauth,error-pages"
+      - "traefik.http.services.homer.loadbalancer.server.port=8080"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "1m30s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1"

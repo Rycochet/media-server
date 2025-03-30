@@ -2,7 +2,7 @@ services:
   glances:
     container_name: glances
     image: nicolargo/glances:latest-full
-    profiles: ["access"]
+    profiles: ["${PROFILE_GLANCES:-information}"]
     restart: unless-stopped
     pid: host
     deploy:

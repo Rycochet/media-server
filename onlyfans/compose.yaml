@@ -2,10 +2,10 @@ services:
   onlyfans:
     container_name: onlyfans
     image: ghcr.io/datawhores/of-scraper:latest
-    profiles: ["media"]
+    profiles: ["${PROFILE_ONLYFANS:-download}"]
     restart: unless-stopped
     networks:
-      - default
+      - external
     logging:
       driver: "json-file"
       options:

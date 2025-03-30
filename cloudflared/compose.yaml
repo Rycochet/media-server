@@ -2,10 +2,11 @@ services:
   cloudflared:
     container_name: cloudflared
     image: cloudflare/cloudflared:latest
-    profiles: ["network"]
+    profiles: ["${PROFILE_CLOUDFLARED:-network}"]
     restart: unless-stopped
     networks:
-      - default
+      - external
+      - internal
     command: tunnel run
     logging:
       driver: "json-file"
@@ -13,7 +14,7 @@ services:
         max-size: "1m"
         max-file: "3"
     environment:
-      TUNNEL_TOKEN: "${CLOUDFLARED_TOKEN}"
+      TUNNEL_TOKEN: "${CLOUDFLARED_TOKEN:?You must disable the cloudflared service if not using it}"
       TUNNEL_LOGLEVEL: "debug"
     labels:
       - "deunhealth.restart.on.unhealthy=true"

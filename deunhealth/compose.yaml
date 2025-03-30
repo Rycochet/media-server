@@ -2,7 +2,7 @@ services:
   deunhealth:
     container_name: deunhealth
     image: qmcgaw/deunhealth:latest
-    profiles: ["infrastructure"]
+    profiles: ["${PROFILE_DEUNHEALTH:-infrastructure}"]
     restart: unless-stopped
     network_mode: none
     depends_on:
@@ -22,6 +22,6 @@ services:
       # Image
       LOG_LEVEL: "info"
     labels:
-      - "traefik.enable=false"
       - "com.centurylinklabs.watchtower.monitor-only=true"
       - "deunhealth.restart.on.unhealthy=false"
+      - "traefik.enable=false"

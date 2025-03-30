@@ -2,13 +2,15 @@ services:
   sabnzbd:
     container_name: sabnzbd
     image: lscr.io/linuxserver/sabnzbd:latest
-    profiles: ["download"]
+    profiles: ["${PROFILE_SABNZBD:-download}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - internal
+      - external
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
+      proxy:
+        condition: service_started
+        restart: false
       traefik:
         condition: service_started
         restart: false

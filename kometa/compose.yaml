@@ -2,19 +2,16 @@ services:
   kometa:
     container_name: kometa
     image: lscr.io/linuxserver/kometa:latest
-    profiles: ["quality"]
-    # restart: unless-stopped
-    restart: no
-    network_mode: service:vpn
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "1m"
-        max-file: "3"
+    profiles: ["${PROFILE_KOMETA:-quality}"]
+    restart: unless-stopped
+    # restart: no
+    networks:
+      - external
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
+      proxy:
+        condition: service_started
+        restart: false
       plex:
         condition: service_healthy
         restart: false
@@ -24,6 +21,11 @@ services:
       radarr:
         condition: service_healthy
         restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
     environment:
       # Default
       TZ: "Europe/London"
@@ -33,7 +35,7 @@ services:
       # Image
       KOMETA_TIMES: "06:30" # Run at this time every day
       # KOMETA_RUN: "True" # Run once
-      # KOMETA_RUN_LIBRARIES: "TV Shows" # Single library
+      # KOMETA_RUN_LIBRARIES: "Movies" # Single library
       # KOMETA_IGNORE_SCHEDULES: "True"
     volumes:
       - "./config:/config"

@@ -2,13 +2,12 @@ services:
   titlecardmaker:
     container_name: titlecardmaker
     image: ghcr.io/titlecardmaker/titlecardmaker-webui:latest
-    profiles: ["quality"]
+    profiles: ["${PROFILE_TITLECARDMAKER:-quality}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - external
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
       traefik:
         condition: service_started
         restart: false

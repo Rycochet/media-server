@@ -2,14 +2,10 @@ services:
   error-pages:
     container_name: error-pages
     image: ghcr.io/tarampampam/error-pages:latest
-    profiles: ["network"]
+    profiles: ["${PROFILE_ERROR_PAGES:-network}"]
     restart: unless-stopped
     networks:
       - internal
-    depends_on:
-      traefik:
-        condition: service_started
-        restart: false
     logging:
       driver: "json-file"
       options:
@@ -22,12 +18,12 @@ services:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
+      - "traefik.http.services.error-pages.loadbalancer.server.port=8080"
       # use as "fallback" for any NON-registered services (with priority below normal)
+      - "traefik.http.routers.error-pages.rule=Host(`error-pages.$DOMAIN`) || HostRegexp(`.+`)"
       - "traefik.http.routers.error-pages.priority=10"
       # - "traefik.http.routers.error-pages.entrypoints=web"
-      - "traefik.http.routers.error-pages.rule=HostRegexp(`.+`)"
       - "traefik.http.routers.error-pages.middlewares=error-pages"
-      - "traefik.http.services.error-pages.loadbalancer.server.port=8080"
       # "error-pagess" middleware settings
       - "traefik.http.middlewares.error-pages.errors.status=400-599"
       - "traefik.http.middlewares.error-pages.errors.service=error-pages"

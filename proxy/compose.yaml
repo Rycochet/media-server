@@ -1,0 +1,23 @@
+services:
+  proxy:
+    container_name: proxy
+    image: serjs/go-socks5-proxy:latest
+    profiles: ["${PROFILE_PROXY:-network}"]
+    restart: unless-stopped
+    network_mode: service:vpn
+    depends_on:
+      vpn:
+        condition: service_healthy
+        restart: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      PROXY_USER: "${PROXY_USER:-}"
+      PROXY_PASSWORD: "${PROXY_PASSWORD:-}"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "deunhealth.restart.on.unhealthy=true"
+      - "traefik.enable=false"

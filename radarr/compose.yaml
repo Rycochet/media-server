@@ -2,13 +2,14 @@ services:
   radarr:
     container_name: radarr
     image: lscr.io/linuxserver/radarr:develop
-    profiles: ["media"]
+    profiles: ["${PROFILE_RADARR:-media}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
+      proxy:
+        condition: service_started
+        restart: false
       traefik:
         condition: service_started
         restart: false

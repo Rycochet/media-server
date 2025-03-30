@@ -1,11 +1,11 @@
 services:
   oauth:
     container_name: oauth
-    image: ghcr.io/jordemort/traefik-forward-auth:latest # thomseddon/traefik-forward-auth:latest
-    profiles: ["network"]
+    image: ghcr.io/steveiliop56/tinyauth:v3
+    profiles: ["${PROFILE_OAUTH:-network}"]
     restart: unless-stopped
     networks:
-      - default
+      - external
       - internal
     logging:
       driver: "json-file"
@@ -13,27 +13,24 @@ services:
         max-size: "1m"
         max-file: "3"
     environment:
-      # Default
-      TZ: "Europe/London"
-      PUID: "$PUID"
-      PGID: "$PGID"
-      UMASK: "000"
       # Image
-      PROVIDERS_GOOGLE_CLIENT_ID: "$GOOGLE_CLIENT_ID"
-      PROVIDERS_GOOGLE_CLIENT_SECRET: "$GOOGLE_CLIENT_SECRET"
       SECRET: "$OAUTH_SECRET"
-      COOKIE_DOMAIN: "$DOMAIN"
-      WHITELIST: "$WHITELIST"
-      # INSECURE_COOKIE: "false"
-      AUTH_HOST: "oauth.$DOMAIN"
-      LOG_LEVEL: "info"
-      LOG_FORMAT: "text"
-      LIFETIME: "2592000" # 30 days
-      DEFAULT_ACTION: "auth"
-      DEFAULT_PROVIDER: "google"
+      APP_URL: "https://oauth.$DOMAIN"
+      GOOGLE_CLIENT_ID: "$GOOGLE_CLIENT_ID"
+      GOOGLE_CLIENT_SECRET: "$GOOGLE_CLIENT_SECRET"
+      OAUTH_WHITELIST: "${WHITELIST:?Set the WHITELIST to your google email address!}"
+      COOKIE_SECURE: "true"
+      DISABLE_CONTINUE: "true"
+      SESSION_EXPIRY: "2592000" # 30 days
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.oauth.rule=Host(`oauth.$DOMAIN`)"
-      - "traefik.http.services.oauth.loadbalancer.server.port=4181"
-      - "traefik.http.middlewares.oauth.forwardauth.address=http://oauth:4181"
+      - "traefik.http.services.oauth.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.oauth.forwardauth.address=http://oauth:3000"
       - "traefik.http.middlewares.oauth.forwardauth.authResponseHeaders=X-Forwarded-User"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "1m30s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost:3000/api/healthcheck || exit 1"

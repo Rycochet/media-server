@@ -1,99 +1,77 @@
-# version: "3.8"
-
 name: rycochet
 
+# For each of these sections the initial comment is the default PROFILE name
+# used for it.
+#
+# To prevent any service from automatically running set the `PROFILE_<name>` to
+# `"disabled"`, or create a `compose.override.yaml` file, and reset the entire
+# service:
+# ```yaml
+# services:
+#   bazarr: !reset []
+# ```
 include:
   # INFRASTRUCTURE
-    # Bring unhealthy containers back up
-  - deunhealth/compose.yaml
-    # Secure access to the docker socket
-  - socket-proxy/compose.yaml
-    # Auto-update containers
-  - watchtower/compose.yaml
+  - deunhealth/compose.yaml           # Bring unhealthy containers back up
+  - socket-proxy/compose.yaml         # Secure access to the docker socket
+  - watchtower/compose.yaml           # Auto-update containers
 
   # NETWORK
-    # Cloudflare tunnel
-  - cloudflared/compose.yaml
-    # Error pages
-  - error-pages/compose.yaml
-    # OAuth via Google
-  - oauth/compose.yaml
-    # HTTP routing
-  - traefik/compose.yaml
-    # NordVPN
-  - vpn/compose.yaml
+  - cloudflared/compose.yaml          # Cloudflare tunnel
+  - error-pages/compose.yaml          # Error pages
+  - oauth/compose.yaml                # OAuth via Google
+  - proxy/compose.yaml                # Socks5 proxy for vpn
+  - traefik/compose.yaml              # HTTP routing
+  - vpn/compose.yaml                  # NordVPN
 
   # LIBRARY
-    # Media library
-  - jellyfin/compose.yaml
-    # Media library
-  - plex/compose.yaml
+  - komga/compose.yaml                # Comic library
+  - jellyfin/compose.yaml             # Open source media library
+  - plex/compose.yaml                 # Media library
 
   # QUALITY
-    # Cleanup Plex images
-  - imagemaid/compose.yaml
-    # Images and Collections for Plex
-  - kometa/compose.yaml
-    # Transcoding / format shifting / audio normalisation
-  - tdarr/compose.yaml
-    # Episode thumbnails for Plex
-  - titlecardmaker/compose.yaml
-    # Finds mismatches between tvdb/tmdb/imdb and Plex
-  - plex-find-mismatch/compose.yaml
-    # Notifications from sonarr / radarr / etc to tdarr
-  - tdarr_inform/compose.yaml
+  - imagemaid/compose.yaml            # Cleanup Plex image cache
+  - kometa/compose.yaml               # Poster overlays, collections, playlists for Plex
+  - plex-find-mismatch/compose.yaml   # Finds mismatches between tvdb/tmdb/imdb and Plex
+  - tdarr_inform/compose.yaml         # Notifications from sonarr / radarr / etc to tdarr
+  - tdarr/compose.yaml                # Transcoding / format shifting / audio normalisation
+  - titlecardmaker/compose.yaml       # Episode thumbnails for Plex
 
-  # ACCESS
-    # Front-end
-  - dashy/compose.yaml
-    # Docker status
-  - dozzle/compose.yaml
-    # Front-end
-  - organizr/compose.yaml
-    # System status
-  - glances/compose.yaml
+  # INFORMATION
+  - dozzle/compose.yaml               # Docker status
+  - glances/compose.yaml              # Operating system status
+  - homer/compose.yaml                # Dashboard
+  - overseerr/compose.yaml            # Media requests and issue tracking
+  - tautulli/compose.yaml             # Plex stats
 
   # DESKTOP
-    # Linux desktop
-  - webtop/compose.yaml
-    # Windows desktop
-  - windows/compose.yaml
+  - webtop/compose.yaml               # Linux desktop
+  - windows/compose.yaml              # Windows desktop
 
   # DOWNLOAD
-    # Torrent / NNTP search proxy
-  - prowlarr/compose.yaml
-    # Torrent downloader
-  - qbittorrent/compose.yaml
-    # NNTP downloader
-  - sabnzbd/compose.yaml
+  - onlyfans/compose.yaml             # Download all subscriptions
+  - prowlarr/compose.yaml             # Torrent / NNTP search proxy
+  - qbittorrent/compose.yaml          # Torrent downloader
+  - sabnzbd/compose.yaml              # NNTP downloader
+  - sonarr_youtubedl/compose.yaml     # YouTube downloader
 
   # MEDIA
-    # eBooks / Audiobooks
-  - readarr/compose.yaml
-    # Comics
-  - komga/compose.yaml
-    # Comics
-  - mylar/compose.yaml
-    # Comics
-  - ubooquity/compose.yaml
-    # TV Shows
-  - sonarr/compose.yaml
-    # Movies
-  - radarr/compose.yaml
-    # Subtitles
-  - bazarr/compose.yaml
-    # Music
-  - lidarr/compose.yaml
-    # Download all subscriptions
-  - onlyfans/compose.yaml
+  - bazarr/compose.yaml               # Subtitles
+  - lidarr/compose.yaml               # Music
+  - mylar/compose.yaml                # Comics
+  - radarr/compose.yaml               # Movies
+  - readarr/compose.yaml              # eBooks / Audiobooks
+  - sonarr/compose.yaml               # TV Shows
+  - ubooquity/compose.yaml            # Comics
 
-  # GAMES
-    # Minecraft
-  - papermc/compose.yaml
+  # GAMES - Not started automatically
+  - papermc/compose.yaml              # Minecraft
 
 networks:
-  default: # Internet access
+  external:
+    name: "external"
     driver: bridge
   internal: # No internet access
+    name: "internal"
     driver: bridge
     internal: true

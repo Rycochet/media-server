@@ -2,13 +2,14 @@ services:
   prowlarr:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr:develop
-    profiles: ["download"]
+    profiles: ["${PROFILE_PROWLARR:-download}"]
     restart: unless-stopped
-    network_mode: service:vpn
+    networks:
+      - internal
     depends_on:
-      vpn:
-        condition: service_healthy
-        restart: true
+      proxy:
+        condition: service_started
+        restart: false
       traefik:
         condition: service_started
         restart: false
@@ -37,8 +38,9 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.$DOMAIN`)"
-      - "traefik.http.routers.prowlarr.middlewares=oauth,error-pages"
+      - "traefik.http.routers.prowlarr.middlewares=prowlarr,oauth,error-pages"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+      - "traefik.http.middlewares.prowlarr.headers.accessControlAllowOriginList=*"
     healthcheck:
       interval: "30s"
       timeout: "5s"

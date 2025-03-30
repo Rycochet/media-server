@@ -2,7 +2,7 @@ services:
   plex-find-mismatch:
     container_name: plex-find-mismatch
     image: rycochet/plex-find-mismatch:latest
-    profiles: ["quality"]
+    profiles: ["${PROFILE_PLEX_FIND_MISMATCH:-quality}"]
     restart: unless-stopped
     networks:
       - internal

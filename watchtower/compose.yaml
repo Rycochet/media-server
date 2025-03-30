@@ -2,7 +2,7 @@ services:
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower
-    profiles: ["infrastructure"]
+    profiles: ["${PROFILE_WATCHTOWER:-infrastructure}"]
     restart: unless-stopped
     networks:
       - internal
@@ -23,6 +23,6 @@ services:
       WATCHTOWER_LABEL_ENABLE: "true"
       WATCHTOWER_TIMEOUT: "30s"
     labels:
-      - "traefik.enable=false"
       - "com.centurylinklabs.watchtower.monitor-only=true"
       - "deunhealth.restart.on.unhealthy=false"
+      - "traefik.enable=false"

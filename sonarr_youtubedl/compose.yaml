@@ -1,0 +1,36 @@
+services:
+  sonarr_youtubedl:
+    container_name: sonarr_youtubedl
+    image: whatdaybob/sonarr_youtubedl
+    profiles: ["${PROFILE_SONARR_YOUTUBEDL:-download}"]
+    # restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      proxy:
+        condition: service_started
+        restart: false
+      sonarr:
+        condition: service_healthy
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./logs:/logs"
+      - "$PATH_TV:/sonarr_root"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=false"

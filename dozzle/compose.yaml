@@ -2,7 +2,7 @@ services:
   dozzle:
     container_name: dozzle
     image: amir20/dozzle:latest
-    profiles: ["access"]
+    profiles: ["${PROFILE_DOZZLE:-information}"]
     restart: unless-stopped
     networks:
       - internal
@@ -29,8 +29,9 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.$DOMAIN`)"
-      - "traefik.http.routers.dozzle.middlewares=oauth,error-pages"
+      - "traefik.http.routers.dozzle.middlewares=dozzle,oauth,error-pages"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.dozzle.headers.accessControlAllowOriginList=*"
     healthcheck:
       interval: "30s"
       timeout: "5s"

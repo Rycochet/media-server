@@ -5,8 +5,10 @@ services:
     profiles: ["${PROFILE_TRAEFIK:-network}"]
     restart: unless-stopped
     networks:
-      - external
-      - internal
+      external:
+      internal:
+        aliases:
+          - "plex.$DOMAIN"
     logging:
       driver: "json-file"
       options:
@@ -22,8 +24,6 @@ services:
       error-pages:
         condition: service_started
         restart: false
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     environment:
       # Default
       TZ: "Europe/London"

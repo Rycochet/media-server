@@ -1,0 +1,32 @@
+services:
+  i2p:
+    container_name: i2p
+    image: geti2p/i2p:latest
+    profiles: ["${PROFILE_I2P:-network}"]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    ports:
+      - "4444:4444"
+      - "7656:7656"
+      - "$I2P_PORT:$I2P_PORT"
+      - "$I2P_PORT:$I2P_PORT/udp"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      - "JVM_XMX=512m"
+      - "EXT_PORT=$I2P_PORT"
+    volumes:
+      - "./config:/i2p/.i2p"
+      - "$PATH_DOWNLOADS/i2ptorrents:/i2psnark"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "deunhealth.restart.on.unhealthy=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.i2p.rule=Host(`i2p.$DOMAIN`)"
+      - "traefik.http.routers.i2p.middlewares=oauth,error-pages"
+      - "traefik.http.services.i2p.loadbalancer.server.port=7657"

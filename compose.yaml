@@ -49,6 +49,7 @@ include:
   - windows/compose.yaml              # Windows desktop
 
   # DOWNLOAD
+  - i2p/compose.yaml                  # I2P Client
   - onlyfans/compose.yaml             # Download all subscriptions
   - prowlarr/compose.yaml             # Torrent / NNTP search proxy
   - qbittorrent/compose.yaml          # Torrent downloader

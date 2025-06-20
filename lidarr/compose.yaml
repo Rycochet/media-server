@@ -41,9 +41,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.lidarr.rule=Host(`lidarr.$DOMAIN`)"
-      - "traefik.http.routers.lidarr.middlewares=lidarr,oauth,error-pages"
+      - "traefik.http.routers.lidarr.middlewares=lidarr,tinyauth,error-pages"
       - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
-      - "traefik.http.middlewares.lidarr.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.lidarr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.lidarr.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

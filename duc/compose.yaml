@@ -1,0 +1,51 @@
+services:
+  duc:
+    container_name: duc
+    image: tigerdockermediocore/duc-docker:latest
+    profiles: ["${PROFILE_DUC:-information}"]
+    # restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      socket-proxy:
+        condition: service_healthy
+        restart: false
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    # command: duc index /host
+    volumes:
+      - "./config:/duc"
+      - "$PATH_MOVIES:/host/movies:ro"
+      - "$PATH_MUSIC:/host/Music:ro"
+      - "$PATH_TV:/host/tv:ro"
+      - "$PATH_ADULT:/host/adult:ro"
+      - "$PATH_AUDIOBOOKS:/host/Audiobooks:ro"
+      - "$PATH_CONCERTS:/host/Concerts:ro"
+      - "$PATH_ONLYFANS:/host/OnlyFans:ro"
+      - "$PATH_PICTURES:/host/Pictures:ro"
+      - "$PATH_TEST:/host/test:ro"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.duc.rule=Host(`duc.$DOMAIN`)"
+      - "traefik.http.routers.duc.middlewares=duc,tinyauth,error-pages"
+      - "traefik.http.services.duc.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.duc.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.duc.headers.accessControlAllowOriginList=https://$DOMAIN"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/80'"
+      # test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:80/"

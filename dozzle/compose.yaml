@@ -29,9 +29,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.$DOMAIN`)"
-      - "traefik.http.routers.dozzle.middlewares=dozzle,oauth,error-pages"
+      - "traefik.http.routers.dozzle.middlewares=dozzle,tinyauth,error-pages"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
-      - "traefik.http.middlewares.dozzle.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.dozzle.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.dozzle.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

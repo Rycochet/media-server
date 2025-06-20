@@ -40,9 +40,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.kapowarr.rule=Host(`kapowarr.$DOMAIN`)"
-      - "traefik.http.routers.kapowarr.middlewares=kapowarr,oauth,error-pages"
+      - "traefik.http.routers.kapowarr.middlewares=kapowarr,tinyauth,error-pages"
       - "traefik.http.services.kapowarr.loadbalancer.server.port=5656"
-      - "traefik.http.middlewares.kapowarr.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.kapowarr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.kapowarr.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

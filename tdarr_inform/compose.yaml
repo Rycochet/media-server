@@ -1,8 +1,8 @@
 services:
   tdarr-inform:
     container_name: tdarr-inform
-    # image: ghcr.io/deathbybandaid/tdarr_inform:latest
-    build: tdarr_inform/
+    image: ghcr.io/deathbybandaid/tdarr_inform:latest
+    # build: tdarr_inform/
     profiles: ["${PROFILE_TDARR_INFORM:-quality}"]
     restart: unless-stopped
     networks:
@@ -31,5 +31,5 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.tdarr-inform.rule=Host(`tdarr-inform.$DOMAIN`)"
-      - "traefik.http.routers.tdarr-inform.middlewares=oauth,error-pages"
+      - "traefik.http.routers.tdarr-inform.middlewares=tinyauth,error-pages"
       - "traefik.http.services.tdarr-inform.loadbalancer.server.port=5004"

@@ -37,9 +37,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.ubooquity.rule=Host(`ubooquity.$DOMAIN`)"
-      - "traefik.http.routers.ubooquity.middlewares=ubooquity,oauth,error-pages"
+      - "traefik.http.routers.ubooquity.middlewares=ubooquity,tinyauth,error-pages"
       - "traefik.http.services.ubooquity.loadbalancer.server.port=2202"
-      - "traefik.http.middlewares.ubooquity.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.ubooquity.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.ubooquity.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

@@ -43,5 +43,5 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.titlecardmaker.rule=Host(`titlecardmaker.$DOMAIN`)"
-      - "traefik.http.routers.titlecardmaker.middlewares=oauth,error-pages"
+      - "traefik.http.routers.titlecardmaker.middlewares=tinyauth,error-pages"
       - "traefik.http.services.titlecardmaker.loadbalancer.server.port=4242"

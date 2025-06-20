@@ -1,13 +1,11 @@
 services:
-  qbittorrent:
-    container_name: qbittorrent
-    image: lscr.io/linuxserver/qbittorrent:latest
-    profiles: ["${PROFILE_QBITTORRENT:-download}"]
+  whisparr:
+    container_name: whisparr
+    image: ghcr.io/hotio/whisparr:latest # v3
+    profiles: ["${PROFILE_WHISPARR:-media}"]
     restart: unless-stopped
     networks:
       - internal
-    ports:
-      - "51414:51414"
     depends_on:
       proxy:
         condition: service_started
@@ -32,19 +30,21 @@ services:
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"
-      - "./logs:/config/qBittorrent/logs"
+      - "./backup:/config/Backups"
+      - "./logs:/config/logs"
+      - "$PATH_ADULT:/data/adult"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
-      - "com.centurylinklabs.watchtower.enable=false"
+      - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
-      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.$DOMAIN`)"
-      - "traefik.http.routers.qbittorrent.middlewares=qbittorrent,oauth,error-pages"
-      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
-      - "traefik.http.middlewares.qbittorrent.headers.accessControlAllowOriginList=*"
+      - "traefik.http.routers.whisparr.rule=Host(`whisparr.$DOMAIN`)"
+      - "traefik.http.routers.whisparr.middlewares=whisparr,oauth,error-pages"
+      - "traefik.http.services.whisparr.loadbalancer.server.port=6969"
+      - "traefik.http.middlewares.whisparr.headers.accessControlAllowOriginList=*"
     healthcheck:
       interval: "30s"
       timeout: "5s"
       retries: 3
       start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8080/"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:6969/"

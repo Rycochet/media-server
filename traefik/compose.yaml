@@ -8,6 +8,7 @@ services:
       external:
       internal:
         aliases:
+          - "jellyfin.$DOMAIN"
           - "plex.$DOMAIN"
     logging:
       driver: "json-file"

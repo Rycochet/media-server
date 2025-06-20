@@ -1,0 +1,33 @@
+services:
+  openspeedtest:
+    container_name: openspeedtest
+    image: openspeedtest/latest
+    profiles: ["${PROFILE_OPENSPEEDTEST:-network}"]
+    restart: unless-stopped
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      DOMAIN_NAME: "openspeedtest.$DOMAIN"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.openspeedtest.rule=Host(`openspeedtest.$DOMAIN`)"
+      - "traefik.http.routers.openspeedtest.middlewares=oauth,error-pages"
+      - "traefik.http.services.openspeedtest.loadbalancer.server.port=3000"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:3000/"

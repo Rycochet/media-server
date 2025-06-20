@@ -5,6 +5,7 @@ services:
     profiles: ["${PROFILE_WATCHTOWER:-infrastructure}"]
     restart: unless-stopped
     networks:
+      - external
       - internal
     depends_on:
       socket-proxy:

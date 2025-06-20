@@ -1,7 +1,7 @@
 services:
   socket-proxy:
     container_name: socket-proxy
-    image: lscr.io/linuxserver/socket-proxy:latest
+    image: lscr.io/linuxserver/socket-proxy:1.26.3
     profiles: ["${PROFILE_SOCKET_PROXY:-infrastructure}"]
     restart: unless-stopped
     networks:

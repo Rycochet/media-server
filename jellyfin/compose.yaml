@@ -8,6 +8,9 @@ services:
       - external
       - internal
     depends_on:
+      cloudflared:
+        condition: service_started
+        restart: false
       traefik:
         condition: service_started
         restart: false
@@ -22,12 +25,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.50"
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+          cpus: "2"
     ports:
       - "8096:8096"
       - "8920:8920" #optional
@@ -39,21 +37,14 @@ services:
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"
-      # GPU
-      NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
-      NVIDIA_VISIBLE_DEVICES: "all"
       # Image
-      JELLYFIN_PublishedServerUrl: "http://192.168.0.2" #optional
+      JELLYFIN_PublishedServerUrl: "http://jellyfin.$DOMAIN"
     volumes:
       - "./config:/config"
-      - "./config/logs:/config/log"
-      - "$PATH_ADULT:/data/Adult:ro"
-      - "$PATH_AUDIOBOOKS:/data/Audiobooks:ro"
-      - "$PATH_CONCERTS:/data/Concerts:ro"
+      - "./logs:/config/logs"
+      - "./tmp:/config/cache/transcodes"
       - "$PATH_MOVIES:/data/movies:ro"
       - "$PATH_MUSIC:/data/Music:ro"
-      - "$PATH_ONLYFANS:/data/OnlyFans:ro"
-      - "$PATH_PICTURES:/data/Pictures:ro"
       - "$PATH_TV:/data/tv:ro"
     labels:
       - "deunhealth.restart.on.unhealthy=true"

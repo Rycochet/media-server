@@ -20,12 +20,13 @@ include:
   - cloudflared/compose.yaml          # Cloudflare tunnel
   - error-pages/compose.yaml          # Error pages
   - oauth/compose.yaml                # OAuth via Google
+  - openspeedtest/compose.yaml        # Speed test
   - proxy/compose.yaml                # Socks5 proxy for vpn
   - traefik/compose.yaml              # HTTP routing
   - vpn/compose.yaml                  # NordVPN
 
   # LIBRARY
-  - komga/compose.yaml                # Comic library
+  # - komga/compose.yaml                # Comic library
   - jellyfin/compose.yaml             # Open source media library
   - plex/compose.yaml                 # Media library
 
@@ -59,11 +60,13 @@ include:
   # MEDIA
   - bazarr/compose.yaml               # Subtitles
   - lidarr/compose.yaml               # Music
-  - mylar/compose.yaml                # Comics
+  - kapowarr/compose.yaml             # Comics
+  # - mylar/compose.yaml                # Comics
   - radarr/compose.yaml               # Movies
   - readarr/compose.yaml              # eBooks / Audiobooks
   - sonarr/compose.yaml               # TV Shows
-  - ubooquity/compose.yaml            # Comics
+  # - ubooquity/compose.yaml            # Comics
+  - whisparr/compose.yaml             # Porn
 
   # GAMES - Not started automatically
   - papermc/compose.yaml              # Minecraft

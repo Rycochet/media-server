@@ -1,0 +1,51 @@
+services:
+  kapowarr:
+    container_name: kapowarr
+    image: mrcas/kapowarr:latest
+    profiles: ["${PROFILE_KAPOWARR:-media}"]
+    restart: unless-stopped
+    networks:
+      - internal
+      - external
+    depends_on:
+      # proxy:
+      #   condition: service_started
+      #   restart: false
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/app/db"
+      # - "./backup:/config/Backups"
+      # - "./logs:/config/logs"
+      - "$PATH_COMICS:/data/comics"
+      - "$PATH_DOWNLOADS:/data/Downloads"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.kapowarr.rule=Host(`kapowarr.$DOMAIN`)"
+      - "traefik.http.routers.kapowarr.middlewares=kapowarr,oauth,error-pages"
+      - "traefik.http.services.kapowarr.loadbalancer.server.port=5656"
+      - "traefik.http.middlewares.kapowarr.headers.accessControlAllowOriginList=*"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5656'"

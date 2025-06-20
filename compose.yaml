@@ -19,7 +19,7 @@ include:
   # NETWORK
   - cloudflared/compose.yaml          # Cloudflare tunnel
   - error-pages/compose.yaml          # Error pages
-  - oauth/compose.yaml                # OAuth via Google
+  - tinyauth/compose.yaml             # OAuth via Google
   - openspeedtest/compose.yaml        # Speed test
   - proxy/compose.yaml                # Socks5 proxy for vpn
   - traefik/compose.yaml              # HTTP routing
@@ -42,6 +42,7 @@ include:
   - dozzle/compose.yaml               # Docker status
   - glances/compose.yaml              # Operating system status
   - homer/compose.yaml                # Dashboard
+  - duc/compose.yaml                  # Disk usage
   - overseerr/compose.yaml            # Media requests and issue tracking
   - tautulli/compose.yaml             # Plex stats
 
@@ -56,6 +57,7 @@ include:
   - qbittorrent/compose.yaml          # Torrent downloader
   - sabnzbd/compose.yaml              # NNTP downloader
   - sonarr_youtubedl/compose.yaml     # YouTube downloader
+  - syncthing/compose.yaml            # Synchronise library
 
   # MEDIA
   - bazarr/compose.yaml               # Subtitles
@@ -75,6 +77,7 @@ networks:
   external:
     name: "external"
     driver: bridge
+    # enable_ipv6: true
   internal: # No internet access
     name: "internal"
     driver: bridge

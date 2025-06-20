@@ -1,0 +1,55 @@
+services:
+  syncthing:
+    container_name: syncthing
+    image: syncthing/syncthing:latest
+    profiles: ["${PROFILE_SYNCTHING:-download}"]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    ports:
+      - 22000:22000/tcp # TCP file transfers
+      - 22000:22000/udp # QUIC file transfers
+    depends_on:
+      proxy:
+        condition: service_started
+        restart: false
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/var/syncthing"
+      - "$PATH_MOVIES:/data/movies:ro"
+      - "$PATH_MUSIC:/data/music:ro"
+      - "$PATH_TV:/data/tv:ro"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.syncthing.rule=Host(`syncthing.$DOMAIN`)"
+      - "traefik.http.routers.syncthing.middlewares=syncthing,tinyauth,error-pages"
+      - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
+      - "traefik.http.middlewares.syncthing.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.syncthing.headers.accessControlAllowOriginList=https://$DOMAIN"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1"
+      # test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8384/"

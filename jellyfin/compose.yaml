@@ -51,7 +51,7 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.$DOMAIN`)"
-      - "traefik.http.routers.jellyfin.middlewares=oauth,error-pages"
+      - "traefik.http.routers.jellyfin.middlewares=tinyauth,error-pages"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
     healthcheck:
       interval: "30s"

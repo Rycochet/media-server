@@ -28,5 +28,5 @@ services:
       - "deunhealth.restart.on.unhealthy=true"
       - "traefik.enable=true"
       - "traefik.http.routers.i2p.rule=Host(`i2p.$DOMAIN`)"
-      - "traefik.http.routers.i2p.middlewares=oauth,error-pages"
+      - "traefik.http.routers.i2p.middlewares=tinyauth,error-pages"
       - "traefik.http.services.i2p.loadbalancer.server.port=7657"

@@ -39,9 +39,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.whisparr.rule=Host(`whisparr.$DOMAIN`)"
-      - "traefik.http.routers.whisparr.middlewares=whisparr,oauth,error-pages"
+      - "traefik.http.routers.whisparr.middlewares=whisparr,tinyauth,error-pages"
       - "traefik.http.services.whisparr.loadbalancer.server.port=6969"
-      - "traefik.http.middlewares.whisparr.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.whisparr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.whisparr.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

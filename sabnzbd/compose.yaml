@@ -39,8 +39,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.$DOMAIN`)"
-      - "traefik.http.routers.sabnzbd.middlewares=oauth,error-pages"
+      - "traefik.http.routers.sabnzbd.middlewares=sabnzbd,tinyauth,error-pages"
       - "traefik.http.services.sabnzbd.loadbalancer.server.port=7070"
+      - "traefik.http.middlewares.sabnzbd.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.sabnzbd.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

@@ -40,8 +40,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.readarr.rule=Host(`readarr.$DOMAIN`)"
-      - "traefik.http.routers.readarr.middlewares=oauth,error-pages"
+      - "traefik.http.routers.readarr.middlewares=readarr,tinyauth,error-pages"
       - "traefik.http.services.readarr.loadbalancer.server.port=8787"
+      - "traefik.http.middlewares.readarr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.readarr.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

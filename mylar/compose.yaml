@@ -34,6 +34,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mylar.rule=Host(`mylar.$DOMAIN`)"
-      - "traefik.http.routers.mylar.middlewares=mylar,oauth,error-pages"
+      - "traefik.http.routers.mylar.middlewares=mylar,tinyauth,error-pages"
       - "traefik.http.services.mylar.loadbalancer.server.port=8090"
-      - "traefik.http.middlewares.mylar.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.mylar.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.mylar.headers.accessControlAllowOriginList=https://$DOMAIN"

@@ -1,7 +1,7 @@
 services:
   traefik:
     container_name: traefik
-    image: traefik:v3.3.4
+    image: traefik:v3.4.1
     profiles: ["${PROFILE_TRAEFIK:-network}"]
     restart: unless-stopped
     networks:
@@ -19,10 +19,13 @@ services:
       socket-proxy:
         condition: service_healthy
         restart: false
-      oauth:
+      tinyauth:
         condition: service_started
         restart: false
       error-pages:
+        condition: service_started
+        restart: false
+      cloudflared:
         condition: service_started
         restart: false
     environment:
@@ -76,7 +79,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.$DOMAIN`)"
-      - "traefik.http.routers.dashboard.middlewares=oauth,error-pages"
+      - "traefik.http.routers.dashboard.middlewares=tinyauth,error-pages"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
     healthcheck:
       interval: "30s"

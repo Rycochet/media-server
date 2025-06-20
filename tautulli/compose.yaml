@@ -36,9 +36,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.tautulli.rule=Host(`tautulli.$DOMAIN`)"
-      - "traefik.http.routers.tautulli.middlewares=tautulli,oauth,error-pages"
+      - "traefik.http.routers.tautulli.middlewares=tautulli,tinyauth,error-pages"
       - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
-      - "traefik.http.middlewares.tautulli.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.tautulli.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.tautulli.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

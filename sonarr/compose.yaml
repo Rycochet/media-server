@@ -39,8 +39,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.$DOMAIN`)"
-      - "traefik.http.routers.sonarr.middlewares=oauth,error-pages"
+      - "traefik.http.routers.sonarr.middlewares=sonarr,tinyauth,error-pages"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+      - "traefik.http.middlewares.sonarr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.sonarr.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

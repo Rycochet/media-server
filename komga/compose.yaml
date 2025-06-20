@@ -38,9 +38,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=Host(`komga.$DOMAIN`)"
-      - "traefik.http.routers.komga.middlewares=komga,oauth,error-pages"
+      - "traefik.http.routers.komga.middlewares=komga,tinyauth,error-pages"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
-      - "traefik.http.middlewares.komga.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.komga.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.komga.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

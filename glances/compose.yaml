@@ -48,8 +48,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.glances.rule=Host(`glances.$DOMAIN`)"
-      - "traefik.http.routers.glances.middlewares=oauth,error-pages"
+      - "traefik.http.routers.glances.middlewares=glances,tinyauth,error-pages"
       - "traefik.http.services.glances.loadbalancer.server.port=61208"
+      - "traefik.http.middlewares.glances.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.glances.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

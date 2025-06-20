@@ -37,9 +37,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.rule=Host(`bazarr.$DOMAIN`)"
-      - "traefik.http.routers.bazarr.middlewares=bazarr,oauth,error-pages"
+      - "traefik.http.routers.bazarr.middlewares=bazarr,tinyauth,error-pages"
       - "traefik.http.services.bazarr.loadbalancer.server.port=6767"
-      - "traefik.http.middlewares.bazarr.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.bazarr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.bazarr.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

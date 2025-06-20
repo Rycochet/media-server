@@ -53,5 +53,5 @@ services:
       - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
       - "traefik.http.routers.windows.rule=Host(`windows.$DOMAIN`)"
-      - "traefik.http.routers.windows.middlewares=oauth,error-pages"
+      - "traefik.http.routers.windows.middlewares=tinyauth,error-pages"
       - "traefik.http.services.windows.loadbalancer.server.port=8006"

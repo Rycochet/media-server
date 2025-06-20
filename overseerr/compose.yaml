@@ -31,6 +31,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"
       - "./logs:/config/logs"
+      - "./tmp:/run/overseerr-temp"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
@@ -38,7 +39,8 @@ services:
       - "traefik.http.routers.overseerr.rule=Host(`overseerr.$DOMAIN`) || Host(`ask.$DOMAIN`)"
       - "traefik.http.routers.overseerr.middlewares=overseerr,error-pages"
       - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
-      - "traefik.http.middlewares.overseerr.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.overseerr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.overseerr.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

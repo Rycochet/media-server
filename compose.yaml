@@ -26,7 +26,7 @@ include:
   - vpn/compose.yaml                  # NordVPN
 
   # LIBRARY
-  # - komga/compose.yaml                # Comic library
+  - komga/compose.yaml                # Comic library
   - jellyfin/compose.yaml             # Open source media library
   - plex/compose.yaml                 # Media library
 
@@ -52,7 +52,7 @@ include:
 
   # DOWNLOAD
   - i2p/compose.yaml                  # I2P Client
-  - onlyfans/compose.yaml             # Download all subscriptions
+  # - onlyfans/compose.yaml             # Download all subscriptions
   - prowlarr/compose.yaml             # Torrent / NNTP search proxy
   - qbittorrent/compose.yaml          # Torrent downloader
   - sabnzbd/compose.yaml              # NNTP downloader
@@ -68,7 +68,7 @@ include:
   - readarr/compose.yaml              # eBooks / Audiobooks
   - sonarr/compose.yaml               # TV Shows
   # - ubooquity/compose.yaml            # Comics
-  - whisparr/compose.yaml             # Porn
+  # - whisparr/compose.yaml             # Porn
 
   # GAMES - Not started automatically
   - papermc/compose.yaml              # Minecraft

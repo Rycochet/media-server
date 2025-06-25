@@ -27,12 +27,6 @@ services:
       - "$PATH_MOVIES:/host/movies:ro"
       - "$PATH_MUSIC:/host/Music:ro"
       - "$PATH_TV:/host/tv:ro"
-      - "$PATH_ADULT:/host/adult:ro"
-      - "$PATH_AUDIOBOOKS:/host/Audiobooks:ro"
-      - "$PATH_CONCERTS:/host/Concerts:ro"
-      - "$PATH_ONLYFANS:/host/OnlyFans:ro"
-      - "$PATH_PICTURES:/host/Pictures:ro"
-      - "$PATH_TEST:/host/test:ro"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"

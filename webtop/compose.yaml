@@ -32,12 +32,11 @@ services:
       PGID: "$PGID"
       UMASK: "000"
       # Image
-      TITLE: "Webtop"
-      PASSWORD: ""
-      NO_DECOR: true
+      TITLE: "Webtop - $DOMAIN"
+      NO_DECOR: "true"
       # Auto-install LSIO mods and packages
       DOCKER_MODS: "linuxserver/mods:universal-package-install"
-      INSTALL_PACKAGES: "mkvtoolnix|bento4"
+      INSTALL_PACKAGES: "libc6-compat|mkvtoolnix|bento4|ffmpeg"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"

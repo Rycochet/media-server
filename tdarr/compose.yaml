@@ -113,7 +113,6 @@ services:
 #       - "./config/config:/app/configs"
 #       - "./logs:/app/logs"
 #       - "./tmp:/tmp"
-#       - "$PATH_CONCERTS:/data/Concerts"
 #       - "$PATH_MOVIES:/data/movies"
 #       - "$PATH_TV:/data/tv"
 #     labels:

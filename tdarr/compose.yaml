@@ -23,11 +23,6 @@ services:
       resources:
         limits:
           cpus: "4"
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
     # ports:
     # #   - "8265:8265" # webUI port
     #   - "8266:8266" # server port
@@ -39,9 +34,6 @@ services:
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"
-      # GPU
-      NVIDIA_DRIVER_CAPABILITIES: "all"
-      NVIDIA_VISIBLE_DEVICES: "all"
       # Image
       serverIP: "0.0.0.0"
       serverPort: "8266"

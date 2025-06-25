@@ -5,13 +5,6 @@ services:
     profiles: ["${PROFILE_GLANCES:-information}"]
     restart: unless-stopped
     pid: host
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
     networks:
       - internal
     depends_on:

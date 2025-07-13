@@ -24,7 +24,7 @@ services:
       - "traefik.http.routers.error-pages.priority=10"
       # - "traefik.http.routers.error-pages.entrypoints=web"
       - "traefik.http.routers.error-pages.middlewares=error-pages"
-      # "error-pagess" middleware settings
+      # "error-pages" middleware settings
       - "traefik.http.middlewares.error-pages.errors.status=400-599"
       - "traefik.http.middlewares.error-pages.errors.service=error-pages"
       - "traefik.http.middlewares.error-pages.errors.query=/{status}.html"

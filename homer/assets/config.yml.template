@@ -3,6 +3,8 @@
 # Homepage configuration
 # See https://fontawesome.com/search for icons options
 
+# IMPORTANT: Find and replace $DOMAIN with your actual domain, it doesn't happen automatically!
+
 title: "Dashboard"
 subtitle: "Homer"
 logo: "logo.png"
@@ -22,24 +24,27 @@ defaults:
   layout: list # Either 'columns', or 'list'
   colorTheme: auto # One of 'auto', 'light', or 'dark'
 
+proxy:
+  useCredentials: true
+
 # Optional message
 message:
   style: "is-dark" # See https://bulma.io/documentation/components/message/#colors for styling options.
   title: "Important"
   icon: "fas fa-book"
-  content: "Please use this config as a starting point, comment out the bits you don't use, and see <a href='https://github.com/bastienwirtz/homer' target='_blank'>here</a> for more information!"
+  content: "Please use this config as a starting point, replace <b>$DOMAIN</b> with your own domain, comment out the bits you don't use, and see <a href='https://github.com/bastienwirtz/homer' target='_blank'>here</a> for more information!"
 
 # Optional navbar
-links:
-  - name: "Local Plex"
-    icon: "fas fa-video"
-    url: "https://plex.rycochet.net/web/index.html"
-    target: "_blank"
+# links:
+#   - name: "Jellyfin"
+#     icon: "fas fa-video"
+#     url: "https://jellyfin.$DOMAIN/web/"
+#     target: "_blank"
 
-  - name: "Traefik"
-    icon: "fas fa-network-wired"
-    url: "https://traefik.rycochet.net/dashboard/"
-    target: "_blank"
+#   - name: "I2P"
+#     icon: "fas fa-user-secret"
+#     url: "https://i2p.$DOMAIN/"
+#     target: "_blank"
 
 # Services
 # First level array represent a group.
@@ -52,7 +57,7 @@ services:
         type: "Glances"
         icon: "fa-solid fa-heart-pulse"
         tag: "information"
-        url: https://glances.rycochet.net
+        url: "https://glances.$DOMAIN"
         target: "_blank"
         stats: [cpu, mem] # Metric to display. Possible values are: load, cpu, mem, swap.
         updateInterval: 5000 # (Optional) Interval (in ms) for updating the stats
@@ -62,32 +67,74 @@ services:
         logo: "assets/png/dozzle.png"
         subtitle: "Docker Status"
         tag: "information"
-        url: "https://dozzle.rycochet.net"
+        url: "https://dozzle.$DOMAIN"
         target: "_blank"
         method: "get"
         updateInterval: 30000
 
-      - name: "Overseerr"
-        type: "Ping"
-        logo: "assets/png/overseerr.png"
-        subtitle: "Media Requests"
+      - name: "Traefik"
+        type: "Traefik"
+        logo: "assets/png/traefik.png"
         tag: "information"
-        url: "https://overseerr.rycochet.net"
+        url: "https://traefik.$DOMAIN"
+        target: "_blank"
+        updateInterval: 30000
+
+      - name: "OpenSpeedTest"
+        type: "Ping"
+        logo: "assets/png/openspeedtest.png"
+        subtitle: "Bandwidth"
+        tag: "information"
+        url: "https://openspeedtest.$DOMAIN"
         target: "_blank"
         method: "get"
+        updateInterval: 30000
+
+  - name: "Playback"
+    icon: "fas fa-play-circle"
+    items:
+      - name: "Plex"
+        type: "Plex"
+        logo: "assets/png/plex.png"
+        subtitle: "TV Shows / Movies"
+        tag: "playback"
+        url: "https://plex.$DOMAIN/web"
+        target: "_blank"
+        endpoint: "https://plex.$DOMAIN"
+        token:
         updateInterval: 30000
 
       - name: "Tautulli"
         type: "Tautulli"
         logo: "assets/png/tautulli.png"
         subtitle: "Plex Status (play count)"
-        tag: "information"
-        url: "https://tautulli.rycochet.net"
+        tag: "playback"
+        url: "https://tautulli.$DOMAIN"
         target: "_blank"
-        apikey: ""
+        apikey:
         checkInterval: 5000 # (Optional) Interval (in ms) for updating the status
 
-  - name: "Downloads"
+      - name: "Overseerr"
+        type: "Ping"
+        logo: "assets/png/overseerr.png"
+        subtitle: "Media Requests"
+        tag: "playback"
+        url: "https://overseerr.$DOMAIN"
+        target: "_blank"
+        method: "get"
+        updateInterval: 30000
+
+      - name: "Komga"
+        type: "Ping"
+        logo: "assets/png/komga.png"
+        subtitle: "Comics"
+        tag: "media"
+        url: "https://komga.$DOMAIN"
+        target: "_blank"
+        method: "get"
+        updateInterval: 30000
+
+  - name: "Download"
     icon: "fas fa-cloud-download-alt"
     items:
       - name: "Prowlarr"
@@ -95,7 +142,7 @@ services:
         logo: "assets/png/prowlarr.png"
         subtitle: "Indexers"
         tag: "download"
-        url: "https://prowlarr.rycochet.net"
+        url: "https://prowlarr.$DOMAIN"
         target: "_blank"
         method: "get"
         updateInterval: 30000
@@ -105,19 +152,29 @@ services:
         logo: "assets/png/sabnzbd.png"
         subtitle: "Newsgroups"
         tag: "download"
-        url: "https://sabnzbd.rycochet.net"
+        url: "https://sabnzbd.$DOMAIN"
         target: "_blank"
-        apikey: ""
+        apikey:
         downloadInterval: 5000 # (Optional) Interval (in ms) for updating the download count
 
       - name: "qBittorrent"
         type: "qBittorrent"
         logo: "assets/png/qbittorrent.png"
         tag: "download"
-        url: "https://qbittorrent.rycochet.net"
+        url: "https://qbittorrent.$DOMAIN"
         target: "_blank"
         rateInterval: 2000 # Interval for updating the download and upload rates.
         torrentInterval: 5000 # Interval for updating the torrent count.
+
+      - name: "SyncThing"
+        type: "Ping"
+        logo: "assets/png/syncthing.png"
+        subtitle: "Library Syncronisation"
+        tag: "download"
+        url: "https://syncthing.$DOMAIN"
+        target: "_blank"
+        method: "get"
+        updateInterval: 30000
 
   - name: "Media"
     icon: "fas fa-photo-video"
@@ -127,16 +184,16 @@ services:
         logo: "assets/png/bazarr.png"
         subtitle: "Subtitles"
         tag: "media"
-        url: "https://bazarr.rycochet.net"
+        url: "https://bazarr.$DOMAIN"
         target: "_blank"
         checkInterval: 30000
 
-      - name: "Komga"
+      - name: "Kapowarr"
         type: "Ping"
-        logo: "assets/png/komga.png"
+        logo: "assets/png/kapowarr.png"
         subtitle: "Comics"
         tag: "media"
-        url: "https://komga.rycochet.net"
+        url: "https://kapowarr.$DOMAIN/"
         target: "_blank"
         method: "get"
         updateInterval: 30000
@@ -146,56 +203,65 @@ services:
         logo: "assets/png/lidarr.png"
         subtitle: "Music"
         tag: "media"
-        url: "https://lidarr.rycochet.net"
+        url: "https://lidarr.$DOMAIN"
         target: "_blank"
         apikey:
 
-      - name: "Mylar"
-        type: "Ping"
-        logo: "assets/png/mylar.png"
-        subtitle: "Comics"
-        tag: "media"
-        url: "https://mylar.rycochet.net"
-        target: "_blank"
-        method: "get"
-        updateInterval: 30000
+      # - name: "Mylar"
+      #   type: "Ping"
+      #   logo: "assets/png/mylar.png"
+      #   subtitle: "Comics"
+      #   tag: "media"
+      #   url: "https://mylar.$DOMAIN"
+      #   target: "_blank"
+      #   method: "get"
+      #   updateInterval: 30000
 
       - name: "Radarr"
         type: "Radarr"
         logo: "assets/png/radarr.png"
         subtitle: "Movies"
         tag: "media"
-        url: "https://radarr.rycochet.net"
+        url: "https://radarr.$DOMAIN"
         target: "_blank"
         apikey:
 
-      - name: "Readarr"
-        type: "Readarr"
-        logo: "assets/png/readarr.png"
-        subtitle: "EBooks"
-        tag: "media"
-        url: "https://readarr.rycochet.net"
-        target: "_blank"
-        apikey:
+      # - name: "Readarr"
+      #   type: "Readarr"
+      #   logo: "assets/png/readarr.png"
+      #   subtitle: "EBooks"
+      #   tag: "media"
+      #   url: "https://readarr.$DOMAIN"
+      #   target: "_blank"
+      #   apikey:
 
       - name: "Sonarr"
         type: "Sonarr"
         logo: "assets/png/sonarr.png"
         subtitle: "TV Shows"
         tag: "media"
-        url: "https://sonarr.rycochet.net"
+        url: "https://sonarr.$DOMAIN"
         target: "_blank"
         apikey:
 
-      - name: "Ubooquity"
-        type: "Ping"
-        logo: "assets/png/ubooquity.png"
-        subtitle: "Comics"
-        tag: "media"
-        url: "https://ubooquity.rycochet.net"
-        target: "_blank"
-        method: "get"
-        updateInterval: 30000
+      # - name: "Ubooquity"
+      #   type: "Ping"
+      #   logo: "assets/png/ubooquity.png"
+      #   subtitle: "Comics"
+      #   tag: "media"
+      #   url: "https://ubooquity.$DOMAIN"
+      #   target: "_blank"
+      #   method: "get"
+      #   updateInterval: 30000
+
+      # - name: "Whisparr"
+      #   type: "Sonarr" # TODO
+      #   logo: "assets/png/cherry.png"
+      #   subtitle: "Porn"
+      #   tag: "media"
+      #   url: "https://whisparr.$DOMAIN"
+      #   target: "_blank"
+      #   apikey:
 
   - name: "Quality"
     icon: "fas fa-diagnoses"
@@ -205,7 +271,7 @@ services:
         logo: "assets/png/tdarr.png"
         subtitle: "Video transcoding"
         tag: "quality"
-        url: "https://tdarr.rycochet.net"
+        url: "https://tdarr.$DOMAIN"
         target: "_blank"
         checkInterval: 5000 # (Optional) Interval (in ms) for updating the queue & error counts
 
@@ -214,7 +280,7 @@ services:
         logo: "assets/png/titlecardmaker.png"
         subtitle: "Episode Cards"
         tag: "quality"
-        url: "https://titlecardmaker.rycochet.net"
+        url: "https://titlecardmaker.$DOMAIN"
         target: "_blank"
         method: "get"
         updateInterval: 30000
@@ -227,20 +293,20 @@ services:
         logo: "assets/png/linux.png"
         subtitle: "Linux Desktop"
         tag: "desktop"
-        url: "https://webtop.rycochet.net"
+        url: "https://webtop.$DOMAIN"
         target: "_blank"
         method: "get"
         updateInterval: 30000
 
-      - name: "Windows"
-        type: "Ping"
-        logo: "assets/png/windows-vista.png"
-        subtitle: "Windows Desktop"
-        tag: "desktop"
-        url: "https://windows.rycochet.net"
-        target: "_blank"
-        method: "get"
-        updateInterval: 30000
+      # - name: "Windows"
+      #   type: "Ping"
+      #   logo: "assets/png/windows-vista.png"
+      #   subtitle: "Windows Desktop"
+      #   tag: "desktop"
+      #   url: "https://windows.$DOMAIN"
+      #   target: "_blank"
+      #   method: "get"
+      #   updateInterval: 30000
 
   - name: "Games"
     icon: "fas fa-gamepad"
@@ -250,7 +316,7 @@ services:
         logo: "assets/png/minecraft.png"
         subtitle: "Minecraft"
         tag: "games"
-        url: "https://minecraft-map.rycochet.net"
+        url: "https://minecraft-map.$DOMAIN"
         target: "_blank"
         method: "get"
         updateInterval: 30000

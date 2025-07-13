@@ -1,7 +1,7 @@
 services:
   traefik:
     container_name: traefik
-    image: traefik:v3.4.1
+    image: traefik:v3.4.4
     profiles: ["${PROFILE_TRAEFIK:-network}"]
     restart: unless-stopped
     networks:
@@ -79,8 +79,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.$DOMAIN`)"
-      - "traefik.http.routers.dashboard.middlewares=tinyauth,error-pages"
+      - "traefik.http.routers.dashboard.middlewares=traefik,tinyauth,error-pages"
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.traefik.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.traefik.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

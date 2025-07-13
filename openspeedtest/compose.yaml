@@ -27,8 +27,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.openspeedtest.rule=Host(`openspeedtest.$DOMAIN`)"
-      - "traefik.http.routers.openspeedtest.middlewares=tinyauth,error-pages"
+      - "traefik.http.routers.openspeedtest.middlewares=openspeedtest,tinyauth,error-pages"
       - "traefik.http.services.openspeedtest.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.openspeedtest.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.openspeedtest.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

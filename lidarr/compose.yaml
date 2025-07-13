@@ -1,7 +1,7 @@
 services:
   lidarr:
     container_name: lidarr
-    image: lscr.io/linuxserver/lidarr:develop
+    image: lscr.io/linuxserver/lidarr:latest
     profiles: ["${PROFILE_LIDARR:-media}"]
     restart: unless-stopped
     networks:

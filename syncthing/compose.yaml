@@ -34,9 +34,9 @@ services:
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/var/syncthing"
-      - "$PATH_MOVIES:/data/movies:ro"
-      - "$PATH_MUSIC:/data/music:ro"
-      - "$PATH_TV:/data/tv:ro"
+      - "$PATH_MOVIES:/data/movies"
+      - "$PATH_MUSIC:/data/music"
+      - "$PATH_TV:/data/tv"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"

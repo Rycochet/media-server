@@ -57,9 +57,11 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.plex.rule=Host(`plex.$DOMAIN`)"
-      - "traefik.http.routers.plex.middlewares=error-pages"
+      - "traefik.http.routers.plex.middlewares=plex,error-pages"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
       - "traefik.http.services.plex.loadbalancer.server.scheme=https"
+      - "traefik.http.middlewares.plex.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.plex.headers.accessControlAllowOriginList=https://$DOMAIN"
       # - "traefik.http.middlewares.plex.redirectregex.regex=^https?://plex.$DOMAIN/$"
       # - "traefik.http.middlewares.plex.redirectregex.replacement=https://plex.$DOMAIN/web/index.html"
     healthcheck:

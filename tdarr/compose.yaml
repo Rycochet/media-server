@@ -55,6 +55,7 @@ services:
       - "traefik.http.routers.tdarr.middlewares=tdarr,tinyauth,error-pages"
       - "traefik.http.services.tdarr.loadbalancer.server.port=8265"
       - "traefik.http.middlewares.tdarr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.tdarr.headers.accessControlAllowHeaders=content-type"
       - "traefik.http.middlewares.tdarr.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"

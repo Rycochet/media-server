@@ -1,7 +1,7 @@
 services:
   mylar:
     container_name: mylar
-    image: lscr.io/linuxserver/mylar:latest
+    image: lscr.io/linuxserver/mylar3:latest
     profiles: ["${PROFILE_MYLAR:-media}"]
     restart: unless-stopped
     networks:

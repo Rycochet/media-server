@@ -1,7 +1,7 @@
 services:
   tinyauth:
     container_name: tinyauth
-    image: ghcr.io/steveiliop56/tinyauth:v3
+    image: ghcr.io/steveiliop56/tinyauth:v3.6.2-beta.2
     profiles: ["${PROFILE_OAUTH:-network}"]
     restart: unless-stopped
     networks:
@@ -22,7 +22,8 @@ services:
       COOKIE_SECURE: "true"
       DISABLE_CONTINUE: "true"
       APP_TITLE: "$DOMAIN"
-      # SESSION_EXPIRY: "2592000" # 30 days
+      LOG_LEVEL: "2"
+      SESSION_EXPIRY: "${SESSION_EXPIRY:-86400}" # Default is 24 hours
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tinyauth.rule=Host(`tinyauth.$DOMAIN`)"

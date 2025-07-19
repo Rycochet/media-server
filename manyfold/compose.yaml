@@ -37,8 +37,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.manyfold.rule=Host(`manyfold.$DOMAIN`)"
-      - "traefik.http.routers.manyfold.middlewares=tinyauth,error-pages"
+      - "traefik.http.routers.manyfold.middlewares=manyfold,tinyauth,error-pages"
       - "traefik.http.services.manyfold.loadbalancer.server.port=3214"
+      - "traefik.http.middlewares.manyfold.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.manyfold.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "5s"

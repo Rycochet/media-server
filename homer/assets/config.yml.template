@@ -329,7 +329,7 @@ services:
   #       logo: "assets/png/manyfold.png"
   #       subtitle: "3d Models"
   #       tag: "other"
-  #       url: "https://manyfold.rycochet.net"
+  #       url: "https://manyfold.$DOMAIN"
   #       target: "_blank"
   #       method: "get"
   #       updateInterval: 30000

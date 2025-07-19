@@ -320,3 +320,16 @@ services:
         target: "_blank"
         method: "get"
         updateInterval: 30000
+
+  # - name: "Other"
+  #   icon: "fas fa-yin-yang"
+  #   items:
+  #     - name: "Manyfold"
+  #       type: "Ping"
+  #       logo: "assets/png/manyfold.png"
+  #       subtitle: "3d Models"
+  #       tag: "other"
+  #       url: "https://manyfold.rycochet.net"
+  #       target: "_blank"
+  #       method: "get"
+  #       updateInterval: 30000

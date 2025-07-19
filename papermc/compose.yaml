@@ -36,8 +36,10 @@ services:
       - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
       - "traefik.http.routers.papermc.rule=Host(`minecraft-map.$DOMAIN`)"
-      - "traefik.http.routers.papermc.middlewares=error-pages"
+      - "traefik.http.routers.papermc.middlewares=papermc,error-pages"
       - "traefik.http.services.papermc.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.papermc.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.papermc.headers.accessControlAllowOriginList=https://$DOMAIN"
     healthcheck:
       interval: "30s"
       timeout: "1s"

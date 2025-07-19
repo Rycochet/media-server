@@ -6,9 +6,6 @@ services:
     restart: unless-stopped
     networks:
       - internal
-      - external
-    ports:
-      - "3214:3214"
     depends_on:
       traefik:
         condition: service_started

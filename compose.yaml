@@ -29,6 +29,7 @@ include:
   - komga/compose.yaml                # Comic library
   - jellyfin/compose.yaml             # Open source media library
   - plex/compose.yaml                 # Media library
+  # - manyfold/compose.yaml             # 3d Models
 
   # QUALITY
   - imagemaid/compose.yaml            # Cleanup Plex image cache

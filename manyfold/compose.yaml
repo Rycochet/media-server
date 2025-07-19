@@ -1,0 +1,50 @@
+services:
+  manyfold:
+    container_name: manyfold
+    image: ghcr.io/manyfold3d/manyfold-solo:latest
+    profiles: ["${PROFILE_MANYFOLD:-library}"]
+    restart: unless-stopped
+    networks:
+      - internal
+      - external
+    ports:
+      - "3214:3214"
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Manyfold
+      SECRET_KEY_BASE: "$DOMAIN"
+      PUBLIC_HOSTNAME: "manyfold.$DOMAIN"
+      PUBLIC_PORT: "443"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "$PATH_3D:/data/models"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.manyfold.rule=Host(`manyfold.$DOMAIN`)"
+      - "traefik.http.routers.manyfold.middlewares=tinyauth,error-pages"
+      - "traefik.http.services.manyfold.loadbalancer.server.port=3214"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost:3214/health || exit 1"

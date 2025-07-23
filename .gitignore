@@ -4,10 +4,14 @@ compose.override.yaml
 /aquota.user
 /.vscode
 
-/*/backup
-/*/config
-/*/logs
-/*/tmp
+/*/backup/**
+!/*/backup/.gitkeep
+/*/config/**
+!/*/config/.gitkeep
+/*/logs/**
+!/*/logs/.gitkeep
+/*/tmp/**
+!/*/tmp/.gitkeep
 
 /homer/assets/config.yml
 /tdarr_inform/tdarr_inform

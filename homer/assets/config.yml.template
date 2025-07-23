@@ -13,7 +13,7 @@ columns: "4"
 connectivityCheck: false
 
 header: false
-footer: '<p>Server configuration by <a href="https://github.com/Rycochet/server" target="_blank"><i class="fab fa-github-alt"></i> Rycochet</a></p>' # set false if you want to hide it.
+footer: '<p>Server configuration by <a href="https://github.com/Rycochet/media-server" target="_blank"><i class="fab fa-github-alt"></i> Rycochet</a></p>' # set false if you want to hide it.
 
 theme: default
 
@@ -90,7 +90,7 @@ services:
         method: "get"
         updateInterval: 30000
 
-  - name: "Playback"
+  - name: "Libraries"
     icon: "fas fa-play-circle"
     items:
       - name: "Plex"
@@ -130,6 +130,16 @@ services:
         subtitle: "Comics"
         tag: "media"
         url: "https://komga.$DOMAIN"
+        target: "_blank"
+        method: "get"
+        updateInterval: 30000
+
+      - name: "Audiobookshelf"
+        type: "Ping"
+        logo: "assets/png/audiobookshelf.png"
+        subtitle: "Audiobooks"
+        tag: "playback"
+        url: "https://audiobookshelf.$DOMAIN"
         target: "_blank"
         method: "get"
         updateInterval: 30000

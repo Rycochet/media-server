@@ -26,10 +26,11 @@ include:
   - vpn/compose.yaml                  # NordVPN
 
   # LIBRARY
+  - audiobookshelf/compose.yaml       # Audiobooks library
   - komga/compose.yaml                # Comic library
   - jellyfin/compose.yaml             # Open source media library
+  # - manyfold/compose.yaml             # 3d models library
   - plex/compose.yaml                 # Media library
-  # - manyfold/compose.yaml             # 3d Models
 
   # QUALITY
   - imagemaid/compose.yaml            # Cleanup Plex image cache

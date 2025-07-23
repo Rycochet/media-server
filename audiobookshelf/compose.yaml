@@ -1,0 +1,51 @@
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    profiles: ["${PROFILE_AUDIOBOOKSHELF:-library}"]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+      error-pages:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # AUDIOBOOKSHELF
+      ALLOW_CORS: 1
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./config/metadata:/metadata"
+      - "./backup:/metadata/backups"
+      - "$PATH_AUDIOBOOKS:/data/Audiobooks"
+      - "$PATH_DOWNLOADS:/data/Downloads"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true"
+      - "traefik.http.routers.audiobookshelf.rule=Host(`audiobookshelf.$DOMAIN`)"
+      - "traefik.http.routers.audiobookshelf.middlewares=audiobookshelf,error-pages"
+      - "traefik.http.services.audiobookshelf.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.audiobookshelf.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.audiobookshelf.headers.accessControlAllowOriginList=https://$DOMAIN"
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost/ || exit 1"

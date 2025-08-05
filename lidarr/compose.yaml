@@ -30,10 +30,9 @@ services:
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"
-      - "./config/custom-services.d:/custom-services.d"
-      - "./config/custom-cont-init.d:/custom-cont-init.d"
       - "./backup:/config/Backups"
       - "./logs:/config/logs"
+      - "./make_ignore.sh:/config/make_ignore.sh:ro"
       - "$PATH_MUSIC:/data/Music"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:

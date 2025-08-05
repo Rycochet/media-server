@@ -15,7 +15,7 @@ services:
         max-file: "3"
     environment:
       TUNNEL_TOKEN: "${CLOUDFLARED_TOKEN:?You must disable the cloudflared service if not using it}"
-      TUNNEL_LOGLEVEL: "debug"
+      TUNNEL_LOGLEVEL: "info"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"

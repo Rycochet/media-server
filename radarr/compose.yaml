@@ -32,6 +32,7 @@ services:
       - "./config:/config"
       - "./backup:/config/Backups"
       - "./logs:/config/logs"
+      - "./make_ignore.sh:/config/make_ignore.sh:ro"
       - "$PATH_MOVIES:/data/movies"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:

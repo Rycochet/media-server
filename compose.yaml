@@ -79,7 +79,8 @@ networks:
   external:
     name: "external"
     driver: bridge
-    # enable_ipv6: true
+    enable_ipv4: true
+    enable_ipv6: true
   internal: # No internet access
     name: "internal"
     driver: bridge

@@ -8,8 +8,9 @@ services:
       - external
       - internal
     ports:
-      - 22000:22000/tcp # TCP file transfers
-      - 22000:22000/udp # QUIC file transfers
+      - "21027:21027/udp" # Local announce
+      - "22000:22000/tcp" # TCP file transfers
+      - "22000:22000/udp" # QUIC file transfers
     depends_on:
       proxy:
         condition: service_started

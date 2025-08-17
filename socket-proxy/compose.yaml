@@ -22,7 +22,7 @@ services:
       EXEC: "0"
       IMAGES: "1"
       INFO: "1"
-      NETWORKS: "0"
+      NETWORKS: "1"
       NODES: "0"
       PING: "1"
       PLUGINS: "0"
@@ -34,7 +34,7 @@ services:
       SYSTEM: "0"
       TASKS: "0"
       VERSION: "1"
-      VOLUMES: "0"
+      VOLUMES: "1"
       LOG_LEVEL: "notice" # debug, info, notice, warning, err, crit, alert, emerg
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"

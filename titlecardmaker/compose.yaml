@@ -40,7 +40,7 @@ services:
       - "$PATH_TV:/data/tv"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
-      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
       - "traefik.http.routers.titlecardmaker.rule=Host(`titlecardmaker.$DOMAIN`)"
       - "traefik.http.routers.titlecardmaker.middlewares=tinyauth,error-pages"

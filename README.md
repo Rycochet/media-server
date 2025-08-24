@@ -4,9 +4,63 @@
 > This uses Cloudflare for incoming connections, NordVPN for outgoing, and Google Auth for logging in. If you cannot figure those out with help from google then this might not be the setup for you!
 
 > [!NOTE]
-> This is the barebones setup for a media server, it does not include any config (although over time I may add more to this file explaining what to do).
+> This is the barebones setup for a media server, it does not include any config (although over time I may add more document and templates explaining what to do).
 
-## Configuration
+## Components
+
+> This is a partial list, the individual folders have every service, and I'll maybe add information for each over time.
+
+### Media Server
+
+* **AudioBookShelf**: Audiobook media server.
+* **Kapowarr**: Comic Books.
+* **Manyfold**: 3d model server.
+* **Overseerr**: Requests for Sonarr / Radarr.
+* **Plex Media Server**: Main media server.
+
+### Content Management
+
+* **Bazarr**: Subtitle Management (for Movies and TV Shows).
+* **Kometa**: Add overlays to posters for tv and movies in Plex.
+* **Imagemaid**: Delete unused posters in Plex.
+* **Lidarr**: Music Management.
+* **Plex-Find-Mismatch**: Find incorrect matches in Plex.
+* **Prowlarr**: Usenet and Torrent Search.
+* **qBittorrent**: Torrent downloads.
+* **Radarr**: Movie Management.
+* **SABnzbd**: Usenet downloads.
+* **Sonarr**: TV Show Management.
+* **Tdarr**: Transcode media for cnosistency and size.
+* **Titlecardmaker**: Add consistent posters to episodes in Plex.
+
+### System / Networking
+
+* **Cloudflared**: Cloudflare Tunnel (incoming web requests).
+* **DeUnhealth**: Restart unhealthy services.
+* **Error-Pages**: Better looking error pages.
+* **NordLynx** + **Socks5-Proxy**: VPN (outgoing connections).
+* **OpenSpeedTest**: Speed test app to server.
+* **SyncThing**: Synchronise libraries between multiple computers.
+* **TinyAuth**: Google OAuth login security.
+* **Traefik**: Webapp Routing.
+* **Watchtower**: Automatic updating of services.
+
+### Information
+
+* **Glances**: (Hardware) Server Status.
+* **Homer**: Dashboard
+* **Tautulli**: Plex Server Status.
+
+## Concept
+
+Every service uses a similar folder layout, this inclues having a `config` folder inside the service folder for easier backup and configuration.
+
+When one service depends on another it should only be started first (with a couple of exceptions that require them tobe healthy first).
+
+## Installation
+
+> [!IMPORTANT]
+> The `install.sh` script is not usable yet, these other steps are always going to be manual!
 
 It is advised to use VSCode or similar that does syntax highlighting (ie, colors) for the files you edit!
 

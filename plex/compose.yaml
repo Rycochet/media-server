@@ -53,8 +53,24 @@ services:
       - "$PATH_MUSIC:/data/Music:ro"
       - "$PATH_TV:/data/tv:ro"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Libraries"
+      - "homepage.name=Plex"
+      - "homepage.icon=plex.png"
+      - "homepage.href=https://tautulli.$DOMAIN/"
+      - "homepage.description=Media Library"
+      - "homepage.widgets[0].type=plex"
+      - "homepage.widgets[0].url=https://plex:32400"
+      - "homepage.widgets[0].key=${PLEX_TOKEN:-}"
+      - "homepage.widgets[1].type=tautulli"
+      - "homepage.widgets[1].url=http://tautulli:8181"
+      - "homepage.widgets[1].key=${TAUTULLI_API:-}"
+      - "homepage.widgets[1].showEpisodeNumber=true"
+      - "homepage.widgets[1].expandOneStreamToTwoRows=false"
+
       - "traefik.enable=true"
       - "traefik.http.routers.plex.rule=Host(`plex.$DOMAIN`)"
       - "traefik.http.routers.plex.middlewares=plex,error-pages"
@@ -64,6 +80,7 @@ services:
       - "traefik.http.middlewares.plex.headers.accessControlAllowOriginList=https://$DOMAIN"
       # - "traefik.http.middlewares.plex.redirectregex.regex=^https?://plex.$DOMAIN/$"
       # - "traefik.http.middlewares.plex.redirectregex.replacement=https://plex.$DOMAIN/web/index.html"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

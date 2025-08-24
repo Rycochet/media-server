@@ -81,6 +81,15 @@ services:
       - "./config:/etc/traefik"
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "homepage.group=Information"
+      - "homepage.name=Traefik"
+      - "homepage.icon=traefik.png"
+      - "homepage.href=https://traefik.$DOMAIN/"
+      - "homepage.description=Web Ingress"
+      # - "homepage.widget.type=traefik"
+      # - "homepage.widget.url=http://traefik:8080"
+
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.$DOMAIN`)"
@@ -88,6 +97,7 @@ services:
       - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
       - "traefik.http.middlewares.traefik.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.traefik.headers.accessControlAllowOriginList=https://$DOMAIN"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

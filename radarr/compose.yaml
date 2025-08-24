@@ -36,14 +36,26 @@ services:
       - "$PATH_MOVIES:/data/movies"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Media"
+      - "homepage.name=Radarr"
+      - "homepage.icon=radarr.png"
+      - "homepage.href=https://radarr.$DOMAIN/"
+      - "homepage.description=Movies"
+      - "homepage.widget.type=radarr"
+      - "homepage.widget.url=http://radarr:7878"
+      - "homepage.widget.key=${RADARR_API:-}"
+
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.rule=Host(`radarr.$DOMAIN`)"
       - "traefik.http.routers.radarr.middlewares=radarr,tinyauth,error-pages"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
       - "traefik.http.middlewares.radarr.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.radarr.headers.accessControlAllowOriginList=https://$DOMAIN"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

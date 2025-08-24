@@ -1,0 +1,49 @@
+services:
+  homepage:
+    container_name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    profiles: ["${PROFILE_HOMEPAGE:-information}"]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      socket-proxy:
+        condition: service_healthy
+        restart: false
+      traefik:
+        condition: service_started
+      error-pages:
+        condition: service_started
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    # user: $PGID:$PUID
+    environment:
+      # Default
+      TZ: "Europe/London"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+      # Image
+      DOCKER_HOST: "tcp://socket-proxy:2375"
+      HOMEPAGE_ALLOWED_HOSTS: "$DOMAIN"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/app/config"
+      - "./logs:/app/config/logs"
+      - "./images:/app/public/images"
+      - "$PATH_MOVIES:/data/movies:ro"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.rule=Host(`$DOMAIN`)"
+      - "traefik.http.routers.homepage.middlewares=homepage,tinyauth,error-pages"
+      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.homepage.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.homepage.headers.accessControlAllowOriginList=https://$DOMAIN"

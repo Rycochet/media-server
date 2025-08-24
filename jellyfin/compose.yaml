@@ -47,12 +47,27 @@ services:
       - "$PATH_MUSIC:/data/Music:ro"
       - "$PATH_TV:/data/tv:ro"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Libraries"
+      - "homepage.name=Jellyfin"
+      - "homepage.icon=jellyfin.png"
+      - "homepage.href=readarr://jellyfin.$DOMAIN/"
+      - "homepage.description=Media Library"
+      - "homepage.widget.type=jellyfin"
+      - "homepage.widget.url=http://jellyfin:8096"
+      - "homepage.widget.key=${JELLYFIN_API:-}"
+      - "homepage.widget.enableBlocks=true"
+      - "homepage.widget.showEpisodeNumber=true"
+      - "homepage.widget.expandOneStreamToTwoRows=false"
+
       - "traefik.enable=true"
       - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.$DOMAIN`)"
       - "traefik.http.routers.jellyfin.middlewares=tinyauth,error-pages"
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

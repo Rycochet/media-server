@@ -35,14 +35,27 @@ services:
       - "$PATH_AUDIOBOOKS:/data/Audiobooks"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Libraries"
+      - "homepage.name=Audiobookshelf"
+      - "homepage.icon=audiobookshelf.png"
+      - "homepage.href=https://audiobookshelf.$DOMAIN/"
+      - "homepage.description=Audiobooks and Podcasts"
+      - "homepage.weight=50"
+      - "homepage.widget.type=audiobookshelf"
+      - "homepage.widget.url=http://audiobookshelf:80"
+      - "homepage.widget.key=${AUDIOBOOKSHELF_API:-}"
+
       - "traefik.enable=true"
       - "traefik.http.routers.audiobookshelf.rule=Host(`audiobookshelf.$DOMAIN`)"
       - "traefik.http.routers.audiobookshelf.middlewares=audiobookshelf,error-pages"
       - "traefik.http.services.audiobookshelf.loadbalancer.server.port=80"
       - "traefik.http.middlewares.audiobookshelf.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.audiobookshelf.headers.accessControlAllowOriginList=https://$DOMAIN"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

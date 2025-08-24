@@ -36,14 +36,24 @@ services:
       - "$PATH_COMICS:/data/comics"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Libraries"
+      - "homepage.name=Kapowarr"
+      - "homepage.icon=kapowarr.png"
+      - "homepage.href=https://kapowarr.$DOMAIN/"
+      - "homepage.description=Comics"
+      - "homepage.weight=50"
+
       - "traefik.enable=true"
       - "traefik.http.routers.kapowarr.rule=Host(`kapowarr.$DOMAIN`)"
       - "traefik.http.routers.kapowarr.middlewares=kapowarr,tinyauth,error-pages"
       - "traefik.http.services.kapowarr.loadbalancer.server.port=5656"
       - "traefik.http.middlewares.kapowarr.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.kapowarr.headers.accessControlAllowOriginList=https://$DOMAIN"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

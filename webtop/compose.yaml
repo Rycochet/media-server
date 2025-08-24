@@ -44,14 +44,23 @@ services:
       - "$PATH_MOVIES:/data/movies:ro"
       - "$PATH_TV:/data/tv:ro"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=false"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Desktops"
+      - "homepage.name=Webtop"
+      - "homepage.icon=webtop.png"
+      - "homepage.href=https://webtop.$DOMAIN/"
+      - "homepage.description=Linux Desktop"
+
       - "traefik.enable=true"
       - "traefik.http.routers.webtop.rule=Host(`webtop.$DOMAIN`)"
       - "traefik.http.routers.webtop.middlewares=webtop,tinyauth,error-pages"
       - "traefik.http.services.webtop.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.webtop.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.webtop.headers.accessControlAllowOriginList=https://$DOMAIN"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

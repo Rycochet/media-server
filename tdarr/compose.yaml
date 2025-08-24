@@ -50,6 +50,15 @@ services:
       - "$PATH_TV:/data/tv"
     labels:
       - "com.centurylinklabs.watchtower.monitor-only=true"
+
+      - "homepage.group=Quality"
+      - "homepage.name=Tdarr"
+      - "homepage.icon=tdarr.png"
+      - "homepage.href=https://tdarr.$DOMAIN/"
+      - "homepage.description=Subtitles"
+      - "homepage.widget.type=tdarr"
+      - "homepage.widget.url=http://tdarr:8265"
+
       - "traefik.enable=true"
       - "traefik.http.routers.tdarr.rule=Host(`tdarr.$DOMAIN`)"
       - "traefik.http.routers.tdarr.middlewares=tdarr,tinyauth,error-pages"
@@ -57,6 +66,7 @@ services:
       - "traefik.http.middlewares.tdarr.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.tdarr.headers.accessControlAllowHeaders=content-type"
       - "traefik.http.middlewares.tdarr.headers.accessControlAllowOriginList=https://$DOMAIN"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

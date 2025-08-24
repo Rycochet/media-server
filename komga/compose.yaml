@@ -34,14 +34,26 @@ services:
       - "./logs:/config/logs"
       - "$PATH_COMICS:/data/Comics"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=false"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Libraries"
+      - "homepage.name=Komga"
+      - "homepage.icon=komga.png"
+      - "homepage.href=readarr://komga.$DOMAIN/"
+      - "homepage.description=Comics"
+      - "homepage.widget.type=readarr"
+      - "homepage.widget.url=http://komga:25600"
+      - "homepage.widget.key=${KOMGA_API:-}"
+
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=Host(`komga.$DOMAIN`)"
       - "traefik.http.routers.komga.middlewares=komga,tinyauth,error-pages"
       - "traefik.http.services.komga.loadbalancer.server.port=25600"
       - "traefik.http.middlewares.komga.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.komga.headers.accessControlAllowOriginList=https://$DOMAIN"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

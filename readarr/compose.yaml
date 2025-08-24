@@ -36,14 +36,26 @@ services:
       - "$PATH_BOOKS:/data/Books"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Media"
+      - "homepage.name=Readarr"
+      - "homepage.icon=bazarr.png"
+      - "homepage.href=readarr://bazarr.$DOMAIN/"
+      - "homepage.description=Audiobooks and Ebooks"
+      - "homepage.widget.type=readarr"
+      - "homepage.widget.url=http://readarr:8787"
+      - "homepage.widget.key=${READARR_API:-}"
+
       - "traefik.enable=true"
       - "traefik.http.routers.readarr.rule=Host(`readarr.$DOMAIN`)"
       - "traefik.http.routers.readarr.middlewares=readarr,tinyauth,error-pages"
       - "traefik.http.services.readarr.loadbalancer.server.port=8787"
       - "traefik.http.middlewares.readarr.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.readarr.headers.accessControlAllowOriginList=https://$DOMAIN"
+
     healthcheck:
       interval: "30s"
       timeout: "5s"

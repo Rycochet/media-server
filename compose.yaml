@@ -43,7 +43,7 @@ include:
   # INFORMATION
   - dozzle/compose.yaml               # Docker status
   - glances/compose.yaml              # Operating system status
-  - homer/compose.yaml                # Dashboard
+  - homepage/compose.yaml             # Dashboard
   - duc/compose.yaml                  # Disk usage
   - overseerr/compose.yaml            # Media requests and issue tracking
   - tautulli/compose.yaml             # Plex stats
@@ -60,6 +60,10 @@ include:
   - sabnzbd/compose.yaml              # NNTP downloader
   - sonarr_youtubedl/compose.yaml     # YouTube downloader
   - syncthing/compose.yaml            # Synchronise library
+
+  # MEDIA SUPPORT
+  - postgres/compose.yaml             # Database
+  - pgadmin/compose.yaml              # Database admin
 
   # MEDIA
   - bazarr/compose.yaml               # Subtitles

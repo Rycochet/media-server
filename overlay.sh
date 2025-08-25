@@ -18,8 +18,8 @@ mount () {
 
         mkdir -p ${LOWERDIR} ${UPPERDIR} ${WORKDIR} ${MERGED}
 
-        echo sudo mount -t overlay overlay -olowerdir=${LOWERDIR},upperdir=${UPPERDIR},workdir=${WORKDIR},redirect_dir=off,metacopy=off,index=off,xino=off ${MERGED}
-        sudo mount -t overlay overlay -olowerdir=${LOWERDIR},upperdir=${UPPERDIR},workdir=${WORKDIR},redirect_dir=off,metacopy=off,index=off,xino=off ${MERGED}
+        echo sudo mount -t overlay overlay -o"lowerdir=${LOWERDIR},upperdir=${UPPERDIR},workdir=${WORKDIR},redirect_dir=off,metacopy=off,index=off,xino=off" "${MERGED}"
+        sudo mount -t overlay overlay -o"lowerdir=${LOWERDIR},upperdir=${UPPERDIR},workdir=${WORKDIR},redirect_dir=off,metacopy=off,index=off,xino=off" "${MERGED}"
     done
 }
 

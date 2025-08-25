@@ -62,8 +62,8 @@ include:
   - syncthing/compose.yaml            # Synchronise library
 
   # MEDIA SUPPORT
-  - postgres/compose.yaml             # Database
-  - pgadmin/compose.yaml              # Database admin
+  # - postgres/compose.yaml             # Database
+  # - pgadmin/compose.yaml              # Database admin
 
   # MEDIA
   - bazarr/compose.yaml               # Subtitles

@@ -42,8 +42,8 @@ services:
 
       - "homepage.group=Media"
       - "homepage.name=Readarr"
-      - "homepage.icon=bazarr.png"
-      - "homepage.href=readarr://bazarr.$DOMAIN/"
+      - "homepage.icon=readarr.png"
+      - "homepage.href=readarr://readarr.$DOMAIN/"
       - "homepage.description=Audiobooks and Ebooks"
       - "homepage.widget.type=readarr"
       - "homepage.widget.url=http://readarr:8787"

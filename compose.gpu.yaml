@@ -1,0 +1,15 @@
+# GPU support
+services:
+  nvidia:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: "all"
+      NVIDIA_VISIBLE_DEVICES: "all"
+
+  none: # No GPU support - might report a parsing error in VSCode

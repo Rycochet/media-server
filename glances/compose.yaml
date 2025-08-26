@@ -1,8 +1,11 @@
 services:
   glances:
     container_name: glances
-    image: nicolargo/glances:latest-full
+    image: nicolargo/glances:ubuntu-latest-full
     profiles: ["${PROFILE_GLANCES:-information}"]
+    extends:
+      file: ../compose.gpu.yaml
+      service: ${GPU_SUPPORT:-none}
     restart: unless-stopped
     pid: host
     networks:
@@ -28,9 +31,6 @@ services:
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"
-      # GPU
-      NVIDIA_DRIVER_CAPABILITIES: "all"
-      NVIDIA_VISIBLE_DEVICES: "all"
       # Image
       DOCKER_HOST: "tcp://socket-proxy:2375"
       GLANCES_OPT: "-w"

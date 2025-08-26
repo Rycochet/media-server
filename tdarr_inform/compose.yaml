@@ -1,9 +1,8 @@
 services:
   tdarr-inform:
     container_name: tdarr-inform
-    image: ghcr.io/deathbybandaid/tdarr_inform:latest
-    # build: tdarr_inform/
-    profiles: ["${PROFILE_TDARR_INFORM:-quality}"]
+    image: ${TDARR_INFORM_IMAGE:-ghcr.io/deathbybandaid/tdarr_inform}:${TDARR_INFORM_IMAGE_TAG:-latest}
+    profiles: ["${TDARR_INFORM_PROFILE:-quality}"]
     restart: unless-stopped
     networks:
       - external
@@ -27,8 +26,10 @@ services:
     volumes:
       - "./config:/config"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
       - "traefik.enable=true"
       - "traefik.http.routers.tdarr-inform.rule=Host(`tdarr-inform.$DOMAIN`)"
       - "traefik.http.routers.tdarr-inform.middlewares=tinyauth,error-pages"

@@ -1,8 +1,8 @@
 services:
   overseerr:
     container_name: overseerr
-    image: lscr.io/linuxserver/overseerr:latest
-    profiles: ["${PROFILE_OVERSEERR:-information}"]
+    image: ${OVERSEERR_IMAGE:-lscr.io/linuxserver/overseerr}:${OVERSEERR_IMAGE_TAG:-latest}
+    profiles: ["${OVERSEERR_PROFILE:-information}"]
     restart: unless-stopped
     networks:
       - external
@@ -41,7 +41,7 @@ services:
       - "homepage.name=Overseerr"
       - "homepage.icon=overseerr.png"
       - "homepage.href=https://overseerr.$DOMAIN/"
-      - "homepage.description=Requests"
+      - "homepage.description=Media requests"
       - "homepage.weight=50"
       - "homepage.widget.type=overseerr"
       - "homepage.widget.url=http://overseerr:5055"

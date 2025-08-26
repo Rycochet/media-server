@@ -1,16 +1,13 @@
 services:
   kapowarr:
     container_name: kapowarr
-    image: mrcas/kapowarr:latest
-    profiles: ["${PROFILE_KAPOWARR:-media}"]
+    image: ${KAPOWARR_IMAGE:-mrcas/kapowarr}:${KAPOWARR_IMAGE_TAG:-latest}
+    profiles: ["${KAPOWARR_PROFILE:-library}"]
     restart: unless-stopped
     networks:
       - internal
       - external
     depends_on:
-      # proxy:
-      #   condition: service_started
-      #   restart: false
       traefik:
         condition: service_started
         restart: false

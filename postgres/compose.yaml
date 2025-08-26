@@ -1,0 +1,38 @@
+services:
+  postgres:
+    container_name: postgres
+    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_IMAGE_TAG:-17-alpine}
+    profiles: ["${POSTGRES_PROFILE:-media}"]
+    restart: unless-stopped
+    networks:
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    shm_size: 128mb
+    user: "${PUID}:${PGID}"
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?You must set a POSTGRES_PASSWORD .env variable}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/var/lib/postgresql/data"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=Postgres"
+      - "homepage.icon=postgres.png"
+      - "homepage.description=Postgres"
+
+      - "traefik.enable=false"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "pg_isready -d postgres -U postgres"

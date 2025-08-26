@@ -1,16 +1,16 @@
 services:
   sabnzbd:
     container_name: sabnzbd
-    image: lscr.io/linuxserver/sabnzbd:latest
-    profiles: ["${PROFILE_SABNZBD:-download}"]
+    image: ${SABNZBD_IMAGE:-lscr.io/linuxserver/sabnzbd}:${SABNZBD_IMAGE_TAG:-latest}
+    profiles: ["${SABNZBD_PROFILE:-download}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - internal
       - external
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

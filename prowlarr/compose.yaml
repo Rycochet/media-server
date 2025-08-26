@@ -1,15 +1,15 @@
 services:
   prowlarr:
     container_name: prowlarr
-    image: lscr.io/linuxserver/prowlarr:develop
-    profiles: ["${PROFILE_PROWLARR:-download}"]
+    image: ${PROWLARR_IMAGE:-lscr.io/linuxserver/prowlarr}:${PROWLARR_IMAGE_TAG:-latest}
+    profiles: ["${PROWLARR_PROFILE:-download}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

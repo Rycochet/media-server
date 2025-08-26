@@ -1,15 +1,15 @@
 services:
   lidarr:
     container_name: lidarr
-    image: lscr.io/linuxserver/lidarr:latest
-    profiles: ["${PROFILE_LIDARR:-media}"]
+    image: ${LIDARR_IMAGE:-lscr.io/linuxserver/lidarr}:${LIDARR_IMAGE_TAG:-latest}
+    profiles: ["${LIDARR_PROFILE:-media}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

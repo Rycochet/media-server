@@ -1,8 +1,8 @@
 services:
   titlecardmaker:
     container_name: titlecardmaker
-    image: ghcr.io/titlecardmaker/titlecardmaker-webui:latest
-    profiles: ["${PROFILE_TITLECARDMAKER:-quality}"]
+    image: ${TITLECARDMAKER_IMAGE:-ghcr.io/titlecardmaker/titlecardmaker-webui}:${TITLECARDMAKER_IMAGE_TAG:-latest}
+    profiles: ["${TITLECARDMAKER_PROFILE:-quality}"]
     restart: unless-stopped
     networks:
       - external

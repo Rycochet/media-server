@@ -1,8 +1,8 @@
 services:
   mylar:
     container_name: mylar
-    image: lscr.io/linuxserver/mylar3:latest
-    profiles: ["${PROFILE_MYLAR:-media}"]
+    image: ${MYLAR_IMAGE:-lscr.io/linuxserver/mylar3}:${MYLAR_IMAGE_TAG:-latest}
+    profiles: ["${MYLAR_PROFILE:-media}"]
     restart: unless-stopped
     networks:
       - external
@@ -32,6 +32,16 @@ services:
       - "$PATH_COMICS:/data/Comics"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Media"
+      - "homepage.name=Mylar"
+      - "homepage.icon=mylar.png"
+      - "homepage.href=https://mylar.$DOMAIN/"
+      - "homepage.description=Comic books"
+
       - "traefik.enable=true"
       - "traefik.http.routers.mylar.rule=Host(`mylar.$DOMAIN`)"
       - "traefik.http.routers.mylar.middlewares=mylar,tinyauth,error-pages"

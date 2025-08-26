@@ -1,8 +1,8 @@
 services:
   openspeedtest:
     container_name: openspeedtest
-    image: openspeedtest/latest
-    profiles: ["${PROFILE_OPENSPEEDTEST:-network}"]
+    image: ${OPENSPEEDTEST_IMAGE:-openspeedtest/latest}:${OPENSPEEDTEST_IMAGE_TAG:-latest}
+    profiles: ["${OPENSPEEDTEST_PROFILE:-network}"]
     restart: unless-stopped
     networks:
       - internal

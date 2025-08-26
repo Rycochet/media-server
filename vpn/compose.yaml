@@ -1,8 +1,8 @@
 services:
   vpn:
     container_name: vpn
-    image: ghcr.io/bubuntux/nordlynx:latest
-    profiles: ["${PROFILE_VPN:-network}"]
+    image: ${VPN_IMAGE:-ghcr.io/bubuntux/nordlynx}:${VPN_IMAGE_TAG:-latest}
+    profiles: ["${VPN_PROFILE:-network}"]
     restart: unless-stopped
     networks:
       - external

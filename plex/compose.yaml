@@ -1,19 +1,16 @@
 services:
   plex:
     container_name: plex
-    image: plexinc/pms-docker:plexpass
-    profiles: ["${PROFILE_PLEX:-library}"]
+    image: ${PLEX_IMAGE:-plexinc/pms-docker}:${PLEX_IMAGE_TAG:-latest}
+    profiles: ["${PLEX_PROFILE:-library}"]
     extends:
-      file: ../compose.gpu.yaml
-      service: ${GPU_SUPPORT:-none}
+      file: ../compose.extend.yaml
+      service: "cf-${USE_CLOUDFLARED:-true}_gpu-${USE_GPU:-none}"
     restart: unless-stopped
     networks:
       - external
       - internal
     depends_on:
-      cloudflared:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

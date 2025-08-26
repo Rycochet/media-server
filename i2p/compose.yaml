@@ -1,8 +1,8 @@
 services:
   i2p:
     container_name: i2p
-    image: geti2p/i2p:latest
-    profiles: ["${PROFILE_I2P:-network}"]
+    image: ${I2P_IMAGE:-geti2p/i2p}:${I2P_IMAGE_TAG:-latest}
+    profiles: ["${I2P_PROFILE:-disabled}"]
     restart: unless-stopped
     networks:
       - external
@@ -24,8 +24,16 @@ services:
       - "./config:/i2p/.i2p"
       - "$PATH_DOWNLOADS/i2ptorrents:/i2psnark"
     labels:
-      - "com.centurylinklabs.watchtower.enable=false"
       - "deunhealth.restart.on.unhealthy=true"
+
+      - "com.centurylinklabs.watchtower.enable=false"
+
+      - "homepage.group=Download"
+      - "homepage.name=I2P"
+      - "homepage.icon=i2p.png"
+      - "homepage.href=https://i2p.$DOMAIN/"
+      - "homepage.description=I2P network"
+
       - "traefik.enable=true"
       - "traefik.http.routers.i2p.rule=Host(`i2p.$DOMAIN`)"
       - "traefik.http.routers.i2p.middlewares=tinyauth,error-pages"

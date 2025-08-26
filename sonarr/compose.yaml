@@ -1,15 +1,15 @@
 services:
   sonarr:
     container_name: sonarr
-    image: lscr.io/linuxserver/sonarr:develop
-    profiles: ["${PROFILE_SONARR:-media}"]
+    image: ${SONARR_IMAGE:-lscr.io/linuxserver/sonarr}:${SONARR_IMAGE_TAG:-latest}
+    profiles: ["${SONARR_PROFILE:-media}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

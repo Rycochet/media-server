@@ -1,8 +1,11 @@
 services:
   traefik:
     container_name: traefik
-    image: traefik:v3.4.4
-    profiles: ["${PROFILE_TRAEFIK:-network}"]
+    image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3.4.4}
+    profiles: ["${TRAEFIK_PROFILE:-network}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "cf-${USE_CLOUDFLARED:-true}"
     restart: unless-stopped
     networks:
       external:
@@ -25,9 +28,6 @@ services:
       error-pages:
         condition: service_started
         restart: false
-      cloudflared:
-        condition: service_started
-        restart: false
     environment:
       # Default
       TZ: "Europe/London"
@@ -35,7 +35,7 @@ services:
       PGID: "$PGID"
       UMASK: "000"
       # Cloudflare
-      CF_DNS_API_TOKEN: "${CLOUDFLARE_API}"
+      CF_DNS_API_TOKEN: "${CLOUDFLARE_DNS_API}"
       # Image
       # GODEBUG: "http2xconnect=0"
     command:

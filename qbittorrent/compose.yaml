@@ -1,8 +1,11 @@
 services:
   qbittorrent:
     container_name: qbittorrent
-    image: lscr.io/linuxserver/qbittorrent:latest
-    profiles: ["${PROFILE_QBITTORRENT:-download}"]
+    image: ${QBITTORRENT_IMAGE:-lscr.io/linuxserver/qbittorrent}:${QBITTORRENT_IMAGE_TAG:-latest}
+    profiles: ["${QBITTORRENT_PROFILE:-download}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - external
@@ -10,9 +13,6 @@ services:
     ports:
       - "51414:51414"
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

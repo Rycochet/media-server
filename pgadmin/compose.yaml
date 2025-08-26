@@ -1,0 +1,49 @@
+services:
+  pgadmin:
+    container_name: pgadmin
+    image: ${PGADMIN_IMAGE:-dpage/pgadmin4}:${PGADMIN_IMAGE_TAG:-latest}
+    profiles: ["${PGADMIN_PROFILE:-media}"]
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      postgres:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "${EMAIL}"
+      PGADMIN_DEFAULT_PASSWORD: "${POSTGRES_PASSWORD:?You must set a POSTGRES_PASSWORD .env variable}"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/var/lib/pgadmin"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=PGAdmin"
+      - "homepage.icon=pgadmin.png"
+      - "homepage.href=https://pgadmin.$DOMAIN/"
+      - "homepage.description=Postgres administration"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.$DOMAIN`)"
+      - "traefik.http.routers.pgadmin.middlewares=pgadmin,tinyauth,error-pages"
+      - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.pgadmin.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.pgadmin.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost/ || exit 1"

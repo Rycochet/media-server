@@ -1,8 +1,8 @@
 services:
   homepage:
     container_name: homepage
-    image: ghcr.io/gethomepage/homepage:latest
-    profiles: ["${PROFILE_HOMEPAGE:-information}"]
+    image: ${HOMEPAGE_IMAGE:-ghcr.io/gethomepage/homepage}:${HOMEPAGE_IMAGE_TAG:-latest}
+    profiles: ["${HOMEPAGE_PROFILE:-information}"]
     restart: unless-stopped
     networks:
       - external

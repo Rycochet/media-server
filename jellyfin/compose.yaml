@@ -1,19 +1,16 @@
 services:
   jellyfin:
     container_name: jellyfin
-    image: lscr.io/linuxserver/jellyfin:latest
-    profiles: ["${PROFILE_JELLYFIN:-library}"]
+    image: ${JELLYFIN_IMAGE:-lscr.io/linuxserver/jellyfin}:${JELLYFIN_IMAGE_TAG:-latest}
+    profiles: ["${JELLYFIN_PROFILE:-library}"]
     extends:
-      file: ../compose.gpu.yaml
-      service: ${GPU_SUPPORT:-none}
+      file: ../compose.extend.yaml
+      service: "cf-${USE_CLOUDFLARED:-true}_gpu-${USE_GPU:-none}"
     restart: unless-stopped
     networks:
       - external
       - internal
     depends_on:
-      cloudflared:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

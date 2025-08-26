@@ -1,8 +1,8 @@
 services:
   tinyauth:
     container_name: tinyauth
-    image: ghcr.io/steveiliop56/tinyauth:v3.6.2-beta.2
-    profiles: ["${PROFILE_OAUTH:-network}"]
+    image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v3}
+    profiles: ["${TINYAUTH_PROFILE:-network}"]
     restart: unless-stopped
     networks:
       - external

@@ -1,8 +1,8 @@
 services:
   proxy:
     container_name: proxy
-    image: serjs/go-socks5-proxy:latest
-    profiles: ["${PROFILE_PROXY:-network}"]
+    image: ${PROXY_IMAGE:-serjs/go-socks5-proxy}:${PROXY_IMAGE_TAG:-latest}
+    profiles: ["${PROXY_PROFILE:-network}"]
     restart: unless-stopped
     network_mode: service:vpn
     depends_on:

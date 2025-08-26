@@ -1,8 +1,8 @@
 services:
   imagemaid:
     container_name: imagemaid
-    image: kometateam/imagemaid:latest
-    profiles: ["${PROFILE_IMAGEMAID:-quality}"]
+    image: ${IMAGEMAID_IMAGE:-kometateam/imagemaid}:${IMAGEMAID_IMAGE_TAG:-latest}
+    profiles: ["${IMAGEMAID_PROFILE:-quality}"]
     restart: unless-stopped
     networks:
       - external
@@ -29,5 +29,5 @@ services:
       - "./logs:/config/logs"
       - "../plex/config/Library/Application Support/Plex Media Server:/plex"
     labels:
-      - "traefik.enable=false"
       - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=false"

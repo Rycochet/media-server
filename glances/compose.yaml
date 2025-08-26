@@ -1,11 +1,11 @@
 services:
   glances:
     container_name: glances
-    image: nicolargo/glances:ubuntu-latest-full
-    profiles: ["${PROFILE_GLANCES:-information}"]
+    image: ${GLANCES_IMAGE:-nicolargo/glances}:${GLANCES_IMAGE_TAG:-ubuntu-latest-full}
+    profiles: ["${GLANCES_PROFILE:-information}"]
     extends:
-      file: ../compose.gpu.yaml
-      service: ${GPU_SUPPORT:-none}
+      file: ../compose.extend.yaml
+      service: "gpu-${USE_GPU:-none}"
     restart: unless-stopped
     pid: host
     networks:

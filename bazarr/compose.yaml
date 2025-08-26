@@ -1,8 +1,11 @@
 services:
   bazarr:
     container_name: bazarr
-    image: lscr.io/linuxserver/bazarr:latest
-    profiles: ["${PROFILE_BAZARR:-media}"]
+    image: ${BAZARR_IMAGE:-lscr.io/linuxserver/bazarr}:${BAZARR_IMAGE_TAG:-latest}
+    profiles: ["${BAZARR_PROFILE:-media}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - external

@@ -1,8 +1,8 @@
 services:
   deunhealth:
     container_name: deunhealth
-    image: qmcgaw/deunhealth:latest
-    profiles: ["${PROFILE_DEUNHEALTH:-infrastructure}"]
+    image: ${DEUNHEALTH_IMAGE:-qmcgaw/deunhealth}:${DEUNHEALTH_IMAGE_TAG:-latest}
+    profiles: ["${DEUNHEALTH_PROFILE:-infrastructure}"]
     restart: unless-stopped
     network_mode: none
     depends_on:

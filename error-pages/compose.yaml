@@ -1,8 +1,8 @@
 services:
   error-pages:
     container_name: error-pages
-    image: ghcr.io/tarampampam/error-pages:latest
-    profiles: ["${PROFILE_ERROR_PAGES:-network}"]
+    image: ${ERROR_PAGES_IMAGE:-ghcr.io/tarampampam/error-pages}:${ERROR_PAGES_IMAGE_TAG:-latest}
+    profiles: ["${ERROR_PAGES_PROFILE:-network}"]
     restart: unless-stopped
     networks:
       - internal
@@ -15,8 +15,10 @@ services:
       # Image
       TEMPLATE_NAME: "lost-in-space"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
       - "com.centurylinklabs.watchtower.enable=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
       - "traefik.enable=true"
       - "traefik.http.services.error-pages.loadbalancer.server.port=8080"
       # use as "fallback" for any NON-registered services (with priority below normal)

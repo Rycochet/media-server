@@ -1,16 +1,16 @@
 services:
   kometa:
     container_name: kometa
-    image: lscr.io/linuxserver/kometa:latest
-    profiles: ["${PROFILE_KOMETA:-quality}"]
+    image: ${KOMETA_IMAGE:-lscr.io/linuxserver/kometa}:${KOMETA_IMAGE_TAG:-latest}
+    profiles: ["${KOMETA_PROFILE:-quality}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - external
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       plex:
         condition: service_healthy
         restart: false

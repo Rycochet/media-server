@@ -1,8 +1,8 @@
 services:
   komga:
     container_name: komga
-    image: gotson/komga:latest
-    profiles: ["${PROFILE_KOMGA:-library}"]
+    image: ${KOMGA_IMAGE:-gotson/komga}:${KOMGA_IMAGE_TAG:-latest}
+    profiles: ["${KOMGA_PROFILE:-library}"]
     restart: unless-stopped
     networks:
       - external

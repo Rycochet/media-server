@@ -1,8 +1,8 @@
 services:
   cloudflared:
     container_name: cloudflared
-    image: cloudflare/cloudflared:latest
-    profiles: ["${PROFILE_CLOUDFLARED:-network}"]
+    image: ${CLOUDFLARED_IMAGE:-cloudflare/cloudflared}:${CLOUDFLARED_IMAGE_TAG:-latest}
+    profiles: ["${CLOUDFLARED_PROFILE:-network}"]
     restart: unless-stopped
     networks:
       - external
@@ -26,9 +26,9 @@ services:
       - "homepage.icon=cloudflare.png"
       - "homepage.description=Cloudflare Status"
       - "homepage.widget.type=cloudflared"
-      - "homepage.widget.accountid=${CLOUDFLARE_ACCOUNT_ID:-}"
-      - "homepage.widget.tunnelid=${CLOUDFLARE_TUNNEL_ID:-}"
-      - "homepage.widget.key=${CLOUDFLARE_TUNNEL_API:-}"
+      - "homepage.widget.accountid=${CLOUDFLARED_ACCOUNT_ID:-}"
+      - "homepage.widget.tunnelid=${CLOUDFLARED_TUNNEL_ID:-}"
+      - "homepage.widget.key=${CLOUDFLARED_API:-}"
 
       - "traefik.enable=false"
 

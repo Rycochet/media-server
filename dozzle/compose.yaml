@@ -1,8 +1,8 @@
 services:
   dozzle:
     container_name: dozzle
-    image: amir20/dozzle:latest
-    profiles: ["${PROFILE_DOZZLE:-information}"]
+    image: ${DOZZLE_IMAGE:-amir20/dozzle}:${DOZZLE_IMAGE_TAG:-latest}
+    profiles: ["${DOZZLE_PROFILE:-information}"]
     restart: unless-stopped
     networks:
       - internal

@@ -1,15 +1,15 @@
 services:
   readarr:
     container_name: readarr
-    image: lscr.io/linuxserver/readarr:0.4.18-develop
-    profiles: ["${PROFILE_READARR:-media}"]
+    image: ${READARR_IMAGE:-lscr.io/linuxserver/readarr}:${READARR_IMAGE_TAG:-0.4.18-develop}
+    profiles: ["${READARR_PROFILE:-media}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

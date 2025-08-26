@@ -1,5 +1,11 @@
 # GPU support
 services:
+  # https://instinct.docs.amd.com/projects/container-toolkit/en/latest/index.html
+  amd:
+    environment:
+      AMD_VISIBLE_DEVICES: "all"
+
+  # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html
   nvidia:
     deploy:
       resources:

@@ -1,16 +1,16 @@
 services:
   windows:
     container_name: windows
-    image: dockurr/windows:latest
-    profiles: ["${PROFILE_WINDOWS:-desktop}"]
+    image: ${WINDOWS_IMAGE:-dockurr/windows}:${WINDOWS_IMAGE_TAG:-latest}
+    profiles: ["${WINDOWS_PROFILE:-desktop}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - external
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

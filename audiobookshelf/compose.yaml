@@ -1,8 +1,8 @@
 services:
   audiobookshelf:
     container_name: audiobookshelf
-    image: ghcr.io/advplyr/audiobookshelf:latest
-    profiles: ["${PROFILE_AUDIOBOOKSHELF:-library}"]
+    image: ${AUDIOBOOKSHELF_IMAGE:-ghcr.io/advplyr/audiobookshelf}:${AUDIOBOOKSHELF_IMAGE_TAG:-latest}
+    profiles: ["${AUDIOBOOKSHELF_PROFILE:-library}"]
     restart: unless-stopped
     networks:
       - external

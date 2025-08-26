@@ -1,8 +1,8 @@
 services:
   onlyfans:
     container_name: onlyfans
-    image: ghcr.io/datawhores/of-scraper:latest
-    profiles: ["${PROFILE_ONLYFANS:-download}"]
+    image: ${ONLYFANS_IMAGE:-ghcr.io/datawhores/of-scraper}:${ONLYFANS_IMAGE_TAG:-latest}
+    profiles: ["${ONLYFANS_PROFILE:-download}"]
     restart: unless-stopped
     networks:
       - external
@@ -17,7 +17,6 @@ services:
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"
-      # Image
     stdin_open: true
     tty: true
     volumes:

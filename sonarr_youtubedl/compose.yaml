@@ -1,16 +1,13 @@
 services:
   sonarr_youtubedl:
     container_name: sonarr_youtubedl
-    image: whatdaybob/sonarr_youtubedl
-    profiles: ["${PROFILE_SONARR_YOUTUBEDL:-download}"]
+    image: ${SONARR_YOUTUBEDL_IMAGE:-whatdaybob/sonarr_youtubedl}:${SONARR_YOUTUBEDL_IMAGE_TAG:-latest}
+    profiles: ["${SONARR_YOUTUBEDL_PROFILE:-disabled}"]
     # restart: unless-stopped
     networks:
       - external
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       sonarr:
         condition: service_healthy
         restart: false

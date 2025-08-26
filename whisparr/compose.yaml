@@ -1,15 +1,15 @@
 services:
   whisparr:
     container_name: whisparr
-    image: ghcr.io/hotio/whisparr:latest # v3
-    profiles: ["${PROFILE_WHISPARR:-media}"]
+    image: ${WHISPARR_IMAGE:-ghcr.io/hotio/whisparr}:${WHISPARR_IMAGE_TAG:-latest}
+    profiles: ["${WHISPARR_PROFILE:-media}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

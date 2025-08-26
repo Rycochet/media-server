@@ -1,8 +1,8 @@
 services:
   watchtower:
     container_name: watchtower
-    image: containrrr/watchtower
-    profiles: ["${PROFILE_WATCHTOWER:-infrastructure}"]
+    image: ${WATCHTOWER_IMAGE:-containrrr/watchtower}:${WATCHTOWER_IMAGE_TAG:-latest}
+    profiles: ["${WATCHTOWER_PROFILE:-infrastructure}"]
     restart: unless-stopped
     networks:
       - external

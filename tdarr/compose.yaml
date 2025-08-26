@@ -1,11 +1,11 @@
 services:
   tdarr:
     container_name: tdarr
-    image: haveagitgat/tdarr:latest
-    profiles: ["${PROFILE_TDARR:-quality}"]
+    image: ${TDARR_IMAGE:-haveagitgat/tdarr}:${TDARR_IMAGE_TAG:-latest}
+    profiles: ["${TDARR_PROFILE:-quality}"]
     extends:
-      file: ../compose.gpu.yaml
-      service: ${GPU_SUPPORT:-none}
+      file: ../compose.extend.yaml
+      service: "gpu-${USE_GPU:-none}"
     restart: unless-stopped
     networks:
       - external
@@ -58,7 +58,7 @@ services:
       - "homepage.name=Tdarr"
       - "homepage.icon=tdarr.png"
       - "homepage.href=https://tdarr.$DOMAIN/"
-      - "homepage.description=Subtitles"
+      - "homepage.description=Video transcoding"
       - "homepage.widget.type=tdarr"
       - "homepage.widget.url=http://tdarr:8265"
 

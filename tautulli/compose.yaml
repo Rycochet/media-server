@@ -1,8 +1,8 @@
 services:
   tautulli:
     container_name: tautulli
-    image: lscr.io/linuxserver/tautulli:latest
-    profiles: ["${PROFILE_TAUTULLI:-information}"]
+    image: ${TAUTULLI_IMAGE:-lscr.io/linuxserver/tautulli}:${TAUTULLI_IMAGE_TAG:-latest}
+    profiles: ["${TAUTULLI_PROFILE:-information}"]
     restart: unless-stopped
     networks:
       - external
@@ -40,7 +40,7 @@ services:
       - "homepage.name=Tautulli"
       - "homepage.icon=tautulli.png"
       - "homepage.href=https://tautulli.$DOMAIN/"
-      - "homepage.description=Plex Monitoring"
+      - "homepage.description=Plex monitoring"
       - "homepage.widget.type=tautulli"
       - "homepage.widget.url=http://tautulli:8181"
       - "homepage.widget.key=${TAUTULLI_API:-}"

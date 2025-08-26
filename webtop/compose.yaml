@@ -1,16 +1,16 @@
 services:
   webtop:
     container_name: webtop
-    image: lscr.io/linuxserver/webtop:latest
-    profiles: ["${PROFILE_WEBTOP:-desktop}"]
+    image: ${WEBTOP_IMAGE:-lscr.io/linuxserver/webtop}:${WEBTOP_IMAGE_TAG:-latest}
+    profiles: ["${WEBTOP_PROFILE:-desktop}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - external
       - internal
     depends_on:
-      proxy:
-        condition: service_started
-        restart: false
       traefik:
         condition: service_started
         restart: false

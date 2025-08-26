@@ -27,8 +27,9 @@ include:
 
   # LIBRARY
   - audiobookshelf/compose.yaml       # Audiobooks library
-  - komga/compose.yaml                # Comic library
   - jellyfin/compose.yaml             # Open source media library
+  - kapowarr/compose.yaml             # Comics
+  # - komga/compose.yaml                # Comic library
   # - manyfold/compose.yaml             # 3d models library
   - plex/compose.yaml                 # Media library
 
@@ -58,17 +59,16 @@ include:
   - prowlarr/compose.yaml             # Torrent / NNTP search proxy
   - qbittorrent/compose.yaml          # Torrent downloader
   - sabnzbd/compose.yaml              # NNTP downloader
-  - sonarr_youtubedl/compose.yaml     # YouTube downloader
+  # - sonarr_youtubedl/compose.yaml     # YouTube downloader
   - syncthing/compose.yaml            # Synchronise library
 
   # MEDIA SUPPORT
-  # - postgres/compose.yaml             # Database
-  # - pgadmin/compose.yaml              # Database admin
+  - postgres/compose.yaml             # Database
+  - pgadmin/compose.yaml              # Database admin
 
   # MEDIA
   - bazarr/compose.yaml               # Subtitles
   - lidarr/compose.yaml               # Music
-  - kapowarr/compose.yaml             # Comics
   # - mylar/compose.yaml                # Comics
   - radarr/compose.yaml               # Movies
   - readarr/compose.yaml              # eBooks / Audiobooks
@@ -77,7 +77,7 @@ include:
   # - whisparr/compose.yaml             # Porn
 
   # GAMES - Not started automatically
-  - papermc/compose.yaml              # Minecraft
+  - minecraft/compose.yaml            # Minecraft
 
 networks:
   external:

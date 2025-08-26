@@ -1,0 +1,102 @@
+# This is used for USE_xxx options until `extend:` or `include:` is fixed...
+
+# Wait for cloudflared
+x-cloudflared: &cf-true
+  cloudflared:
+    condition: service_started
+    restart: false
+
+# https://instinct.docs.amd.com/projects/container-toolkit/en/latest/index.html
+x-gpu-amd: &gpu-amd
+  environment:
+    AMD_VISIBLE_DEVICES: "all"
+
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html
+x-gpu-nvidia: &gpu-nvidia
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+  environment:
+    NVIDIA_DRIVER_CAPABILITIES: "all"
+    NVIDIA_VISIBLE_DEVICES: "all"
+
+# Wait for postgres
+x-postgres: &pg-true
+  postgres:
+    condition: service_started
+    restart: false
+
+x-vpn: &vpn-true
+  proxy:
+    condition: service_started
+    restart: false
+
+services:
+  cf-false:
+
+  cf-false_gpu-amd:
+    <<: *gpu-amd
+
+  cf-false_gpu-none:
+
+  cf-false_gpu-nvidia:
+    <<: *gpu-nvidia
+
+  cf-true:
+    depends_on:
+      <<: *cf-true
+
+  cf-true_gpu-amd:
+    <<: *gpu-amd
+    depends_on:
+      <<: *cf-true
+
+  cf-true_gpu-none:
+    depends_on:
+      <<: *cf-true
+
+  cf-true_gpu-nvidia:
+    <<: *gpu-nvidia
+    depends_on:
+      <<: *cf-true
+
+  gpu-amd:
+    <<: *gpu-amd
+
+  gpu-none:
+
+  gpu-nvidia:
+    <<: *gpu-nvidia
+
+  pg-true:
+    depends_on:
+      <<: *pg-true
+
+  pg-true_vpn-false:
+    depends_on:
+      <<: *pg-true
+
+  pg-true_vpn-true:
+    depends_on:
+      proxy: # can only extend a single...
+        condition: service_started
+        restart: false
+      <<: *pg-true
+
+  pg-false:
+
+  pg-false_vpn-false:
+
+  pg-false_vpn-true:
+    depends_on:
+      <<: *vpn-true
+
+  vpn-false:
+
+  vpn-true:
+    depends_on:
+      <<: *vpn-true

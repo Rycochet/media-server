@@ -3,6 +3,9 @@ services:
     container_name: jellyfin
     image: lscr.io/linuxserver/jellyfin:latest
     profiles: ["${PROFILE_JELLYFIN:-library}"]
+    extends:
+      file: ../compose.gpu.yaml
+      service: ${GPU_SUPPORT:-none}
     restart: unless-stopped
     networks:
       - external

@@ -24,16 +24,22 @@ x-gpu-nvidia: &gpu-nvidia
     NVIDIA_DRIVER_CAPABILITIES: "all"
     NVIDIA_VISIBLE_DEVICES: "all"
 
-# Wait for postgres
-x-postgres: &pg-true
-  postgres:
+x-service-started: &service-started
     condition: service_started
     restart: false
 
+# Wait for postgres
+x-postgres: &pg-true
+  postgres: *service-started
+
+# Wait for the VPN
 x-vpn: &vpn-true
-  proxy:
-    condition: service_started
-    restart: false
+  proxy: *service-started
+
+# Wait for both
+x-postgres-vpn: &pg-true_vpn-true
+  postgres: *service-started
+  proxy: *service-started
 
 services:
   cf-false:
@@ -82,10 +88,7 @@ services:
 
   pg-true_vpn-true:
     depends_on:
-      proxy: # can only extend a single...
-        condition: service_started
-        restart: false
-      <<: *pg-true
+      <<: *pg-true_vpn-true
 
   pg-false:
 

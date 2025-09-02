@@ -44,7 +44,6 @@ services:
       - "homepage.icon=sabnzbd.png"
       - "homepage.href=https://sabnzbd.$DOMAIN/"
       - "homepage.description=Newsgroups"
-      - "homepage.weight=50"
       - "homepage.widget.type=sabnzbd"
       - "homepage.widget.url=http://sabnzbd:7070"
       - "homepage.widget.key=${SABNZBD_API:-}"

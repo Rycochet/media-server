@@ -45,7 +45,6 @@ services:
       - "homepage.icon=qbittorrent.png"
       - "homepage.href=https://qbittorrent.$DOMAIN/"
       - "homepage.description=Torrents"
-      - "homepage.weight=50"
       - "homepage.widget.type=qbittorrent"
       - "homepage.widget.url=http://qbittorrent:8080"
 

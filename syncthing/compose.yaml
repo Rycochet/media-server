@@ -48,7 +48,6 @@ services:
       - "homepage.icon=syncthing.png"
       - "homepage.href=https://syncthing.$DOMAIN/"
       - "homepage.description=Remote data synchronisation"
-      - "homepage.weight=50"
       - "homepage.widget.type=customapi"
       - "homepage.widget.method=GET"
       - "homepage.widget.url=http://syncthing:8384/rest/system/connections" # ?folder=<<<FOLDER_ID>>>"

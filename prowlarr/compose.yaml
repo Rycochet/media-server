@@ -43,7 +43,6 @@ services:
       - "homepage.icon=prowlarr.png"
       - "homepage.href=https://prowlarr.$DOMAIN/"
       - "homepage.description=Search"
-      - "homepage.weight=50"
       - "homepage.widget.type=prowlarr"
       - "homepage.widget.url=http://prowlarr:9696"
       - "homepage.widget.key=${PROWLARR_API:-}"

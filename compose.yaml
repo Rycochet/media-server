@@ -54,12 +54,13 @@ include:
   - windows/compose.yaml              # Windows desktop
 
   # DOWNLOAD
+  - cleanuparr/compose.yaml           # Bad download handling
+  - huntarr/compose.yaml              # Missing media search
   - i2p/compose.yaml                  # I2P Client
   # - onlyfans/compose.yaml             # Download all subscriptions
   - prowlarr/compose.yaml             # Torrent / NNTP search proxy
   - qbittorrent/compose.yaml          # Torrent downloader
   - sabnzbd/compose.yaml              # NNTP downloader
-  # - sonarr_youtubedl/compose.yaml     # YouTube downloader
   - syncthing/compose.yaml            # Synchronise library
 
   # MEDIA SUPPORT

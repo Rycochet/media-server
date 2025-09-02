@@ -20,14 +20,14 @@ mount () {
         declare MERGED=${ROOT}/.overlay/${BASENAME%/}
         declare OPTIONS="lowerdir=${LOWERDIR// /\\040},upperdir=${UPPERDIR// /\\040},workdir=${WORKDIR// /\\040},redirect_dir=off,metacopy=off,index=off,xino=off"
 
-        mkdir -p ${LOWERDIR} ${UPPERDIR} ${WORKDIR} ${MERGED}
+        mkdir -p "${LOWERDIR}" "${UPPERDIR}" "${WORKDIR}" "${MERGED}"
 
-        if ! grep -q "overlay ${MERGED// /\\040} " /etc/fstab ; then
+        if ! grep -q "overlay ${MERGED// /\\040} " /etc/fstab; then
             echo "# Overlay ${BASENAME%/}" | sudo tee -a /etc/fstab
             echo "overlay ${MERGED// /\\040} overlay ${OPTIONS} 0 2" | sudo tee -a /etc/fstab
             echo "Add mount for $MERGED"
             FSTAB_CHANGED=1
-        elif grep -q "^# overlay ${MERGED// /\\040} " /etc/fstab ; then
+        elif grep -q "^# overlay ${MERGED// /\\040} " /etc/fstab; then
             sudo sed -i "s|^# \(overlay ${MERGED// /\\040} .*\)$|\\1|" /etc/fstab
             echo "Enable mount for $MERGED"
             FSTAB_CHANGED=1
@@ -69,7 +69,7 @@ unmount () {
         declare BASENAME=$(basename "$i")
         declare MERGED=${ROOT}/.overlay/${BASENAME%/}
 
-        if grep -q "^overlay ${MERGED// /\\040} " /etc/fstab ; then
+        if grep -q "^overlay ${MERGED// /\\040} " /etc/fstab; then
             sudo sed -i "s|^\(overlay ${MERGED// /\\040} .*\)$|# \\1|" /etc/fstab
             echo "Disable mount for $MERGED"
             FSTAB_CHANGED=1

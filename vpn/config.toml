@@ -1,0 +1,10 @@
+[[roles]]
+name = "homepage"
+auth = "none"
+routes = [
+    "GET /v1/dns/status",
+    "GET /v1/openvpn/portforwarded",
+    "GET /v1/openvpn/status",
+    "GET /v1/publicip/ip",
+    "GET /v1/updater/status"
+]

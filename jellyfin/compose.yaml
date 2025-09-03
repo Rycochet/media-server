@@ -33,7 +33,7 @@ services:
       - "1900:1900/udp" #optional
     environment:
       # Default
-      TZ: "Europe/London"
+      TZ: "${TZ:-Europe/London}"
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"

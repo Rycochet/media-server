@@ -17,13 +17,32 @@ services:
         max-size: "1m"
         max-file: "3"
     environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
       # Docker
       DOCKER_HOST: "tcp://socket-proxy:2375"
       # Image
-      WATCHTOWER_POLL_INTERVAL: "3600"
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_HTTP_API_METRICS: "true"
+      WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
+      WATCHTOWER_INCLUDE_STOPPED: "true"
       WATCHTOWER_LABEL_ENABLE: "true"
+      WATCHTOWER_POLL_INTERVAL: "3600"
+      WATCHTOWER_REMOVE_VOLUMES: "true"
       WATCHTOWER_TIMEOUT: "30s"
+    # volumes:
+    #   - "<PATH_TO_HOME_DIR>/.docker/config.json:/config.json"
     labels:
       - "com.centurylinklabs.watchtower.monitor-only=true"
+
       - "deunhealth.restart.on.unhealthy=false"
+
+      - "homepage.group=Information"
+      - "homepage.name=Watchtower"
+      - "homepage.icon=watchtower.png"
+      - "homepage.description=Docker image updates"
+      - "homepage.widget.type=watchtower"
+      - "homepage.widget.url=http://watchtower:8080"
+      - "homepage.widget.key=${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
+
       - "traefik.enable=false"

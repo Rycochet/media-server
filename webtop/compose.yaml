@@ -27,7 +27,7 @@ services:
     shm_size: "1gb"
     environment:
       # Default
-      TZ: "Europe/London"
+      TZ: "${TZ:-Europe/London}"
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"

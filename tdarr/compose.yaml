@@ -33,7 +33,7 @@ services:
     #                 # the node container use the network from the main container
     environment:
       # Default
-      TZ: "Europe/London"
+      TZ: "${TZ:-Europe/London}"
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"
@@ -103,7 +103,7 @@ services:
 #       - tdarr
 #     environment:
 #       # Default
-#       TZ: "Europe/London"
+#       TZ: "${TZ:-Europe/London}"
 #       PUID: "$PUID"
 #       PGID: "$PGID"
 #       UMASK: "000"

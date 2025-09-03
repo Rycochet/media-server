@@ -27,7 +27,7 @@ services:
         max-file: "3"
     environment:
       # Default
-      TZ: "Europe/London"
+      TZ: "${TZ:-Europe/London}"
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"

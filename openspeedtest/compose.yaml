@@ -27,7 +27,7 @@ services:
 
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Information"
+      - "homepage.group=Tools"
       - "homepage.name=OpenSpeedTest"
       - "homepage.icon=openspeedtest.png"
       - "homepage.href=https://openspeedtest.$DOMAIN/"

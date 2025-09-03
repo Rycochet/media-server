@@ -35,7 +35,7 @@ services:
       - "32400:32400"
     environment:
       # Default
-      TZ: "Europe/London"
+      TZ: "${TZ:-Europe/London}"
       # GPU
       # NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
       # NVIDIA_VISIBLE_DEVICES: "all"

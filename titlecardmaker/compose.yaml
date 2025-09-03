@@ -25,7 +25,7 @@ services:
           cpus: "4"
     environment:
       # Default
-      TZ: "Europe/London"
+      TZ: "${TZ:-Europe/London}"
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"

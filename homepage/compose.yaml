@@ -23,7 +23,7 @@ services:
     # user: $PGID:$PUID
     environment:
       # Default
-      TZ: "Europe/London"
+      TZ: "${TZ:-Europe/London}"
       PUID: "$PUID"
       PGID: "$PGID"
       UMASK: "000"

@@ -62,3 +62,34 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8686/"
+
+  # Help with lidarr's metadata server - don't start automatically
+  lidarr-cache-warmer:
+    container_name: lidarr-cache-warmer
+    image: ghcr.io/devianteng/lidarr-cache-warmer:latest
+    profiles: ["disabled"]
+    restart: unless-stopped
+    networks:
+      - internal
+      - external
+    depends_on:
+      lidarr:
+        condition: service_started
+        restart: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    user: $PGID:$PUID
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config/cache-warmer:/app/data"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "deunhealth.restart.on.unhealthy=true"
+      - "traefik.enable=false"
+

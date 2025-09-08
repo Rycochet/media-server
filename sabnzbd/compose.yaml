@@ -45,13 +45,13 @@ services:
       - "homepage.href=https://sabnzbd.$DOMAIN/"
       - "homepage.description=Newsgroups"
       - "homepage.widget.type=sabnzbd"
-      - "homepage.widget.url=http://sabnzbd:7070"
+      - "homepage.widget.url=http://sabnzbd:8085"
       - "homepage.widget.key=${SABNZBD_API:-}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.$DOMAIN`)"
       - "traefik.http.routers.sabnzbd.middlewares=sabnzbd,tinyauth,error-pages"
-      - "traefik.http.services.sabnzbd.loadbalancer.server.port=7070"
+      - "traefik.http.services.sabnzbd.loadbalancer.server.port=8085"
       - "traefik.http.middlewares.sabnzbd.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.sabnzbd.headers.accessControlAllowOriginList=https://$DOMAIN"
 
@@ -60,4 +60,4 @@ services:
       timeout: "5s"
       retries: 3
       start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:7070/"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8085/"

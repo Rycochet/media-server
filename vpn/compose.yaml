@@ -48,9 +48,9 @@ services:
       - "deunhealth.restart.on.unhealthy=false"
 
       - "homepage.group=Information"
-      - "homepage.name=Gluetun"
+      - "homepage.name=VPN"
       - "homepage.icon=gluetun.png"
-      - "homepage.description=VPN & Proxy | HTTP - vpn:8888 | Socks5 - vpn:1080"
+      - "homepage.description=Gluetun | HTTP - vpn:8888 | Socks5 - vpn:1080"
       - "homepage.widget.type=gluetun"
       - "homepage.widget.url=http://vpn:8000"
 

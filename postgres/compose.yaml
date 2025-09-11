@@ -19,7 +19,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/var/lib/postgresql/data"
     labels:
-      - "com.centurylinklabs.watchtower.enable=false"
+      - "com.centurylinklabs.watchtower.monitor-only=true"
 
       - "deunhealth.restart.on.unhealthy=true"
 

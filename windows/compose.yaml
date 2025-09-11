@@ -49,7 +49,7 @@ services:
       - "./config:/storage"
       # - "media:/data"
     labels:
-      - "com.centurylinklabs.watchtower.enable=false"
+      - "com.centurylinklabs.watchtower.monitor-only=true"
 
       - "deunhealth.restart.on.unhealthy=true"
 

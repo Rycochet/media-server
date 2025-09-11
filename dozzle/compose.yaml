@@ -25,8 +25,6 @@ services:
       DOCKER_HOST: "tcp://socket-proxy:2375"
       DOZZLE_HOSTNAME: "${DOMAIN}"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
       - "deunhealth.restart.on.unhealthy=true"
 
       - "homepage.group=Information"

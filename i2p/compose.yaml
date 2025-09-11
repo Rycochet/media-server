@@ -26,8 +26,6 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "com.centurylinklabs.watchtower.enable=false"
-
       - "homepage.group=Download"
       - "homepage.name=I2P"
       - "homepage.icon=i2p.png"

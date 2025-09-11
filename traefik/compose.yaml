@@ -1,7 +1,7 @@
 services:
   traefik:
     container_name: traefik
-    image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3.5.1}
+    image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     profiles: ["${TRAEFIK_PROFILE:-network}"]
     extends:
       file: ../compose.extend.yaml

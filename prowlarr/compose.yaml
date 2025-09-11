@@ -34,8 +34,6 @@ services:
       - "./logs:/config/logs"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
       - "deunhealth.restart.on.unhealthy=true"
 
       - "homepage.group=Download"

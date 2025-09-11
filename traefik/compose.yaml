@@ -81,8 +81,6 @@ services:
       - "./.ssl/cert.pem:/run/secrets/cert.pem:ro"
       - "./config:/etc/traefik"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
       - "homepage.group=Information"
       - "homepage.name=Traefik"
       - "homepage.icon=traefik.png"

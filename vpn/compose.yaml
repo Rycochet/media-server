@@ -43,8 +43,6 @@ services:
       - "/dev/net/tun:/dev/net/tun"
       - "./config.toml:/gluetun/auth/config.toml:ro"
     labels:
-      - "com.centurylinklabs.watchtower.enable=false"
-
       - "deunhealth.restart.on.unhealthy=false"
 
       - "homepage.group=Information"
@@ -75,6 +73,5 @@ services:
       PROXY_USER: "${PROXY_USER:-}"
       PROXY_PASSWORD: "${PROXY_PASSWORD:-}"
     labels:
-      - "com.centurylinklabs.watchtower.enable=false"
       - "deunhealth.restart.on.unhealthy=true"
       - "traefik.enable=false"

@@ -37,8 +37,6 @@ services:
     volumes:
       - "/etc/os-release:/etc/os-release:ro"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
       - "deunhealth.restart.on.unhealthy=true"
 
       - "homepage.group=Information"

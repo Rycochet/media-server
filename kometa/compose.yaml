@@ -39,5 +39,5 @@ services:
       - "./backup:/data/backup"
     labels:
       - "traefik.enable=false"
-      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.monitor-only=true"
       - "deunhealth.restart.on.unhealthy=false"

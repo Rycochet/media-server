@@ -26,8 +26,6 @@ services:
     volumes:
       - "./config:/config"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
       - "deunhealth.restart.on.unhealthy=true"
 
       - "traefik.enable=true"

@@ -15,8 +15,6 @@ services:
       # Image
       TEMPLATE_NAME: "lost-in-space"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
       - "deunhealth.restart.on.unhealthy=true"
 
       - "traefik.enable=true"

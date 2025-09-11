@@ -37,8 +37,6 @@ services:
       - "./images:/app/public/images"
       - "$PATH_MOVIES:/data/movies:ro"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-
       - "deunhealth.restart.on.unhealthy=true"
 
       - "traefik.enable=true"

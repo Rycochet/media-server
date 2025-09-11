@@ -29,5 +29,4 @@ services:
       - "./logs:/config/logs"
       - "../plex/config/Library/Application Support/Plex Media Server:/plex"
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=false"

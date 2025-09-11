@@ -29,5 +29,4 @@ services:
       - "$PATH_TV:/sonarr_root"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
-      - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=false"

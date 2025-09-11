@@ -6,6 +6,8 @@
 > [!NOTE]
 > This is the barebones setup for a media server, it does not include any config (although over time I may add more document and templates explaining what to do).
 
+<img width="1304" height="715" alt="image" src="https://github.com/user-attachments/assets/4bf99c07-ac29-4233-863e-af6cd92f10aa" />
+
 ## Components
 
 > This is a partial list, the individual folders have every service, and I'll maybe add information for each over time.

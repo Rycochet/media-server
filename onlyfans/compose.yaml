@@ -37,3 +37,6 @@ services:
       - "ALL"
       - "--block-ads"
       # - "--force-model-unique"
+    labels:
+      - "deunhealth.restart.on.unhealthy=false"
+      - "traefik.enable=false"

@@ -27,11 +27,11 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Information"
+      - "homepage.group=Tools"
       - "homepage.name=Dozzle"
       - "homepage.icon=dozzle.png"
       - "homepage.href=https://dozzle.$DOMAIN/"
-      - "homepage.description=Docker Status and Logs"
+      - "homepage.description=Docker container logs"
 
       - "traefik.enable=true"
       - "traefik.http.routers.dozzle.rule=Host(`dozzle.$DOMAIN`)"

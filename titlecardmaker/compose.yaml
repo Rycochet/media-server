@@ -19,10 +19,6 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    deploy:
-      resources:
-        limits:
-          cpus: "4"
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
@@ -41,7 +37,7 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Quality"
+      - "homepage.group=Tools"
       - "homepage.name=TitleCardMaker"
       - "homepage.icon=/images/titlecardmaker.png"
       - "homepage.href=https://titlecardmaker.$DOMAIN/"

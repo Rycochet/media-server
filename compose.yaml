@@ -41,6 +41,7 @@ include:
   - titlecardmaker/compose.yaml       # Episode thumbnails for Plex
 
   # INFORMATION
+  - beszel/compose.yaml               # System information
   - dozzle/compose.yaml               # Docker status
   - glances/compose.yaml              # Operating system status
   - homepage/compose.yaml             # Dashboard

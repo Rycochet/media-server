@@ -28,5 +28,5 @@ services:
       - "./logs:/logs"
       - "$PATH_TV:/sonarr_root"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
+      - "deunhealth.restart.on.unhealthy=false"
       - "traefik.enable=false"

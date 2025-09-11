@@ -48,7 +48,7 @@ services:
 
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Desktops"
+      - "homepage.group=Tools"
       - "homepage.name=Webtop"
       - "homepage.icon=webtop.png"
       - "homepage.href=https://webtop.$DOMAIN/"

@@ -22,10 +22,6 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    deploy:
-      resources:
-        limits:
-          cpus: "4"
     # ports:
     # #   - "8265:8265" # webUI port
     #   - "8266:8266" # server port
@@ -54,7 +50,9 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.monitor-only=true"
 
-      - "homepage.group=Quality"
+      - "deunhealth.restart.on.unhealthy=false"
+
+      - "homepage.group=Media"
       - "homepage.name=Tdarr"
       - "homepage.icon=tdarr.png"
       - "homepage.href=https://tdarr.$DOMAIN/"
@@ -87,10 +85,6 @@ services:
 #       options:
 #         max-size: "1m"
 #         max-file: "3"
-#     deploy:
-#       resources:
-#         limits:
-#           cpus: "0.80"
 #     network_mode: service:tdarr
 #     deploy:
 #       resources:
@@ -123,3 +117,4 @@ services:
 #       - "$PATH_TV:/data/tv"
 #     labels:
 #       - "com.centurylinklabs.watchtower.monitor-only=true"
+#       - "deunhealth.restart.on.unhealthy=false"

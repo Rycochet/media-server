@@ -29,4 +29,5 @@ services:
       - "./logs:/config/logs"
       - "../plex/config/Library/Application Support/Plex Media Server:/plex"
     labels:
+      - "deunhealth.restart.on.unhealthy=false"
       - "traefik.enable=false"

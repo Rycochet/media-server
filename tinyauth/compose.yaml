@@ -25,6 +25,8 @@ services:
       LOG_LEVEL: "2"
       SESSION_EXPIRY: "${SESSION_EXPIRY:-86400}" # Default is 24 hours
     labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
       - "traefik.enable=true"
       - "traefik.http.routers.tinyauth.rule=Host(`tinyauth.$DOMAIN`)"
       - "traefik.http.services.tinyauth.loadbalancer.server.port=3000"

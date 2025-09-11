@@ -87,6 +87,6 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config/cache-warmer:/app/data"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
+      - "deunhealth.restart.on.unhealthy=false"
       - "traefik.enable=false"
 

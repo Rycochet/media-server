@@ -37,7 +37,7 @@ services:
 
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Games"
+      - "homepage.group=Tools"
       - "homepage.name=Minecraft"
       - "homepage.icon=minecraft.png"
       - "homepage.href=readarr://minecraft-map.$DOMAIN/"

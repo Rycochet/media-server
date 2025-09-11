@@ -53,7 +53,7 @@ services:
 
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Desktops"
+      - "homepage.group=Tools"
       - "homepage.name=Windoes"
       - "homepage.icon=windows.png"
       - "homepage.href=https://windows.$DOMAIN/"

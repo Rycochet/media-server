@@ -43,7 +43,7 @@ services:
       - "/dev/net/tun:/dev/net/tun"
       - "./config.toml:/gluetun/auth/config.toml:ro"
     labels:
-      - "deunhealth.restart.on.unhealthy=false"
+      - "deunhealth.restart.on.unhealthy=false" # This can be unhealthy but still be connected
 
       - "homepage.group=Information"
       - "homepage.name=VPN"
@@ -73,5 +73,5 @@ services:
       PROXY_USER: "${PROXY_USER:-}"
       PROXY_PASSWORD: "${PROXY_PASSWORD:-}"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
+      - "deunhealth.restart.on.unhealthy=false"
       - "traefik.enable=false"

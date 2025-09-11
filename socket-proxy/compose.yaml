@@ -46,3 +46,6 @@ services:
       retries: 3
       start_period: "10s"
       test: "wget --no-verbose --tries=1 --spider http://localhost:2375/_ping || exit 1"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+      - "traefik.enable=false"

@@ -22,10 +22,6 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    deploy:
-      resources:
-        limits:
-          cpus: "2"
     ports:
       - "8096:8096"
       - "8920:8920" #optional

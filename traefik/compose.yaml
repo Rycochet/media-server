@@ -81,6 +81,8 @@ services:
       - "./.ssl/cert.pem:/run/secrets/cert.pem:ro"
       - "./config:/etc/traefik"
     labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
       - "homepage.group=Information"
       - "homepage.name=Traefik"
       - "homepage.icon=traefik.png"

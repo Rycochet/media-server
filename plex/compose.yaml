@@ -50,6 +50,7 @@ services:
       - "homepage.name=Plex"
       - "homepage.icon=plex.png"
       - "homepage.href=https://plex.$DOMAIN/web/index.html"
+      - "homepage.weight=-1"
       - "homepage.description=Media Library"
       - "homepage.widget.type=plex"
       - "homepage.widget.url=https://plex:32400"

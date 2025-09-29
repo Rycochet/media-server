@@ -18,7 +18,7 @@ mount () {
         declare UPPERDIR=${ROOT}/${BASENAME%/}-sync
         declare WORKDIR=${ROOT}/.overlay/${BASENAME%/}-work
         declare MERGED=${ROOT}/.overlay/${BASENAME%/}
-        declare OPTIONS="lowerdir=${LOWERDIR// /\\040},upperdir=${UPPERDIR// /\\040},workdir=${WORKDIR// /\\040},redirect_dir=off,metacopy=off,index=off,xino=off"
+        declare OPTIONS="lowerdir=${LOWERDIR// /\\040},upperdir=${UPPERDIR// /\\040},workdir=${WORKDIR// /\\040},redirect_dir=off,metacopy=off,index=off,xino=off,nofail,noauto,x-systemd.automount"
 
         mkdir -p "${LOWERDIR}" "${UPPERDIR}" "${WORKDIR}" "${MERGED}"
 

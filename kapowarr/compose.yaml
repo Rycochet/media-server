@@ -40,7 +40,6 @@ services:
       - "homepage.icon=kapowarr.png"
       - "homepage.href=https://kapowarr.$DOMAIN/"
       - "homepage.description=Comics"
-      - "homepage.weight=50"
 
       - "traefik.enable=true"
       - "traefik.http.routers.kapowarr.rule=Host(`kapowarr.$DOMAIN`)"

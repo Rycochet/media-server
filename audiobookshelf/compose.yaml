@@ -42,7 +42,6 @@ services:
       - "homepage.icon=audiobookshelf.png"
       - "homepage.href=https://audiobookshelf.$DOMAIN/"
       - "homepage.description=Audiobooks and Podcasts"
-      - "homepage.weight=50"
       - "homepage.widget.type=audiobookshelf"
       - "homepage.widget.url=http://audiobookshelf:80"
       - "homepage.widget.key=${AUDIOBOOKSHELF_API:-}"

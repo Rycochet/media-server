@@ -1,0 +1,27 @@
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/settings/
+
+title: Media Server
+hideVersion: true
+disableUpdateCheck: true
+
+layout:
+  Server:
+    header: false
+    style: row
+    columns: 5
+    Information:
+      icon: mdi-eye
+    Libraries:
+      icon: mdi-play-circle
+    Download:
+      icon: mdi-cloud-arrow-down
+    Media:
+      icon: mdi-multimedia
+    Tools:
+      icon: mdi-cog
+
+  Bookmarks:
+    icon: mdi-bookmark
+    style: row
+    columns: 5

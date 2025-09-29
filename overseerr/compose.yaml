@@ -40,7 +40,6 @@ services:
       - "homepage.icon=overseerr.png"
       - "homepage.href=https://overseerr.$DOMAIN/"
       - "homepage.description=Media requests"
-      - "homepage.weight=50"
       - "homepage.widget.type=overseerr"
       - "homepage.widget.url=http://overseerr:5055"
       - "homepage.widget.key=${OVERSEERR_API:-}"

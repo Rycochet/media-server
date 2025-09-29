@@ -58,8 +58,7 @@ services:
       - "homepage.widget.mappings[1].format=bytes"
       - "homepage.widget.mappings[2].label=Since"
       - "homepage.widget.mappings[2].field=total.at"
-      - "homepage.widget.mappings[2].format=date"
-      - "homepage.widget.mappings[2].timeStyle=short"
+      - "homepage.widget.mappings[2].format=relativeDate"
 
       - "traefik.enable=true"
       - "traefik.http.routers.syncthing.rule=Host(`syncthing.$DOMAIN`)"

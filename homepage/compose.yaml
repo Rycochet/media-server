@@ -39,6 +39,18 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 
+      - "homepage.group=Information"
+      - "homepage.name=Homepage"
+      - "homepage.weight=-1"
+      - "homepage.icon=mdi-ip-network-outline"
+      - "homepage.widgets[0].type=customapi"
+      - "homepage.widgets[0].method=GET"
+      - "homepage.widgets[0].refreshInterval=60000"
+      - "homepage.widgets[0].url=https://api.ipify.org?format=json"
+      - "homepage.widgets[0].mappings[0].label=IPv4"
+      - "homepage.widgets[0].mappings[0].field=ip"
+      - "homepage.widgets[0].mappings[0].format=text"
+
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.rule=Host(`$DOMAIN`)"
       - "traefik.http.routers.homepage.middlewares=homepage,tinyauth,error-pages"

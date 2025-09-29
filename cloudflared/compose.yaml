@@ -22,6 +22,7 @@ services:
       - "homepage.group=Information"
       - "homepage.name=Cloudflared"
       - "homepage.icon=cloudflare.png"
+      - "homepage.href=https://dash.cloudflare.com/"
       - "homepage.description=Cloudflare Status"
       - "homepage.widget.type=cloudflared"
       - "homepage.widget.accountid=${CLOUDFLARED_ACCOUNT_ID:-}"

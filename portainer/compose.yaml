@@ -1,0 +1,49 @@
+services:
+  portainer:
+    container_name: portainer
+    image: ${PORTAINER_IMAGE:-portainer/portainer-ce}:${PORTAINER_IMAGE_TAG:-alpine}
+    profiles: ["${PORTAINER_PROFILE:-information}"]
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    command: -H tcp://socket-proxy:2375
+    security_opt:
+      - "no-new-privileges=true"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/data"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Information"
+      - "homepage.name=Portainer"
+      - "homepage.icon=portainer.png"
+      - "homepage.href=https://portainer.$DOMAIN/#!/1/docker/dashboard"
+      - "homepage.description=Container management"
+      - "homepage.widget.type=portainer"
+      - "homepage.widget.url=http://portainer:9000"
+      - "homepage.widget.key=${PORTAINER_API:-}"
+      - "homepage.widget.env=${PORTAINER_ENV:-1}"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.$DOMAIN`)"
+      - "traefik.http.routers.portainer.middlewares=portainer,error-pages"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.http.middlewares.portainer.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.portainer.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost:9000/ || exit 1"

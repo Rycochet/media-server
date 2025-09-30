@@ -16,9 +16,6 @@ services:
       traefik:
         condition: service_started
         restart: false
-      error-pages:
-        condition: service_started
-        restart: false
     logging:
       driver: "json-file"
       options:

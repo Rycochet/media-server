@@ -11,9 +11,6 @@ services:
       traefik:
         condition: service_started
         restart: false
-      error-pages:
-        condition: service_started
-        restart: false
       tdarr:
         condition: service_started
         restart: false

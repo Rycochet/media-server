@@ -15,6 +15,7 @@ include:
   - deunhealth/compose.yaml           # Bring unhealthy containers back up
   - socket-proxy/compose.yaml         # Secure access to the docker socket
   - watchtower/compose.yaml           # Auto-update containers
+  - zfdash/compose.yaml               # ZFS administration
 
   # NETWORK
   - cloudflared/compose.yaml          # Cloudflare tunnel

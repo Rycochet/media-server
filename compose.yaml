@@ -16,6 +16,7 @@ include:
   - socket-proxy/compose.yaml         # Secure access to the docker socket
   - watchtower/compose.yaml           # Auto-update containers
   - zfdash/compose.yaml               # ZFS administration
+  - portainer/compose.yaml            # Container management
 
   # NETWORK
   - cloudflared/compose.yaml          # Cloudflare tunnel

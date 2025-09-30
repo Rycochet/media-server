@@ -10,9 +10,6 @@ services:
       traefik:
         condition: service_started
         restart: false
-      error-pages:
-        condition: service_started
-        restart: false
       beszel-agent:
         condition: service_started
         restart: false

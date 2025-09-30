@@ -1,0 +1,52 @@
+services:
+  zfdash:
+    container_name: zfdash
+    image: ${ZFDASH_IMAGE:-ad4mts/zfdash}:${ZFDASH_IMAGE_TAG:-latest}
+    profiles: ["${ZFDASH_PROFILE:-information}"]
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp=unconfined
+    devices:
+      - "/dev/zfs:/dev/zfs"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/dev:/dev"
+      - "./config:/root/.config/ZfDash"
+      - "./config:/opt/zfdash/data"
+    labels:
+      - "com.centurylinklabs.watchtower.monitor-only=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=ZFDash"
+      - "homepage.icon=sh-openzfs.png"
+      - "homepage.href=https://zfdash.$DOMAIN/"
+      - "homepage.description=ZFS administration"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.zfdash.rule=Host(`zfdash.$DOMAIN`)"
+      - "traefik.http.routers.zfdash.middlewares=zfdash,tinyauth,error-pages"
+      - "traefik.http.services.zfdash.loadbalancer.server.port=5001"
+      - "traefik.http.middlewares.zfdash.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.zfdash.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5001'"

@@ -24,9 +24,6 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      # GPU
-      # NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
-      # NVIDIA_VISIBLE_DEVICES: "all"
       # Image
       ADVERTISE_IP: "https://plex.$DOMAIN:443/"
       PLEX_CLAIM: "$PLEX_CLAIM"

@@ -33,6 +33,7 @@ include:
   # - komga/compose.yaml                # Comic library
   # - manyfold/compose.yaml             # 3d models library
   - plex/compose.yaml                 # Media library
+  - emby/compose.yaml                 # Media library
 
   # QUALITY
   - imagemaid/compose.yaml            # Cleanup Plex image cache

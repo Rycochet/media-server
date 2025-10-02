@@ -1,0 +1,65 @@
+services:
+  emby:
+    container_name: emby
+    image: ${EMBY_IMAGE:-linuxserver/emby}:${EMBY_IMAGE_TAG:-latest}
+    profiles: ["${EMBY_PROFILE:-library}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "cf-${USE_CLOUDFLARED:-true}_gpu-${USE_GPU:-none}"
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    ports:
+      - "8096:8096"
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      PUID: "$PUID"
+      PGID: "$PGID"
+      UMASK: "000"
+    volumes:
+      - "./config:/config"
+      - "./tmp:/tmp"
+      - "$PATH_MOVIES:/data/movies:ro"
+      - "$PATH_MUSIC:/data/Music:ro"
+      - "$PATH_TV:/data/tv:ro"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Libraries"
+      - "homepage.name=Emby"
+      - "homepage.icon=emby.png"
+      - "homepage.href=https://emby.$DOMAIN"
+      - "homepage.weight=-1"
+      - "homepage.description=Media Library"
+      - "homepage.widget.type=emby"
+      - "homepage.widget.url=http://emby:8096"
+      - "homepage.widget.key=${EMBY_TOKEN:-}"
+      - "homepage.widget.enableBlocks=true"
+      - "homepage.widget.showEpisodeNumber=true"
+      - "homepage.widget.expandOneStreamToTwoRows=false"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.emby.rule=Host(`emby.$DOMAIN`)"
+      - "traefik.http.routers.emby.middlewares=emby,error-pages"
+      - "traefik.http.services.emby.loadbalancer.server.port=8096"
+      - "traefik.http.services.emby.loadbalancer.server.scheme=http"
+      - "traefik.http.middlewares.emby.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.emby.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8096/"

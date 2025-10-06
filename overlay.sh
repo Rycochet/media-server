@@ -3,14 +3,21 @@
 # Uses overlay to create a *-sync folder and a shared .overlay/* folder for
 # sharing within docker (or elsewhere).
 
-source .env
+# Given that this is likely on a running system where the 2nd layer is often
+# being edited it is worth having this as a cron job every hour
 
-declare -a arr=("$PATH_AUDIOBOOKS" "$PATH_MOVIES" "$PATH_MUSIC" "$PATH_TV")
+# 0 * * * * /bin/bash /path/to/overlay.sh refresh 2>&1 | /usr/bin/logger -t overlay
+
+# Make sure we have the right .env file path relative to this script
+OPT_ENV="$(dirname "$(realpath $0)")/.env"
+OPT_FORCE=
+
+declare -a arr=()
 
 declare FSTAB_CHANGED=0
 declare MOUNT_CHANGED=0
 
-mount () {
+up () {
     for i in "${arr[@]}"; do
         declare ROOT=$(dirname "$i")
         declare BASENAME=$(basename "$i")
@@ -25,11 +32,11 @@ mount () {
         if ! grep -q "overlay ${MERGED// /\\040} " /etc/fstab; then
             echo "# Overlay ${BASENAME%/}" | sudo tee -a /etc/fstab
             echo "overlay ${MERGED// /\\040} overlay ${OPTIONS} 0 2" | sudo tee -a /etc/fstab
-            echo "Add mount for $MERGED"
+            echo "Add mount for $BASENAME"
             FSTAB_CHANGED=1
         elif grep -q "^# overlay ${MERGED// /\\040} " /etc/fstab; then
             sudo sed -i "s|^# \(overlay ${MERGED// /\\040} .*\)$|\\1|" /etc/fstab
-            echo "Enable mount for $MERGED"
+            echo "Enable mount for $BASENAME"
             FSTAB_CHANGED=1
         fi
     done
@@ -44,22 +51,22 @@ mount () {
         declare MERGED=${ROOT}/.overlay/${BASENAME%/}
 
         if ! grep -qs "overlay ${MERGED// /\\040} " /proc/mounts; then
-            echo "Mount $MERGED"
-            sudo mount "${MERGED}"
+            echo "Mount $BASENAME"
+            sudo mount $OPT_FORCE "${MERGED}"
             MOUNT_CHANGED=1
         fi
     done
 }
 
-unmount () {
+down () {
     for i in "${arr[@]}"; do
         declare ROOT=$(dirname "$i")
         declare BASENAME=$(basename "$i")
         declare MERGED=${ROOT}/.overlay/${BASENAME%/}
 
         if grep -qs "overlay ${MERGED// /\\040} " /proc/mounts; then
-            echo "Unmount $MERGED"
-            sudo umount "${MERGED}"
+            echo "Unmount $BASENAME"
+            sudo umount $OPT_FORCE "${MERGED}"
             MOUNT_CHANGED=1
         fi
     done
@@ -71,7 +78,7 @@ unmount () {
 
         if grep -q "^overlay ${MERGED// /\\040} " /etc/fstab; then
             sudo sed -i "s|^\(overlay ${MERGED// /\\040} .*\)$|# \\1|" /etc/fstab
-            echo "Disable mount for $MERGED"
+            echo "Disable mount for $BASENAME"
             FSTAB_CHANGED=1
         fi
     done
@@ -88,8 +95,8 @@ refresh () {
         declare MERGED=${ROOT}/.overlay/${BASENAME%/}
 
         if grep -qs "overlay ${MERGED// /\\040} " /proc/mounts; then
-            echo "Refresh $MERGED"
-            sudo mount -o remount "${MERGED}"
+            echo "Refresh $BASENAME"
+            sudo mount $OPT_FORCE -o remount "${MERGED}"
             MOUNT_CHANGED=1
         fi
     done
@@ -102,19 +109,75 @@ nothing () {
     fi
 }
 
-if [ "$1" == "up" ]; then
-    mount
-    nothing
-elif [ "$1" == "down" ]; then
-    unmount
-    nothing
-elif [ "$1" == "refresh" ]; then
-    refresh
-    nothing
-else
-    echo "Usage:"
-    echo "$(basename $0) up|down|refresh"
+help () {
+    echo "Usage: $(basename $0) [OPTIONS] COMMAND"
     echo ""
-    echo "This will update /etc/fstab with the correct mountpoints to auto-mount"
-    echo "at boot, and comment out if disabled."
-fi
+    echo "Manage overlay mounts for media folders to keep original media safe from accidental writes."
+    echo "This updates /etc/fstab so the current state persists at boot time"
+    echo "The default paths come from the following env vars: PATH_AUDIOBOOKS, PATH_MOVIES, PATH_MUSIC, PATH_TV"
+    echo ""
+    echo "The *new* folder is at \"<path>/.overlay/<name>\", with any new files from there at \"<path>/<name>-sync\""
+    echo ""
+    echo "NOTE: This needs root permission to run and will ask for it if not run under sudo"
+    echo ""
+    echo "Commands:"
+    echo "  down      Unmount and disable all mountpoints"
+    echo "  refresh   Update data on mounts without needing to unmount them"
+    echo "  up        Create and mount all mountpoints"
+    echo ""
+    echo "Options:"
+    echo "  -e, --env file      Path to the .env file to load for default paths, it will use one next to this script if not specified"
+    echo "  -f, --force         Pass '--force' to the mount / umount commands"
+    echo "  -p, --path folder   Add folder to list of overlays, you can pass this option multiple times"
+    echo "                      NOTE: This will prevent the default paths from being used"
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -e|--env)
+            shift # argument
+            OPT_ENV="$1"
+            shift # value
+            ;;
+        -f|--force)
+            OPT_FORCE=-f
+            shift # argument
+            ;;
+        -p|--path)
+            shift # argument
+            arr+=("$1")
+            shift # value
+            ;;
+        --help)
+            help
+            exit 0
+            ;;
+        -*|--*)
+            echo "Unknown option $1"
+            exit 1
+            ;;
+        *)
+            if [ ${#arr[@]} -eq 0 ]; then
+                source $OPT_ENV
+
+                arr+=("$PATH_AUDIOBOOKS")
+                arr+=("$PATH_MOVIES")
+                arr+=("$PATH_MUSIC")
+                arr+=("$PATH_TV")
+            fi
+            case $1 in
+                up)      up ;;
+                down)    down ;;
+                refresh) refresh ;;
+                *)
+                    echo "Unknown command $1"
+                    exit 1
+                    ;;
+            esac
+            nothing
+            exit 0
+        ;;
+    esac
+done
+
+help

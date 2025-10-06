@@ -4,6 +4,9 @@ services:
     image: ${MINECRAFT_IMAGE:-marctv/minecraft-papermc-server}:${MINECRAFT_IMAGE_TAG:-latest}
     profiles: ["${MINECRAFT_PROFILE:-games}"]
     restart: unless-stopped
+    networks:
+      - internal
+      - external
     ports:
       - "25565:25565/tcp"
       - "25565:25565/udp"

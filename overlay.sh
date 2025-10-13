@@ -103,6 +103,47 @@ refresh () {
     sudo sh -c "sync; echo 3 > /proc/sys/vm/drop_caches"
 }
 
+diff () {
+    if ! [ -x "$(command -v overlay)" ]; then
+        echo "Error: overlayfs-tools is not installed. See https://github.com/kmxz/overlayfs-tools" >&2
+        exit 1
+    fi
+    for i in "${arr[@]}"; do
+        declare ROOT=$(dirname "$i")
+        declare BASENAME=$(basename "$i")
+        declare LOWERDIR=${ROOT}/${BASENAME%/}
+        declare UPPERDIR=${ROOT}/${BASENAME%/}-sync
+
+        echo "Diff for $BASENAME..."
+        echo ""
+        sudo overlay diff --ignore-mounted -l "${LOWERDIR}" -u "${UPPERDIR}"
+        echo ""
+    done
+}
+
+merge () {
+    if ! [ -x "$(command -v overlay)" ]; then
+        echo "Error: overlayfs-tools is not installed. See https://github.com/kmxz/overlayfs-tools" >&2
+        exit 1
+    fi
+    for i in "${arr[@]}"; do
+        declare ROOT=$(dirname "$i")
+        declare BASENAME=$(basename "$i")
+        declare LOWERDIR=${ROOT}/${BASENAME%/}
+        declare UPPERDIR=${ROOT}/${BASENAME%/}-sync
+
+        echo "Merge for $BASENAME..."
+        echo ""
+        sudo overlay merge $OPT_FORCE --ignore-mounted -l "${LOWERDIR}" -u "${UPPERDIR}"
+        if [ "$OPT_FORCE" = "-f" ]; then
+            refresh
+        else
+            echo "Run \"$0 refresh\" when completed"
+        fi
+        echo ""
+    done
+}
+
 nothing () {
     if [ "$FSTAB_CHANGED" = "0" ] && [ "$MOUNT_CHANGED" = "0" ]; then
         echo "Nothing to do!"
@@ -121,7 +162,9 @@ help () {
     echo "NOTE: This needs root permission to run and will ask for it if not run under sudo"
     echo ""
     echo "Commands:"
+    echo "  diff      Show a diff of all mountpoints"
     echo "  down      Unmount and disable all mountpoints"
+    echo "  merge     Merge the sync data into the original folder"
     echo "  refresh   Update data on mounts without needing to unmount them"
     echo "  up        Create and mount all mountpoints"
     echo ""
@@ -169,6 +212,8 @@ while [[ $# -gt 0 ]]; do
                 up)      up ;;
                 down)    down ;;
                 refresh) refresh ;;
+                diff)    diff ; exit 0 ;;
+                merge)    merge ; exit 0 ;;
                 *)
                     echo "Unknown command $1"
                     exit 1

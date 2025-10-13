@@ -15,3 +15,5 @@ compose.override.yaml
 
 /homer/assets/config.yml
 /tdarr_inform/tdarr_inform
+
+/overlay-tools-*.sh

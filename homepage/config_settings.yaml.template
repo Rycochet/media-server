@@ -18,8 +18,13 @@ layout:
       icon: mdi-cloud-arrow-down
     Media:
       icon: mdi-multimedia
-    Tools:
-      icon: mdi-cog
+    Grouped:
+      header: false
+      style: column
+      Tools:
+        icon: mdi-cog
+      Games:
+        icon: mdi-controller
 
   Bookmarks:
     icon: mdi-bookmark

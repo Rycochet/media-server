@@ -31,16 +31,11 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Libraries"
+      - "homepage.group=Tools"
       - "homepage.name=Tautulli"
       - "homepage.icon=tautulli.png"
       - "homepage.href=https://tautulli.$DOMAIN/"
       - "homepage.description=Plex monitoring"
-      - "homepage.widget.type=tautulli"
-      - "homepage.widget.url=http://tautulli:8181"
-      - "homepage.widget.key=${TAUTULLI_API:-}"
-      - "homepage.widget.showEpisodeNumber=true"
-      - "homepage.widget.expandOneStreamToTwoRows=false"
 
       - "traefik.enable=true"
       - "traefik.http.routers.tautulli.rule=Host(`tautulli.$DOMAIN`)"

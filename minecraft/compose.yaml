@@ -24,7 +24,9 @@ services:
       PUID: "$PUID"
       PGID: "$PGID"
       # Image
-      MEMORYSIZE: "1G"
+      MEMORYSIZE: "${MINECRAFT_MEMORYSIZE:-1G}"
+      PAPERMC_FLAGS: "${MINECRAFT_PAPERMCFLAGS:-}"
+      JAVAFLAGS: "${MINECRAFT_JAVAFLAGS:-}"
     depends_on:
       traefik:
         condition: service_started
@@ -37,16 +39,16 @@ services:
 
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Tools"
+      - "homepage.group=Games"
       - "homepage.name=Minecraft"
       - "homepage.icon=minecraft.png"
-      - "homepage.href=readarr://minecraft-map.$DOMAIN/"
+      - "homepage.href=https://minecraft.$DOMAIN/"
       - "homepage.description=Minecraft"
       - "homepage.widget.type=minecraft"
       - "homepage.widget.url=udp://minecraft:25565"
 
       - "traefik.enable=true"
-      - "traefik.http.routers.minecraft.rule=Host(`minecraft-map.$DOMAIN`)"
+      - "traefik.http.routers.minecraft.rule=Host(`minecraft.$DOMAIN`)"
       - "traefik.http.routers.minecraft.middlewares=minecraft,error-pages"
       - "traefik.http.services.minecraft.loadbalancer.server.port=8080"
       - "traefik.http.middlewares.minecraft.headers.accessControlAllowCredentials=true"

@@ -1,7 +1,8 @@
 services:
   tinyauth:
     container_name: tinyauth
-    image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v3}
+    # image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v3}
+    image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v4-distroless}
     profiles: ["${TINYAUTH_PROFILE:-network}"]
     restart: unless-stopped
     networks:
@@ -14,28 +15,22 @@ services:
         max-file: "3"
     environment:
       # Image
-      SECRET: "$OAUTH_SECRET"
-      APP_URL: "https://tinyauth.$DOMAIN"
-      GOOGLE_CLIENT_ID: "$GOOGLE_CLIENT_ID"
-      GOOGLE_CLIENT_SECRET: "$GOOGLE_CLIENT_SECRET"
-      OAUTH_WHITELIST: "${WHITELIST:?Set the WHITELIST to your google email address!}"
-      COOKIE_SECURE: "true"
-      DISABLE_CONTINUE: "true"
       APP_TITLE: "$DOMAIN"
-      LOG_LEVEL: "2"
+      APP_URL: "https://tinyauth.$DOMAIN"
+      DISABLE_ANALYTICS: "true"
+      LOG_LEVEL: "warn"
+      OAUTH_WHITELIST: "${WHITELIST:?Set the WHITELIST to your google email address!}"
+      PROVIDERS_GOOGLE_CLIENT_ID: "$GOOGLE_CLIENT_ID"
+      PROVIDERS_GOOGLE_CLIENT_SECRET: "$GOOGLE_CLIENT_SECRET"
+      SECURE_COOKIE: "true"
       SESSION_EXPIRY: "${SESSION_EXPIRY:-86400}" # Default is 24 hours
+    volumes:
+      - "./config:/data"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 
       - "traefik.enable=true"
       - "traefik.http.routers.tinyauth.rule=Host(`tinyauth.$DOMAIN`)"
       - "traefik.http.services.tinyauth.loadbalancer.server.port=3000"
-      # - "traefik.http.middlewares.tinyauth.forwardauth.address=http://tinyauth:3000"
       - "traefik.http.middlewares.tinyauth.forwardauth.address=http://tinyauth:3000/api/auth/traefik"
       - "traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders=X-Forwarded-User"
-    healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "1m30s"
-      test: "curl -f http://localhost:3000/api/healthcheck || exit 1"

@@ -8,21 +8,22 @@ x-cloudflared: &cf-true
 
 # https://instinct.docs.amd.com/projects/container-toolkit/en/latest/index.html
 x-gpu-amd: &gpu-amd
+  devices:
+    - "/dev/dri:/dev/dri"
   environment:
     AMD_VISIBLE_DEVICES: "all"
 
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html
 x-gpu-nvidia: &gpu-nvidia
-  deploy:
-    resources:
-      reservations:
-        devices:
-          - driver: nvidia
-            count: all
-            capabilities: [gpu]
   environment:
     NVIDIA_DRIVER_CAPABILITIES: "all"
     NVIDIA_VISIBLE_DEVICES: "all"
+  runtime: nvidia
+
+x-gpu-intel: &gpu-intel
+  devices:
+    - "/dev/dri:/dev/dri"
+  privileged: true
 
 x-service-started: &service-started
     condition: service_started
@@ -47,6 +48,9 @@ services:
   cf-false_gpu-amd:
     <<: *gpu-amd
 
+  cf-false_gpu-intel:
+    <<: *gpu-intel
+
   cf-false_gpu-none:
 
   cf-false_gpu-nvidia:
@@ -61,6 +65,11 @@ services:
     depends_on:
       <<: *cf-true
 
+  cf-true_gpu-intel:
+    <<: *gpu-intel
+    depends_on:
+      <<: *cf-true
+
   cf-true_gpu-none:
     depends_on:
       <<: *cf-true
@@ -72,6 +81,9 @@ services:
 
   gpu-amd:
     <<: *gpu-amd
+
+  gpu-intel:
+    <<: *gpu-intel
 
   gpu-none:
 

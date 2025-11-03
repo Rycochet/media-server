@@ -1,0 +1,48 @@
+services:
+  scrutiny:
+    container_name: scrutiny
+    image: ${SCRUTINY_IMAGE:-ghcr.io/analogj/scrutiny}:${SCRUTINY_IMAGE_TAG:-latest}
+    profiles: ["${SCRUTINY_PROFILE:-information}"]
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    privileged: true
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/dev:/dev:ro"
+      - "/run/udev:/run/udev:ro"
+      - "./config:/opt/scrutiny/config"
+      - "./config/influxdb:/opt/config/influxdb"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Information"
+      - "homepage.name=Scrutiny"
+      - "homepage.icon=scrutiny.png"
+      - "homepage.href=https://scrutiny.$DOMAIN/"
+      - "homepage.description=S.M.A.R.T. information"
+      - "homepage.widget.type=scrutiny"
+      - "homepage.widget.url=http://scrutiny:8080"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.scrutiny.rule=Host(`scrutiny.$DOMAIN`)"
+      - "traefik.http.routers.scrutiny.middlewares=scrutiny,tinyauth,error-pages"
+      - "traefik.http.services.scrutiny.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.scrutiny.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.scrutiny.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8080/"

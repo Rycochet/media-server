@@ -46,10 +46,11 @@ include:
   # INFORMATION
   - beszel/compose.yaml               # System information
   - dozzle/compose.yaml               # Docker status
+  - duc/compose.yaml                  # Disk usage
   - glances/compose.yaml              # Operating system status
   - homepage/compose.yaml             # Dashboard
-  - duc/compose.yaml                  # Disk usage
   - overseerr/compose.yaml            # Media requests and issue tracking
+  - scrutiny/compose.yaml             # S.M.A.R.T. information
   - tautulli/compose.yaml             # Plex stats
 
   # DESKTOP

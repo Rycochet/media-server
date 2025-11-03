@@ -42,6 +42,7 @@
 * **Error-Pages**: Better looking error pages.
 * **NordLynx** + **Socks5-Proxy**: VPN (outgoing connections).
 * **OpenSpeedTest**: Speed test app to server.
+* **Scrutiny**: S.M.A.R.T. information.
 * **SyncThing**: Synchronise libraries between multiple computers.
 * **TinyAuth**: Google OAuth login security.
 * **Traefik**: Webapp Routing.

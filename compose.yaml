@@ -52,6 +52,7 @@ include:
   - overseerr/compose.yaml            # Media requests and issue tracking
   - scrutiny/compose.yaml             # S.M.A.R.T. information
   - tautulli/compose.yaml             # Plex stats
+  - watchstate/compose.yaml           # Sync media library watch state
 
   # DESKTOP
   - webtop/compose.yaml               # Linux desktop

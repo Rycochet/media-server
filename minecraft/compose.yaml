@@ -21,8 +21,8 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "$PUID"
-      PGID: "$PGID"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
       # Image
       MEMORYSIZE: "${MINECRAFT_MEMORYSIZE:-1G}"
       PAPERMC_FLAGS: "${MINECRAFT_PAPERMCFLAGS:-}"

@@ -19,7 +19,7 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    user: "$PUID:$PGID"
+    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
       - "./config:/config"
     labels:

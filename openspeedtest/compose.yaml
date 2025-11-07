@@ -18,7 +18,7 @@ services:
     environment:
       DOMAIN_NAME: "openspeedtest.$DOMAIN"
       HTTP_PORT: "3000"
-      SET_USER: "$PUID"
+      SET_USER: "${PUID:-1000}"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 

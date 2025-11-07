@@ -21,8 +21,8 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "$PUID"
-      PGID: "$PGID"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
       UMASK: "000"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
@@ -76,7 +76,7 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    user: $PGID:$PUID
+    user: "${PGID:-1000}:${PUID:-1000}"
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
@@ -86,4 +86,3 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=false"
       - "traefik.enable=false"
-

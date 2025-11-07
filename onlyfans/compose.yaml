@@ -14,17 +14,17 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "$PUID"
-      PGID: "$PGID"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
       UMASK: "000"
     stdin_open: true
     tty: true
     volumes:
-        - "./config:/home/ofscraper/.config"
-        - "./logs:/home/ofscraper/.config/ofscraper/logging"
-        - "/usr/bin/ffmpeg:/usr/bin/ffmpeg:ro" # standalone build
-        - "/usr/local/bin/mp4decrypt:/usr/local/bin/mp4decrypt:ro"
-        - "$PATH_ONLYFANS:/data/Adult"
+      - "./config:/home/ofscraper/.config"
+      - "./logs:/home/ofscraper/.config/ofscraper/logging"
+      - "/usr/bin/ffmpeg:/usr/bin/ffmpeg:ro" # standalone build
+      - "/usr/local/bin/mp4decrypt:/usr/local/bin/mp4decrypt:ro"
+      - "$PATH_ONLYFANS:/data/Adult"
     command:
       - ofscraper
       - "--daemon"

@@ -27,8 +27,8 @@ services:
       # Image
       ADVERTISE_IP: "https://plex.$DOMAIN:443/"
       PLEX_CLAIM: "$PLEX_CLAIM"
-      PLEX_GID: "$PGID"
-      PLEX_UID: "$PUID"
+      PLEX_GID: "${PGID:-1000}"
+      PLEX_UID: "${PUID:-1000}"
     volumes:
       - "./config:/config"
       - "./backup:/data/backup" # TODO: Fix this - /config/Library/Application Support/Plex Media Server/Plug-in Support/Databases ...?

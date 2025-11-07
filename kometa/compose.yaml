@@ -28,8 +28,8 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "$PUID"
-      PGID: "$PGID"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
       UMASK: "000"
       # Image
       KOMETA_TIMES: "06:30" # Run at this time every day

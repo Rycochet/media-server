@@ -21,8 +21,8 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "$PUID"
-      PGID: "$PGID"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
       # Image
       APP_URL: "https://beszel.$DOMAIN/"
       USER_EMAIL: "${BESZEL_USERNAME:-}"
@@ -57,7 +57,7 @@ services:
       timeout: "5s"
       retries: 3
       start_period: "2s"
-      test: ['CMD', '/beszel', 'health', '--url', 'http://localhost:8090']
+      test: ["CMD", "/beszel", "health", "--url", "http://localhost:8090"]
 
   beszel-agent:
     container_name: beszel-agent
@@ -100,4 +100,4 @@ services:
       timeout: "5s"
       retries: 3
       start_period: "2s"
-      test: ['CMD', '/agent', 'health']
+      test: ["CMD", "/agent", "health"]

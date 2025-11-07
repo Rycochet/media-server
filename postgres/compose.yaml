@@ -12,7 +12,7 @@ services:
         max-size: "1m"
         max-file: "3"
     shm_size: 128mb
-    user: "${PUID}:${PGID}"
+    user: "${PUID:-1000}:${PGID:-1000}"
     environment:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?You must set a POSTGRES_PASSWORD .env variable}"
     volumes:

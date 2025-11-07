@@ -19,12 +19,12 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "$PUID"
-      PGID: "$PGID"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
       UMASK: "000"
       # Image
       KOMGA_LIBRARIES_SCAN_CRON: "0 0 0 * * 0"
-    user: "$PUID:$PGID"
+    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"

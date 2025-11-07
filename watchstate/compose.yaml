@@ -1,0 +1,40 @@
+services:
+  watchstate:
+    container_name: watchstate
+    image: ${WATCHSTATE_IMAGE:-ghcr.io/arabcoders/watchstate}:${WATCHSTATE_IMAGE_TAG:-latest}
+    profiles: ["${WATCHSTATE_PROFILE:-information}"]
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    user: "${PUID:-1000}:${PGID:-1000}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./backup:/config/backup"
+      - "./logs:/config/logs"
+    labels:
+      - "com.centurylinklabs.watchtower.monitor-only=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=Watchstate"
+      - "homepage.icon=/images/watchstate.png"
+      - "homepage.href=https://watchstate.$DOMAIN/"
+      - "homepage.description=Sync media library watch state"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.watchstate.rule=Host(`watchstate.$DOMAIN`)"
+      - "traefik.http.routers.watchstate.middlewares=watchstate,tinyauth,error-pages"
+      - "traefik.http.services.watchstate.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.watchstate.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.watchstate.headers.accessControlAllowOriginList=https://$DOMAIN"

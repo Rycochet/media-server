@@ -1,7 +1,7 @@
 services:
   whisparr:
     container_name: whisparr
-    image: ${WHISPARR_IMAGE:-ghcr.io/hotio/whisparr}:${WHISPARR_IMAGE_TAG:-latest}
+    image: ${WHISPARR_IMAGE:-ghcr.io/hotio/whisparr}:${WHISPARR_IMAGE_TAG:-v3}
     profiles: ["${WHISPARR_PROFILE:-media}"]
     extends:
       file: ../compose.extend.yaml
@@ -39,7 +39,7 @@ services:
       - "homepage.icon=whisparr.png"
       - "homepage.href=https://whisparr.$DOMAIN/"
       - "homepage.description=Porn"
-      - "homepage.widget.type=sonarr"
+      - "homepage.widget.type=radarr" # v2 = sonarr, v3 = radarr
       - "homepage.widget.url=http://whisparr:6969"
       - "homepage.widget.key=${WHISPARR_API:-}"
 

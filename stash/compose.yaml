@@ -1,0 +1,55 @@
+services:
+  stash:
+    container_name: stash
+    image: ${STASH_IMAGE:-stashapp/stash}:${STASH_IMAGE_TAG:-latest}
+    profiles: ["${STASH_PROFILE:-media}"]
+    restart: unless-stopped
+    networks:
+      - internal
+      - external
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Application
+      STASH_PORT: "9999"
+      STASH_CACHE: "/root/.stash/cache/"
+      STASH_GENERATED: "/root/.stash/generated/"
+      STASH_METADATA: "/root/.stash/metadata/"
+      STASH_STASH: "/data/adult"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/root/.stash"
+      - "./backup:/root/.stash/Backups"
+      - "./logs:/root/.stash/logs"
+      - "$PATH_ADULT:/data/adult:ro"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=Stash"
+      - "homepage.icon=stash.png"
+      - "homepage.href=https://stash.$DOMAIN/"
+      - "homepage.description=Porn database"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.stash.rule=Host(`stash.$DOMAIN`)"
+      - "traefik.http.routers.stash.middlewares=stash,tinyauth,error-pages"
+      - "traefik.http.services.stash.loadbalancer.server.port=9999"
+      - "traefik.http.middlewares.stash.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.stash.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost:9999/ || exit 1"

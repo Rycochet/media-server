@@ -30,7 +30,7 @@ services:
       - "./backup:/config/Backups"
       - "./logs:/config/logs"
       - "./make_ignore.sh:/config/make_ignore.sh:ro"
-      - "$PATH_MUSIC:/data/Music"
+      - "$PATH_MUSIC:/data/music"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       - "deunhealth.restart.on.unhealthy=true"

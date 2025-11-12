@@ -17,7 +17,7 @@ services:
         max-file: "3"
     volumes:
       - "$PATH_MOVIES:/host/movies:ro"
-      - "$PATH_MUSIC:/host/Music:ro"
+      - "$PATH_MUSIC:/host/music:ro"
       - "$PATH_TV:/host/tv:ro"
     labels:
       - "deunhealth.restart.on.unhealthy=true"

@@ -31,7 +31,7 @@ services:
       - "./config:/config"
       - "./tmp:/tmp"
       - "$PATH_MOVIES:/data/movies:ro"
-      - "$PATH_MUSIC:/data/Music:ro"
+      - "$PATH_MUSIC:/data/music:ro"
       - "$PATH_TV:/data/tv:ro"
     labels:
       - "deunhealth.restart.on.unhealthy=true"

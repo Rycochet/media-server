@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     networks:
       - internal
+      - external
     depends_on:
       traefik:
         condition: service_started

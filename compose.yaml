@@ -22,6 +22,7 @@ include:
   # - adguardhome/compose.yaml          # Ads & trackers blocking DNS server
   - cloudflared/compose.yaml          # Cloudflare tunnel
   - error-pages/compose.yaml          # Error pages
+  - flaresolverr/compose.yaml         # Cloudflare captcha bypasss
   - openspeedtest/compose.yaml        # Speed test
   - tinyauth/compose.yaml             # OAuth via Google
   - traefik/compose.yaml              # HTTP routing

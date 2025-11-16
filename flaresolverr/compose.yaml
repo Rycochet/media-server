@@ -1,0 +1,35 @@
+services:
+  flaresolverr:
+    container_name: flaresolverr
+    image: ${FLARESOLVERR_IMAGE:-ghcr.io/flaresolverr/flaresolverr}:${FLARESOLVERR_IMAGE_TAG:-latest}
+    profiles: ["${FLARESOLVERR_PROFILE:-network}"]
+    restart: unless-stopped
+    networks:
+      - internal
+      - external
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=Flaresolverr"
+      - "homepage.icon=flaresolverr.png"
+      - "homepage.description=Cloudflare captcha bypass"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "2s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8191/"

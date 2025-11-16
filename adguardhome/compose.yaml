@@ -1,0 +1,64 @@
+services:
+  adguardhome:
+    container_name: adguardhome
+    image: ${ADGUARDHOME_IMAGE:-adguard/adguardhome}:${ADGUARDHOME_IMAGE_TAG:-latest}
+    profiles: ["${ADGUARDHOME_PROFILE:-network}"]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    # ports:
+    #   - "53:53/tcp"     # plain DNS
+    #   - "53:53/udp"     # plain DNS
+    #   - "67:67/udp"     # DHCP server
+    #   - "68:68/tcp"     # DHCP server
+    #   - "68:68/udp"     # DHCP server
+    #   - "80:80/tcp"     # HTTPS/DNS-over-HTTPS
+    #   - "443:443/tcp"   # HTTPS/DNS-over-HTTPS
+    #   - "443:443/udp"   # HTTPS/DNS-over-HTTPS
+    #   - "853:853/tcp"   # DNS-over-TLS
+    #   - "784:784/udp"   # DNS-over-QUIC⁠
+    #   - "853:853/udp"   # DNS-over-QUIC⁠
+    #   - "8853:8853/udp" # DNS-over-QUIC⁠
+    #   - "5443:5443/tcp" # DNSCrypt⁠
+    #   - "5443:5443/udp" # DNSCrypt⁠
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # ADGUARDHOME
+      ALLOW_CORS: 1
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/opt/adguardhome/conf"
+      - "./tmp:/opt/adguardhome/work"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=AdguardHome"
+      - "homepage.icon=adguard-home.png"
+      - "homepage.href=https://adguardhome.$DOMAIN/"
+      - "homepage.description=Ads & trackers blocking DNS server"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.adguardhome.rule=Host(`adguardhome.$DOMAIN`)"
+      - "traefik.http.routers.adguardhome.middlewares=adguardhome,tinyauth,error-pages"
+      - "traefik.http.services.adguardhome.loadbalancer.server.port=${ADGUARDHOME_PORT:-80}" # IMPORTANT: The first-run needs 3000, then change back to 80 afterwards!
+      - "traefik.http.middlewares.adguardhome.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.adguardhome.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost:${ADGUARDHOME_PORT:-80}/ || exit 1"

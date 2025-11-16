@@ -13,16 +13,17 @@ name: rycochet
 include:
   # INFRASTRUCTURE
   - deunhealth/compose.yaml           # Bring unhealthy containers back up
+  - portainer/compose.yaml            # Container management
   - socket-proxy/compose.yaml         # Secure access to the docker socket
   - watchtower/compose.yaml           # Auto-update containers
   - zfdash/compose.yaml               # ZFS administration
-  - portainer/compose.yaml            # Container management
 
   # NETWORK
+  # - adguardhome/compose.yaml          # Ads & trackers blocking DNS server
   - cloudflared/compose.yaml          # Cloudflare tunnel
   - error-pages/compose.yaml          # Error pages
-  - tinyauth/compose.yaml             # OAuth via Google
   - openspeedtest/compose.yaml        # Speed test
+  - tinyauth/compose.yaml             # OAuth via Google
   - traefik/compose.yaml              # HTTP routing
   - vpn/compose.yaml                  # VPN + HTTP Proxy + Socks5 Proxy
 

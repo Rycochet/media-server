@@ -7,7 +7,7 @@ services:
     networks:
       - external
       - internal
-    # ports:
+    # ports: # Copy whichever ports are needed to compose.override.yaml - too much chance of conflicting if all turned on by default
     #   - "53:53/tcp"     # plain DNS
     #   - "53:53/udp"     # plain DNS
     #   - "67:67/udp"     # DHCP server
@@ -16,6 +16,7 @@ services:
     #   - "80:80/tcp"     # HTTPS/DNS-over-HTTPS
     #   - "443:443/tcp"   # HTTPS/DNS-over-HTTPS
     #   - "443:443/udp"   # HTTPS/DNS-over-HTTPS
+    #   - "3000:3000/tcp" # HTTPS/DNS-over-HTTPS
     #   - "853:853/tcp"   # DNS-over-TLS
     #   - "784:784/udp"   # DNS-over-QUIC⁠
     #   - "853:853/udp"   # DNS-over-QUIC⁠
@@ -34,8 +35,6 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      # ADGUARDHOME
-      ALLOW_CORS: 1
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/opt/adguardhome/conf"

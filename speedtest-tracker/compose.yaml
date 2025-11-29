@@ -1,0 +1,61 @@
+services:
+  speedtest-tracker:
+    container_name: speedtest-tracker
+    image: ${SPEEDTEST_TRACKER_IMAGE:-lscr.io/linuxserver/speedtest-tracker}:${SPEEDTEST_TRACKER_IMAGE_TAG:-latest}
+    profiles: ["${SPEEDTEST_TRACKER_PROFILE:-media}"]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
+      UMASK: "000"
+      # Image
+      APP_KEY: "base64:NIFEjC5wGMV1jJWTdN31PXqUWL2AT8PZXBOeVaCqcP4=" # really don't care about encryption
+      DB_CONNECTION: "sqlite"
+      ADMIN_NAME: "admin"
+      ADMIN_EMAIL: "$EMAIL"
+      APP_URL: "https://speedtest-tracker.$DOMAIN/"
+      PUBLIC_DASHBOARD: "true"
+      SPEEDTEST_SCHEDULE: "*/15 * * * *"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Information"
+      - "homepage.name=Speedtest-tracker"
+      - "homepage.icon=speedtest-tracker.png"
+      - "homepage.href=https://speedtest-tracker.$DOMAIN/"
+      - "homepage.description=Speedtest with history"
+      - "homepage.widget.type=speedtest"
+      - "homepage.widget.version=2"
+      - "homepage.widget.url=http://speedtest-tracker:80"
+      - "homepage.widget.key=${SPEEDTEST_TRACKER_API:-}"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.speedtest-tracker.rule=Host(`speedtest-tracker.$DOMAIN`)"
+      - "traefik.http.routers.speedtest-tracker.middlewares=speedtest-tracker,tinyauth,error-pages"
+      - "traefik.http.services.speedtest-tracker.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.speedtest-tracker.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.speedtest-tracker.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:80/"

@@ -97,3 +97,5 @@ networks:
     name: "internal"
     driver: bridge
     internal: true
+    enable_ipv4: true
+    enable_ipv6: false

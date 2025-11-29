@@ -34,6 +34,8 @@ services:
       - "./backup:/data/backup" # TODO: Fix this - /config/Library/Application Support/Plex Media Server/Plug-in Support/Databases ...?
       - "./logs:/config/Library/Application Support/Plex Media Server/Logs"
       - "./tmp:/tmp"
+      # This one can be worth remapping to a larger / slower drive -
+      # - "/large_space/.plex:/config/Library/Application Support/Plex Media Server/Metadata"
       - "$PATH_MOVIES:/data/movies:ro"
       - "$PATH_MUSIC:/data/music:ro"
       - "$PATH_TV:/data/tv:ro"

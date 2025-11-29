@@ -30,6 +30,8 @@ services:
     volumes:
       - "./config:/config"
       - "./tmp:/tmp"
+      # This one can be worth remapping to a larger / slower drive -
+      # - "/large_space/.emby:/config/metadata"
       - "$PATH_MOVIES:/data/movies:ro"
       - "$PATH_MUSIC:/data/music:ro"
       - "$PATH_TV:/data/tv:ro"

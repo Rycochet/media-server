@@ -34,7 +34,10 @@ services:
       - "./config:/app/config"
       - "./logs:/app/config/logs"
       - "./images:/app/public/images"
+      # For easy access in widgets.yaml for drive space
       - "$PATH_MOVIES:/data/movies:ro"
+      - "$PATH_MUSIC:/data/music:ro"
+      - "$PATH_TV:/data/tv:ro"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 

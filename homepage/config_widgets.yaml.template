@@ -1,0 +1,29 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/info-widgets/
+
+- resources:
+    label: " " # This character is invisible, but lines up the rows
+    cpu: true
+    memory: true
+
+# Assuming this is running from a fast NVMe drive
+- resources:
+    label: System
+    disk: /app/config
+
+# Assuming a single large media drive - can add for tv & music too
+- resources:
+    label: Media
+    disk: /data/movies
+
+- search:
+    provider: duckduckgo
+    target: _blank
+
+- datetime:
+    text_size: xl
+    format:
+      dateStyle: long
+      timeStyle: short
+      hourCycle: h23

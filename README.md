@@ -58,7 +58,7 @@
 
 Every service uses a similar folder layout, this includes having a `config` folder inside the service folder for easier backup and configuration.
 
-When one service depends on another it should only be started first (with a couple of exceptions that require them tobe healthy first).
+When one service depends on another it should only be started first (with a couple of exceptions that require them to be healthy first).
 
 ## Installation
 

@@ -1,0 +1,47 @@
+services:
+  lingarr:
+    container_name: lingarr
+    image: ${LINGARR_IMAGE:-lingarr/lingarr}:${LINGARR_IMAGE_TAG:-latest}
+    profiles: ["${LINGARR_PROFILE:-quality}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "gpu-${USE_GPU:-none}"
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    # depends_on:
+    #   bazarr:
+    #     condition: service_started
+    #     restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      - ASPNETCORE_URLS=http://+:9876
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/app/config"
+      - "$PATH_MOVIES:/data/movies:ro"
+      - "$PATH_MUSIC:/data/music:ro"
+      - "$PATH_TV:/data/tv:ro"
+    labels:
+      - "com.centurylinklabs.watchtower.monitor-only=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=Lingarr"
+      - "homepage.icon=/images/lingarr.png"
+      - "homepage.description=Subtitle translation"
+
+      - "traefik.enable=false"
+
+    healthcheck:
+      interval: "300s" # Note that it locks up during transcribe, so this must be longer than a movie
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/9876'"

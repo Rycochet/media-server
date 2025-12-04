@@ -29,3 +29,9 @@ services:
       - "traefik.http.routers.tdarr-inform.rule=Host(`tdarr-inform.$DOMAIN`)"
       - "traefik.http.routers.tdarr-inform.middlewares=tinyauth,error-pages"
       - "traefik.http.services.tdarr-inform.loadbalancer.server.port=5004"
+
+      - "homepage.group=Tools"
+      - "homepage.name=Tdarr-inform"
+      - "homepage.icon=tdarr.png"
+      - "homepage.href=https://tdarr-inform.$DOMAIN"
+      - "homepage.description=Tdarr notifications"

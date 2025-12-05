@@ -8,6 +8,9 @@ services:
       - internal
     read_only: true
     environment:
+      TZ: "${TZ:-Europe/London}"
+      LOG_LEVEL: "notice" # debug, info, notice, warning, err, crit, alert, emerg
+      DISABLE_IPV6: "0"
       ALLOW_START: "1"
       ALLOW_STOP: "1"
       ALLOW_RESTARTS: "1"
@@ -16,7 +19,6 @@ services:
       COMMIT: "0"
       CONFIGS: "0"
       CONTAINERS: "1"
-      DISABLE_IPV6: "0"
       DISTRIBUTION: "0"
       EVENTS: "1"
       EXEC: "0"
@@ -35,7 +37,6 @@ services:
       TASKS: "0"
       VERSION: "1"
       VOLUMES: "1"
-      LOG_LEVEL: "notice" # debug, info, notice, warning, err, crit, alert, emerg
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     tmpfs:

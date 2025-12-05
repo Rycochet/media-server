@@ -1,8 +1,7 @@
 services:
   docker-discord-alerts:
     container_name: docker-discord-alerts
-    build: "./docker-discord-alerts"
-    pull_policy: build
+    image: ${DOCKER_DISCORD_ALERTS_IMAGE:-ghcr.io/rycochet/docker-discord-alerts}:${DOCKER_DISCORD_ALERTS_IMAGE_TAG:-latest}
     profiles: ["${DOCKER_DISCORD_ALERTS_PROFILE:-tools}"]
     restart: unless-stopped
     read_only: true

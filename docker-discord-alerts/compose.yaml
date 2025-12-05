@@ -1,0 +1,28 @@
+services:
+  docker-discord-alerts:
+    container_name: docker-discord-alerts
+    build: "./docker-discord-alerts"
+    pull_policy: build
+    profiles: ["${DOCKER_DISCORD_ALERTS_PROFILE:-tools}"]
+    restart: unless-stopped
+    read_only: true
+    networks:
+      - internal
+      - external
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      DOCKER_HOST: "tcp://socket-proxy:2375"
+      CONTAINERS: "${DOCKER_DISCORD_ALERTS_CONTAINERS:-*}"
+      DISCORD_WEBHOOK_URL: "${DOCKER_DISCORD_ALERTS_WEBHOOK:?Set the DOCKER_DISCORD_ALERTS_WEBHOOK to your discord webhook!}"
+      EVENTS: "${DOCKER_DISCORD_ALERTS_EVENTS:-default}"
+      EXTRA: "${DOCKER_DISCORD_ALERTS_EXTRA:-}"
+      LOG_LEVEL: "${DOCKER_DISCORD_ALERTS_LOG_LEVEL:-INFO}"
+      VERBOSE: "${DOCKER_DISCORD_ALERTS_VERBOSE:-False}"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "traefik.enable=false"

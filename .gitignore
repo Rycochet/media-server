@@ -1,9 +1,17 @@
+# These two you need to make yourself
 .env
 compose.override.yaml
 
+# In case someone installs on a dedicaed partition
 /aquota.user
+# Because global .gitignore is too hard for many
 /.vscode
+# If using the overlay script to merge
+/overlay-tools-*.sh
+# Developing containers locally
+/*/src
 
+# Docker data folders that want to exist with the correct permissions
 /*/backup/**
 !/*/backup/.gitkeep
 /*/config/**
@@ -12,8 +20,3 @@ compose.override.yaml
 !/*/logs/.gitkeep
 /*/tmp/**
 !/*/tmp/.gitkeep
-
-/homer/assets/config.yml
-/tdarr_inform/tdarr_inform
-
-/overlay-tools-*.sh

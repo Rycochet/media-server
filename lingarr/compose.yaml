@@ -22,9 +22,8 @@ services:
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/app/config"
-      - "$PATH_MOVIES:/data/movies:ro"
-      - "$PATH_MUSIC:/data/music:ro"
-      - "$PATH_TV:/data/tv:ro"
+      - "$PATH_MOVIES:/data/movies"
+      - "$PATH_TV:/data/tv"
     labels:
       - "com.centurylinklabs.watchtower.monitor-only=true"
 

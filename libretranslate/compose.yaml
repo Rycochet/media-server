@@ -1,0 +1,52 @@
+services:
+  libretranslate:
+    container_name: libretranslate
+    image: ${LIBRETRANSLATE_IMAGE:-libretranslate/libretranslate}:${LIBRETRANSLATE_IMAGE_TAG:-latest}
+    profiles: ["${LIBRETRANSLATE_PROFILE:-quality}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "gpu-${USE_GPU:-none}"
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      - "LT_HOST=0.0.0.0"
+      - "LT_LOAD_ONLY=${LIBRETRANSLATE_LANGUAGES:-en,es,zh}" # Important, replace with your preferred languages - 3 most popular worldwide
+      - "LT_UPDATE_MODELS=true"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/home/libretranslate/.local"
+    labels:
+      - "com.centurylinklabs.watchtower.monitor-only=true"
+
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=Libretranslate"
+      - "homepage.icon=google-translate.png"
+      - "homepage.href=https://translate.$DOMAIN/"
+      - "homepage.description=Translation"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.libretranslate.rule=Host(`translate.$DOMAIN`)"
+      - "traefik.http.routers.libretranslate.middlewares=libretranslate,tinyauth,error-pages"
+      - "traefik.http.services.libretranslate.loadbalancer.server.port=5000"
+      - "traefik.http.middlewares.libretranslate.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.libretranslate.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: ["CMD-SHELL", "./venv/bin/python scripts/healthcheck.py"]

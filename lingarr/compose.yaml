@@ -10,17 +10,15 @@ services:
     networks:
       - external
       - internal
-    # depends_on:
-    #   bazarr:
-    #     condition: service_started
-    #     restart: false
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
     logging:
       driver: "json-file"
       options:
         max-size: "1m"
         max-file: "3"
-    environment:
-      - ASPNETCORE_URLS=http://+:9876
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/app/config"
@@ -35,13 +33,19 @@ services:
       - "homepage.group=Tools"
       - "homepage.name=Lingarr"
       - "homepage.icon=/images/lingarr.png"
+      - "homepage.href=https://lingarr.$DOMAIN/"
       - "homepage.description=Subtitle translation"
 
-      - "traefik.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lingarr.rule=Host(`lingarr.$DOMAIN`)"
+      - "traefik.http.routers.lingarr.middlewares=lingarr,tinyauth,error-pages"
+      - "traefik.http.services.lingarr.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.lingarr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.lingarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
       interval: "300s" # Note that it locks up during transcribe, so this must be longer than a movie
       timeout: "5s"
       retries: 3
       start_period: "10s"
-      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/9876'"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/8080'"

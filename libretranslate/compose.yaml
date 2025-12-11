@@ -19,6 +19,7 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
+    user: "${PUID:-1000}:${PGID:-1000}"
     environment:
       - "LT_HOST=0.0.0.0"
       - "LT_LOAD_ONLY=${LIBRETRANSLATE_LANGUAGES:-en,es,zh}" # Important, replace with your preferred languages - 3 most popular worldwide

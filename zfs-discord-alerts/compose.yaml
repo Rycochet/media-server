@@ -1,0 +1,27 @@
+services:
+  zfs-discord-alerts:
+    container_name: zfs-discord-alerts
+    image: ${ZFS_DISCORD_ALERTS_IMAGE:-ghcr.io/rycochet/zfs-discord-alerts}:${ZFS_DISCORD_ALERTS_IMAGE_TAG:-latest}
+    profiles: ["${ZFS_DISCORD_ALERTS_PROFILE:-tools}"]
+    restart: unless-stopped
+    read_only: true
+    networks:
+      - external
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    devices:
+      - "/dev/zfs:/dev/zfs"
+    environment:
+      DISCORD_WEBHOOK_URL: "${ZFS_DISCORD_ALERTS_WEBHOOK:?Set the ZFS_DISCORD_ALERTS_WEBHOOK to your discord webhook!}"
+      EXTRA: "${ZFS_DISCORD_ALERTS_EXTRA:-}"
+      POOLS: "${ZFS_DISCORD_ALERTS_POOLS:-}"
+      LOG_LEVEL: "${ZFS_DISCORD_ALERTS_LOG_LEVEL:-INFO}"
+      SHOW_SPACE: "${ZFS_DISCORD_ALERTS_SHOW_SPACE:-False}"
+      VERBOSE: "${ZFS_DISCORD_ALERTS_VERBOSE:-False}"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "traefik.enable=false"

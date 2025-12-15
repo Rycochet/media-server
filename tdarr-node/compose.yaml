@@ -1,0 +1,41 @@
+services:
+  tdarr-node:
+    container_name: tdarr-node
+    image: ${TDARR_NODE_IMAGE:-haveagitgat/tdarr_node}:${TDARR_NODE_IMAGE_TAG:-latest}
+    profiles: ["${TDARR_NODE_PROFILE:-quality}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "gpu-${USE_GPU:-none}"
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      tdarr:
+        condition: service_started
+        restart: true
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
+      UMASK: "000"
+      # Image
+      inContainer: "true"
+      nodeName: "Server-Node"
+      # nodePort: "8267"
+      nodeType: "mapped"
+      serverURL: "http://tdarr:8266"
+      transcodegpuWorkers: "2"
+      transcodecpuWorkers: "0"
+      healthcheckgpuWorkers: "0"
+      healthcheckcpuWorkers: "0"
+      UMASK_SET: "000"
+    volumes:
+      - "./config/config:/app/configs"
+      - "./logs:/app/logs"
+      - "./tmp:/tmp"
+      - "$PATH_MOVIES:/data/movies"
+      - "$PATH_TV:/data/tv"
+    labels:
+      - "com.centurylinklabs.watchtower.monitor-only=true"
+      - "deunhealth.restart.on.unhealthy=false"

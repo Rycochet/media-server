@@ -45,7 +45,7 @@ services:
       - "homepage.group=Libraries"
       - "homepage.name=Jellyfin"
       - "homepage.icon=jellyfin.png"
-      - "homepage.href=readarr://jellyfin.$DOMAIN/"
+      - "homepage.href=https://jellyfin.$DOMAIN/"
       - "homepage.description=Media Library"
       - "homepage.widget.type=jellyfin"
       - "homepage.widget.url=http://jellyfin:8096"

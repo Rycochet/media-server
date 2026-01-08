@@ -2,7 +2,6 @@ services:
   chaptarr:
     container_name: chaptarr
     image: ${CHAPTARR_IMAGE:-robertlordhood/chaptarr}:${CHAPTARR_IMAGE_TAG:-latest}
-    pull_policy: missing
     profiles: ["${CHAPTARR_PROFILE:-media}"]
     extends:
       file: ../compose.extend.yaml
@@ -31,9 +30,9 @@ services:
       - "./config:/config"
       - "./backup:/config/Backups"
       - "./logs:/config/logs"
-      - "$PATH_AUDIOBOOKS_SYNC:/data/Audiobooks:ro"
-      - "$PATH_BOOKS:/data/Books:ro"
-      - "$PATH_DOWNLOADS:/data/Downloads:ro"
+      - "$PATH_AUDIOBOOKS_SYNC:/data/Audiobooks"
+      - "$PATH_BOOKS:/data/Books"
+      - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 

@@ -38,6 +38,8 @@ services:
       SERVER_HOSTNAMES: "${VPN_SERVER_HOSTNAMES}"
       SERVER_CATEGORIES: "${VPN_SERVER_CATEGORIES}"
 
+      DNS_UPSTREAM_RESOLVER_TYPE: "doh"
+
       HTTPPROXY: "on"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
@@ -52,6 +54,7 @@ services:
       - "homepage.description=Gluetun | HTTP - vpn:8888 | Socks5 - vpn:1080"
       - "homepage.widget.type=gluetun"
       - "homepage.widget.url=http://vpn:8000"
+      - "homepage.widget.version=2"
 
       - "traefik.enable=false"
 

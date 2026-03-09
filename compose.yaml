@@ -51,7 +51,7 @@ include:
   - duc/compose.yaml                  # Disk usage
   - glances/compose.yaml              # Operating system status
   - homepage/compose.yaml             # Dashboard
-  - overseerr/compose.yaml            # Media requests and issue tracking
+  - seerr/compose.yaml                # Media requests and issue tracking
   - scrutiny/compose.yaml             # S.M.A.R.T. information
   - tautulli/compose.yaml             # Plex stats
   - watchstate/compose.yaml           # Sync media library watch state

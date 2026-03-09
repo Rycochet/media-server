@@ -1,0 +1,53 @@
+services:
+  seerr:
+    container_name: seerr
+    image: ${SEERR_IMAGE:-ghcr.io/seerr-team/seerr}:${SEERR_IMAGE_TAG:-latest}
+    profiles: ["${SEERR_PROFILE:-information}"]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      LOG_LEVEL: "debug"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/app/config"
+      - "./logs:/app/config/logs"
+      - "./tmp:/run/seerr-temp"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Libraries"
+      - "homepage.name=Seerr"
+      - "homepage.icon=jellyseerr.png"
+      - "homepage.href=https://seerr.$DOMAIN/"
+      - "homepage.description=Media requests"
+      - "homepage.widget.type=jellyseerr"
+      - "homepage.widget.url=http://seerr:5055"
+      - "homepage.widget.key=${SEERR_API:-}"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.seerr.rule=Host(`seerr.$DOMAIN`) || Host(`ask.$DOMAIN`)"
+      - "traefik.http.routers.seerr.middlewares=seerr,error-pages"
+      - "traefik.http.services.seerr.loadbalancer.server.port=5055"
+      - "traefik.http.middlewares.seerr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.seerr.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+    healthcheck:
+      interval: "30s"
+      timeout: "5s"
+      retries: 3
+      start_period: "10s"
+      test: "wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1"

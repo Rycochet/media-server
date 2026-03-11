@@ -2,20 +2,30 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/configs/info-widgets/
 
-- resources:
-    label: " " # This character is invisible, but lines up the rows
-    cpu: true
-    memory: true
+- glances:
+    # label: " "
+    url: http://glances:61208
+    href: https://glances.$DOMAIN/
+    version: 4
+    expanded: true
 
-# Assuming this is running from a fast NVMe drive
-- resources:
+- glances:
     label: System
-    disk: /app/config
+    url: http://glances:61208
+    href: https://glances.$DOMAIN/
+    version: 4
+    cpu: false
+    mem: false
+    disk: /rootfs
 
-# Assuming a single large media drive - can add for tv & music too
-- resources:
-    label: Media
-    disk: /data/movies
+- glances:
+    label: "ZFS (media)"
+    url: http://glances:61208
+    href: https://glances.$DOMAIN/
+    version: 4
+    cpu: false
+    mem: false
+    disk: /rootfs/media
 
 - search:
     provider: duckduckgo

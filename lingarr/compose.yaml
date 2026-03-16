@@ -22,9 +22,14 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    user: "${PGID:-1000}:${PUID:-1000}"
     environment:
       DB_CONNECTION: "sqlite"
+      SERVICE_TYPE: "libretranslate"
+      LIBRE_TRANSLATE_URL: "http://libretranslate:5000"
+      RADARR_URL: "http://radarr:7878"
+      RADARR_API_KEY: "${RADARR_API:-}"
+      SONARR_URL: "http://sonarr:8989"
+      SONARR_API_KEY: "${SONARR_API:-}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/app/config"

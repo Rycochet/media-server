@@ -11,6 +11,9 @@ services:
       - external
       - internal
     depends_on:
+      libretranslate:
+        condition: service_started
+        restart: false
       traefik:
         condition: service_started
         restart: false
@@ -19,6 +22,9 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
+    user: "${PGID:-1000}:${PUID:-1000}"
+    environment:
+      DB_CONNECTION: "sqlite"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/app/config"

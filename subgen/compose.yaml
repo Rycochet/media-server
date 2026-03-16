@@ -1,8 +1,8 @@
 services:
-  whisper:
-    container_name: whisper
-    image: ${WHISPER_IMAGE:-mccloud/subgen}:${WHISPER_IMAGE_TAG:-latest}
-    profiles: ["${WHISPER_PROFILE:-quality}"]
+  subgen:
+    container_name: subgen
+    image: ${SUBGEN_IMAGE:-mccloud/subgen}:${SUBGEN_IMAGE_TAG:-latest}
+    profiles: ["${SUBGEN_PROFILE:-quality}"]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -48,8 +48,8 @@ services:
       # USE_MODEL_PROMPT: "False"
       # USE_PATH_MAPPING: "False"
       # WEBHOOKPORT: "9000"
-      WHISPER_MODEL: "distil-large-v3.5"
-      # WHISPER_THREADS: "4"
+      SUBGEN_MODEL: "distil-large-v3.5"
+      # SUBGEN_THREADS: "4"
       # WORD_LEVEL_HIGHLIGHT: "False"
 
       # For auto-transcribe - https://github.com/McCloudS/subgen#-jellyfin
@@ -68,8 +68,8 @@ services:
       - "deunhealth.restart.on.unhealthy=false"
 
       - "homepage.group=Tools"
-      - "homepage.name=Whisper"
-      - "homepage.icon=/images/whisper.png"
+      - "homepage.name=Subgen"
+      - "homepage.icon=/images/subgen.png"
       - "homepage.description=Audio transcaription"
 
       - "traefik.enable=false"

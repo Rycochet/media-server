@@ -63,7 +63,7 @@ include:
   # DOWNLOAD
   - cleanuparr/compose.yaml           # Bad download handling
   - huntarr/compose.yaml              # Missing media search
-  - i2p/compose.yaml                  # I2P Client
+  # - i2p/compose.yaml                  # I2P Client
   # - onlyfans/compose.yaml             # Download all subscriptions
   - prowlarr/compose.yaml             # Torrent / NNTP search proxy
   - qbittorrent/compose.yaml          # Torrent downloader
@@ -75,7 +75,6 @@ include:
   - pgadmin/compose.yaml              # Database admin
 
   # MEDIA
-  - bazarr/compose.yaml               # Subtitles
   - lidarr/compose.yaml               # Music
   # - mylar/compose.yaml                # Comics
   - radarr/compose.yaml               # Movies
@@ -84,8 +83,14 @@ include:
   # - ubooquity/compose.yaml            # Comics
   # - whisparr/compose.yaml             # Porn
 
+  # SUBTITLES AND TRANSLATION
+  - bazarr/compose.yaml               # Subtitles
+  # - subgen/compose.yaml               # Audio transription
+  # - libretranslate/compose.yaml       # Translation
+  # - lingarr/compose.yaml              # Subtitle translation
+
   # GAMES - Not started automatically
-  - minecraft/compose.yaml            # Minecraft
+  # - minecraft/compose.yaml            # Minecraft
 
 networks:
   external:

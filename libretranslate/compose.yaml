@@ -20,9 +20,9 @@ services:
         max-size: "1m"
         max-file: "3"
     environment:
-      - "LT_HOST=0.0.0.0"
-      - "LT_LOAD_ONLY=${LIBRETRANSLATE_LANGUAGES:-en,es,zh}" # Important, replace with your preferred languages - 3 most popular worldwide
-      - "LT_UPDATE_MODELS=true"
+      # - "LT_HOST=0.0.0.0"
+      LT_LOAD_ONLY: "${LIBRETRANSLATE_LANGUAGES:-en,es,zh}" # Important, replace with your preferred languages - 3 most popular worldwide
+      LT_UPDATE_MODELS: "true"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
     labels:

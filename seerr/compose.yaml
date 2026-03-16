@@ -31,12 +31,13 @@ services:
 
       - "homepage.group=Libraries"
       - "homepage.name=Seerr"
-      - "homepage.icon=jellyseerr.png"
+      - "homepage.icon=seerr.png"
       - "homepage.href=https://seerr.$DOMAIN/"
       - "homepage.description=Media requests"
-      - "homepage.widget.type=jellyseerr"
+      - "homepage.widget.type=seerr"
       - "homepage.widget.url=http://seerr:5055"
       - "homepage.widget.key=${SEERR_API:-}"
+      - 'homepage.widget.fields=["pending", "approved", "completed, "issues"]'
 
       - "traefik.enable=true"
       - "traefik.http.routers.seerr.rule=Host(`seerr.$DOMAIN`) || Host(`ask.$DOMAIN`)"

@@ -92,10 +92,10 @@ services:
       - "homepage.widget.url=http://traefik:8080"
 
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.rule=Host(`traefik.$DOMAIN`)"
-      - "traefik.http.routers.dashboard.middlewares=traefik,tinyauth,error-pages"
-      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.$DOMAIN`)"
+      - "traefik.http.routers.traefik.middlewares=traefik,tinyauth,error-pages"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
       - "traefik.http.middlewares.traefik.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.traefik.headers.accessControlAllowOriginList=https://$DOMAIN"
 

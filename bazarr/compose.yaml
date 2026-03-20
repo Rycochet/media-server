@@ -42,7 +42,7 @@ services:
       - "homepage.description=Subtitles"
       - "homepage.widget.type=bazarr"
       - "homepage.widget.url=http://bazarr:6767"
-      - "homepage.widget.key=${BAZARR_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_BAZARR_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.rule=Host(`bazarr.$DOMAIN`)"
@@ -57,3 +57,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:6767/"
+
+  homepage:
+    secrets:
+      - bazarr_api
+    environment:
+      HOMEPAGE_FILE_BAZARR_API: "/run/secrets/bazarr_api"
+
+secrets:
+  bazarr_api:
+    environment: "BAZARR_API"

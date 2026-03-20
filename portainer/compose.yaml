@@ -31,7 +31,7 @@ services:
       - "homepage.description=Container management"
       - "homepage.widget.type=portainer"
       - "homepage.widget.url=http://portainer:9000"
-      - "homepage.widget.key=${PORTAINER_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_PORTAINER_API}}"
       - "homepage.widget.env=${PORTAINER_ENV:-1}"
 
       - "traefik.enable=true"
@@ -47,3 +47,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "wget --no-verbose --tries=1 --spider http://localhost:9000/ || exit 1"
+
+  homepage:
+    secrets:
+      - portainer_api
+    environment:
+      HOMEPAGE_FILE_PORTAINER_API: "/run/secrets/portainer_api"
+
+secrets:
+  portainer_api:
+    environment: "PORTAINER_API"

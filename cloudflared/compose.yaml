@@ -27,7 +27,7 @@ services:
       - "homepage.widget.type=cloudflared"
       - "homepage.widget.accountid=${CLOUDFLARED_ACCOUNT_ID:-}"
       - "homepage.widget.tunnelid=${CLOUDFLARED_TUNNEL_ID:-}"
-      - "homepage.widget.key=${CLOUDFLARED_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_CLOUDFLARED_API}}"
 
       - "traefik.enable=false"
 
@@ -37,3 +37,13 @@ services:
       retries: 3
       start_period: "10s"
       test: ["CMD", "cloudflared", "tunnel", "--metrics", "0.0.0.0:20241", "ready"]
+
+  homepage:
+    secrets:
+      - cloudflared_api
+    environment:
+      HOMEPAGE_FILE_CLOUDFLARED_API: "/run/secrets/cloudflared_api"
+
+secrets:
+  cloudflared_api:
+    environment: "CLOUDFLARED_API"

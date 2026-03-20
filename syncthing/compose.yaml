@@ -46,7 +46,7 @@ services:
       - "homepage.widget.type=customapi"
       - "homepage.widget.method=GET"
       - "homepage.widget.url=http://syncthing:8384/rest/system/connections" # ?folder=<<<FOLDER_ID>>>"
-      - "homepage.widget.headers.X-API-Key=${SYNCTHING_API:-}"
+      - "homepage.widget.headers.X-API-Key={{HOMEPAGE_FILE_SYNCTHING_API}}"
       - "homepage.widget.mappings[0].label=Downloaded"
       - "homepage.widget.mappings[0].field=total.inBytesTotal"
       - "homepage.widget.mappings[0].format=bytes"
@@ -70,3 +70,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1"
+
+  homepage:
+    secrets:
+      - syncthing_api
+    environment:
+      HOMEPAGE_FILE_SYNCTHING_API: "/run/secrets/syncthing_api"
+
+secrets:
+  syncthing_api:
+    environment: "SYNCTHING_API"

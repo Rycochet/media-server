@@ -42,7 +42,7 @@ services:
       - "homepage.description=TV Shows"
       - "homepage.widget.type=sonarr"
       - "homepage.widget.url=http://sonarr:8989"
-      - "homepage.widget.key=${SONARR_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_SONARR_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.$DOMAIN`)"
@@ -57,3 +57,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8989/"
+
+  homepage:
+    secrets:
+      - sonarr_api
+    environment:
+      HOMEPAGE_FILE_SONARR_API: "/run/secrets/sonarr_api"
+
+secrets:
+  sonarr_api:
+    environment: "SONARR_API"

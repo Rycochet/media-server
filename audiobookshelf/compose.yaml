@@ -41,7 +41,7 @@ services:
       - "homepage.description=Audiobooks and Podcasts"
       - "homepage.widget.type=audiobookshelf"
       - "homepage.widget.url=http://audiobookshelf:80"
-      - "homepage.widget.key=${AUDIOBOOKSHELF_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_AUDIOBOOKSHELF_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.audiobookshelf.rule=Host(`audiobookshelf.$DOMAIN`)"
@@ -56,3 +56,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "wget --no-verbose --tries=1 --spider http://localhost/ || exit 1"
+
+  homepage:
+    secrets:
+      - audiobookshelf_api
+    environment:
+      HOMEPAGE_FILE_AUDIOBOOKSHELF_API: "/run/secrets/audiobookshelf_api"
+
+secrets:
+  audiobookshelf_api:
+    environment: "AUDIOBOOKSHELF_API"

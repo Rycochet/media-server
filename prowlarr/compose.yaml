@@ -40,7 +40,7 @@ services:
       - "homepage.description=Search"
       - "homepage.widget.type=prowlarr"
       - "homepage.widget.url=http://prowlarr:9696"
-      - "homepage.widget.key=${PROWLARR_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_PROWLARR_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.$DOMAIN`)"
@@ -55,3 +55,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:9696/"
+
+  homepage:
+    secrets:
+      - prowlarr_api
+    environment:
+      HOMEPAGE_FILE_PROWLARR_API: "/run/secrets/prowlarr_api"
+
+secrets:
+  prowlarr_api:
+    environment: "PROWLARR_API"

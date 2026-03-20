@@ -40,7 +40,7 @@ services:
       - "homepage.description=Comics"
       - "homepage.widget.type=readarr"
       - "homepage.widget.url=http://komga:25600"
-      - "homepage.widget.key=${KOMGA_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_KOMGA_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.komga.rule=Host(`komga.$DOMAIN`)"
@@ -55,3 +55,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:25600/"
+
+  homepage:
+    secrets:
+      - komga_api
+    environment:
+      HOMEPAGE_FILE_KOMGA_API: "/run/secrets/komga_api"
+
+secrets:
+  komga_api:
+    environment: "KOMGA_API"

@@ -37,7 +37,7 @@ services:
       - "homepage.description=Plex and Emby Monitoring"
       - "homepage.widget.type=tracearr"
       - "homepage.widget.url=http://tracearr:3000"
-      - "homepage.widget.key=${TRACEARR_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_TRACEARR_API}}"
       - "homepage.widget.showEpisodeNumber=true"
       - "homepage.widget.expandOneStreamToTwoRows=false"
 
@@ -47,3 +47,13 @@ services:
       - "traefik.http.services.tracearr.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.tracearr.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.tracearr.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+  homepage:
+    secrets:
+      - tracearr_api
+    environment:
+      HOMEPAGE_FILE_TRACEARR_API: "/run/secrets/tracearr_api"
+
+secrets:
+  tracearr_api:
+    environment: "TRACEARR_API"

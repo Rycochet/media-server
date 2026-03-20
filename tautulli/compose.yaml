@@ -50,3 +50,21 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8181/"
+
+  plex:
+    labels:
+      - "homepage.widgets[1].type=tautulli"
+      - "homepage.widgets[1].url=http://tautulli:8181"
+      - "homepage.widgets[1].key={{HOMEPAGE_FILE_TAUTULLI_API}}"
+      - "homepage.widgets[1].showEpisodeNumber=true"
+      - "homepage.widgets[1].expandOneStreamToTwoRows=false"
+
+  homepage:
+    secrets:
+      - tautulli_api
+    environment:
+      HOMEPAGE_FILE_TAUTULLI_API: "/run/secrets/tautulli_api"
+
+secrets:
+  tautulli_api:
+    environment: "TAUTULLI_API"

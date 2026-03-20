@@ -41,7 +41,7 @@ services:
       - "homepage.description=Newsgroups"
       - "homepage.widget.type=sabnzbd"
       - "homepage.widget.url=http://sabnzbd:8085"
-      - "homepage.widget.key=${SABNZBD_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_SABNZBD_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.$DOMAIN`)"
@@ -56,3 +56,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8085/"
+
+  homepage:
+    secrets:
+      - sabnzbd_api
+    environment:
+      HOMEPAGE_FILE_SABNZBD_API: "/run/secrets/sabnzbd_api"
+
+secrets:
+  sabnzbd_api:
+    environment: "SABNZBD_API"

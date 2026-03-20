@@ -11,6 +11,7 @@ services:
       external:
       internal:
         aliases:
+          - "emby.$DOMAIN"
           - "jellyfin.$DOMAIN"
           - "plex.$DOMAIN"
     logging:

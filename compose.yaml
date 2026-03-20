@@ -30,8 +30,8 @@ include:
 
   # LIBRARY
   - audiobookshelf/compose.yaml       # Audiobooks library
-  - jellyfin/compose.yaml             # Open source media library
-  - kapowarr/compose.yaml             # Comics
+  # - jellyfin/compose.yaml             # Open source media library
+  # - kapowarr/compose.yaml             # Comics
   # - komga/compose.yaml                # Comic library
   # - manyfold/compose.yaml             # 3d models library
   - plex/compose.yaml                 # Media library

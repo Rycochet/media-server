@@ -42,7 +42,7 @@ services:
       - "homepage.description=Porn"
       - "homepage.widget.type=radarr" # v2 = sonarr, v3 = radarr
       - "homepage.widget.url=http://whisparr:6969"
-      - "homepage.widget.key=${WHISPARR_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_WHISPARR_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.whisparr.rule=Host(`whisparr.$DOMAIN`)"
@@ -57,3 +57,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:6969/"
+
+  homepage:
+    secrets:
+      - whisparr_api
+    environment:
+      HOMEPAGE_FILE_WHISPARR_API: "/run/secrets/whisparr_api"
+
+secrets:
+  whisparr_api:
+    environment: "WHISPARR_API"

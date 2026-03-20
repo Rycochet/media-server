@@ -42,7 +42,7 @@ services:
       - "homepage.description=Movies"
       - "homepage.widget.type=radarr"
       - "homepage.widget.url=http://radarr:7878"
-      - "homepage.widget.key=${RADARR_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_RADARR_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.rule=Host(`radarr.$DOMAIN`)"
@@ -57,3 +57,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:7878/"
+
+  homepage:
+    secrets:
+      - radarr_api
+    environment:
+      HOMEPAGE_FILE_RADARR_API: "/run/secrets/radarr_api"
+
+secrets:
+  radarr_api:
+    environment: "RADARR_API"

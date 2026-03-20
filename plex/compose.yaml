@@ -50,12 +50,8 @@ services:
       - "homepage.description=Media Library"
       - "homepage.widgets[0].type=plex"
       - "homepage.widgets[0].url=https://plex:32400"
-      - "homepage.widgets[0].key=${PLEX_TOKEN:-}"
-      - "homepage.widgets[1].type=tautulli"
-      - "homepage.widgets[1].url=http://tautulli:8181"
-      - "homepage.widgets[1].key=${TAUTULLI_API:-}"
-      - "homepage.widgets[1].showEpisodeNumber=true"
-      - "homepage.widgets[1].expandOneStreamToTwoRows=false"
+      - "homepage.widgets[0].key={{HOMEPAGE_FILE_PLEX_TOKEN}}"
+      # Leaving space for Tautulli to extend this if it's running
 
       - "traefik.enable=true"
       - "traefik.http.routers.plex.rule=Host(`plex.$DOMAIN`)"
@@ -73,3 +69,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:32400/identity"
+
+  homepage:
+    secrets:
+      - plex_token
+    environment:
+      HOMEPAGE_FILE_PLEX_TOKEN: "/run/secrets/plex_token"
+
+secrets:
+  plex_token:
+    environment: "PLEX_TOKEN"

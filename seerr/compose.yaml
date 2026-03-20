@@ -36,7 +36,7 @@ services:
       - "homepage.description=Media requests"
       - "homepage.widget.type=seerr"
       - "homepage.widget.url=http://seerr:5055"
-      - "homepage.widget.key=${SEERR_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_SEERR_API}}"
       - 'homepage.widget.fields=["pending", "approved", "completed, "issues"]'
 
       - "traefik.enable=true"
@@ -52,3 +52,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1"
+
+  homepage:
+    secrets:
+      - seerr_api
+    environment:
+      HOMEPAGE_FILE_SEERR_API: "/run/secrets/seerr_api"
+
+secrets:
+  seerr_api:
+    environment: "SEERR_API"

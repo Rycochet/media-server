@@ -51,6 +51,7 @@ services:
       SUBGEN_MODEL: "distil-large-v3.5"
       # SUBGEN_THREADS: "4"
       # WORD_LEVEL_HIGHLIGHT: "False"
+      # WEBHOOK_URL_COMPLETED: ""
 
       # For auto-transcribe - https://github.com/McCloudS/subgen#-jellyfin
       # JELLYFINSERVER: "http://jellyfin:8096"

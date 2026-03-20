@@ -44,7 +44,7 @@ services:
       - "homepage.widget.type=speedtest"
       - "homepage.widget.version=2"
       - "homepage.widget.url=http://speedtest-tracker:80"
-      - "homepage.widget.key=${SPEEDTEST_TRACKER_API:-}"
+      - "homepage.widget.key={{HOMEPAGE_FILE_SPEEDTEST_TRACKER_API}}"
 
       - "traefik.enable=true"
       - "traefik.http.routers.speedtest-tracker.rule=Host(`speedtest-tracker.$DOMAIN`)"
@@ -59,3 +59,13 @@ services:
       retries: 3
       start_period: "10s"
       test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:80/"
+
+  homepage:
+    secrets:
+      - speedtest_tracker_api
+    environment:
+      HOMEPAGE_FILE_SPEEDTEST_TRACKER_API: "/run/secrets/speedtest_tracker_api"
+
+secrets:
+  speedtest_tracker_api:
+    environment: "SPEEDTEST_TRACKER_API"

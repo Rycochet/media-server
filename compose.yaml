@@ -54,7 +54,7 @@ include:
   - seerr/compose.yaml                # Media requests and issue tracking
   - scrutiny/compose.yaml             # S.M.A.R.T. information
   - tautulli/compose.yaml             # Plex stats
-  - tracearr/compose.yaml             # Plex & Emby monitoring
+  # - tracearr/compose.yaml             # Plex & Emby monitoring
   - watchstate/compose.yaml           # Sync media library watch state
 
   # DESKTOP

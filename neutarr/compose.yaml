@@ -1,0 +1,64 @@
+services:
+  neutarr:
+    container_name: neutarr
+    image: ${NEUTARR_IMAGE:-iampuid0/neutarr}:${NEUTARR_IMAGE_TAG:-latest}
+    profiles: ["${NEUTARR_PROFILE:-download}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./backup:/config/backups"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Download"
+      - "homepage.name=Neutarr"
+      - "homepage.icon=/images/neutarr.png"
+      - "homepage.href=https://neutarr.$DOMAIN/"
+      - "homepage.description=Missing media search"
+      - "homepage.widget.type=customapi"
+      - "homepage.widget.method=GET"
+      - "homepage.widget.url=http://neutarr:9705/api/stats?apikey={{HOMEPAGE_FILE_NEUTARR_API}}"
+      - "homepage.widget.mappings[0].label=Lidarr"
+      - "homepage.widget.mappings[0].field=stats.lidarr.hunted"
+      - "homepage.widget.mappings[0].format=number"
+      - "homepage.widget.mappings[1].label=Radarr"
+      - "homepage.widget.mappings[1].field=stats.radarr.hunted"
+      - "homepage.widget.mappings[1].format=number"
+      - "homepage.widget.mappings[2].label=Sonarr"
+      - "homepage.widget.mappings[2].field=stats.sonarr.hunted"
+      - "homepage.widget.mappings[2].format=number"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.neutarr.rule=Host(`neutarr.$DOMAIN`)"
+      - "traefik.http.routers.neutarr.middlewares=neutarr,tinyauth,error-pages"
+      - "traefik.http.services.neutarr.loadbalancer.server.port=9705"
+      - "traefik.http.middlewares.neutarr.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.neutarr.headers.accessControlAllowOriginList=https://$DOMAIN"
+
+  homepage:
+    secrets:
+      - neutarr_api
+    environment:
+      HOMEPAGE_FILE_NEUTARR_API: "/run/secrets/neutarr_api"
+
+secrets:
+  neutarr_api:
+    environment: "NEUTARR_API"

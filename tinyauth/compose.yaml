@@ -1,8 +1,7 @@
 services:
   tinyauth:
     container_name: tinyauth
-    # image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v3}
-    image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v4-distroless}
+    image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v5-distroless}
     profiles: ["${TINYAUTH_PROFILE:-network}"]
     restart: unless-stopped
     networks:
@@ -15,28 +14,28 @@ services:
         max-file: "3"
     environment:
       # Image
-      APP_TITLE: "$DOMAIN"
-      APP_URL: "https://tinyauth.$DOMAIN"
-      DISABLE_ANALYTICS: "true"
-      LOG_LEVEL: "warn"
-      OAUTH_WHITELIST: "${WHITELIST:?Set the WHITELIST to your google email address!}"
-      PROVIDERS_GOOGLE_CLIENT_ID: "$GOOGLE_CLIENT_ID"
-      PROVIDERS_GOOGLE_CLIENT_SECRET: "$GOOGLE_CLIENT_SECRET"
-      SECURE_COOKIE: "true"
-      SESSION_EXPIRY: "${SESSION_EXPIRY:-86400}" # Default is 24 hours
+      TINYAUTH_ANALYTICS_ENABLED: "false"
+      TINYAUTH_APPURL: "https://tinyauth.$DOMAIN"
+      TINYAUTH_AUTH_SECURECOOKIE: "true"
+      TINYAUTH_AUTH_SESSIONEXPIRY: "${SESSION_EXPIRY:-86400}" # Default is 24 hours
+      TINYAUTH_LOG_LEVEL: "warn"
+      TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTID: "$GOOGLE_CLIENT_ID"
+      TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTSECRET: "$GOOGLE_CLIENT_SECRET"
+      TINYAUTH_OAUTH_WHITELIST: "${WHITELIST:?Set the WHITELIST to your google email address!}"
+      TINYAUTH_UI_TITLE: "$DOMAIN"
     volumes:
       - "./config:/data"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.tinyauth.rule=Host(`tinyauth.$DOMAIN`)"
-      - "traefik.http.services.tinyauth.loadbalancer.server.port=3000"
-      - "traefik.http.middlewares.tinyauth.forwardauth.address=http://tinyauth:3000/api/auth/traefik"
-      - "traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders=X-Forwarded-User"
 
       - "homepage.group=Tools"
       - "homepage.name=Tinyauth"
       - "homepage.icon=tinyauth.png"
       - "homepage.href=https://tinyauth.$DOMAIN"
       - "homepage.description=OAuth handling"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.tinyauth.rule=Host(`tinyauth.$DOMAIN`)"
+      - "traefik.http.services.tinyauth.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.tinyauth.forwardauth.address=http://tinyauth:3000/api/auth/traefik"
+      - "traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders=X-Forwarded-User"

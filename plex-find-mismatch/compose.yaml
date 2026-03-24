@@ -15,17 +15,18 @@ services:
       plex:
         condition: service_healthy
         restart: true
+    secrets:
+      - plex_token
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "${PUID:-1000}"
-      PGID: "${PGID:-1000}"
       # Image
-      PLEX_TOKEN: "$PLEX_TOKEN"
+      PLEX_TOKEN_FILE: "/run/secrets/plex_token"
       PLEX_URL: "https://plex.$DOMAIN:443/"
       CHECK_LIBRARY: "Movies,TV Shows"
       CHECK_UNMATCH: "false"
       # CHECK_NOW: "true"
+      # PLEXAPI_PLEXAPI_TIMEOUT: "30" # default
     volumes:
       - "$PATH_MOVIES:/data/movies:ro"
       - "$PATH_TV:/data/tv:ro"

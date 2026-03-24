@@ -12,6 +12,8 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
+    secrets:
+      - google_client_secret
     environment:
       # Image
       TINYAUTH_ANALYTICS_ENABLED: "false"
@@ -20,7 +22,7 @@ services:
       TINYAUTH_AUTH_SESSIONEXPIRY: "${SESSION_EXPIRY:-86400}" # Default is 24 hours
       TINYAUTH_LOG_LEVEL: "warn"
       TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTID: "$GOOGLE_CLIENT_ID"
-      TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTSECRET: "$GOOGLE_CLIENT_SECRET"
+      TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTSECRETFILE: "/run/secrets/google_client_secret"
       TINYAUTH_OAUTH_WHITELIST: "${WHITELIST:?Set the WHITELIST to your google email address!}"
       TINYAUTH_UI_TITLE: "$DOMAIN"
     volumes:
@@ -39,3 +41,7 @@ services:
       - "traefik.http.services.tinyauth.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.tinyauth.forwardauth.address=http://tinyauth:3000/api/auth/traefik"
       - "traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders=X-Forwarded-User"
+
+secrets:
+  google_client_secret:
+    environment: "GOOGLE_CLIENT_SECRET"

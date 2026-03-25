@@ -30,7 +30,7 @@ services:
       - "./config:/config"
       - "./backup:/config/Backups"
       - "./logs:/config/logs"
-      - "$PATH_AUDIOBOOKS_SYNC:/data/Audiobooks"
+      - "$PATH_AUDIOBOOKS:/data/Audiobooks"
       - "$PATH_BOOKS:/data/Books"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:

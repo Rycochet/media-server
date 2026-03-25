@@ -13,8 +13,10 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
+    secrets:
+      - cloudflared_token
     environment:
-      TUNNEL_TOKEN: "${CLOUDFLARED_TOKEN:?You must disable the cloudflared service if not using it}"
+      TUNNEL_TOKEN_FILE: "/run/secrets/cloudflared_token"
       TUNNEL_LOGLEVEL: "info"
     labels:
       - "deunhealth.restart.on.unhealthy=true"
@@ -25,8 +27,8 @@ services:
       - "homepage.href=https://dash.cloudflare.com/"
       - "homepage.description=Cloudflare Status"
       - "homepage.widget.type=cloudflared"
-      - "homepage.widget.accountid=${CLOUDFLARED_ACCOUNT_ID:-}"
-      - "homepage.widget.tunnelid=${CLOUDFLARED_TUNNEL_ID:-}"
+      - "homepage.widget.accountid={{HOMEPAGE_FILE_CLOUDFLARED_ACCOUNT_ID}}"
+      - "homepage.widget.tunnelid={{HOMEPAGE_FILE_CLOUDFLARED_TUNNEL_ID}}"
       - "homepage.widget.key={{HOMEPAGE_FILE_CLOUDFLARED_API}}"
 
       - "traefik.enable=false"
@@ -40,10 +42,20 @@ services:
 
   homepage:
     secrets:
+      - cloudflared_account_id
       - cloudflared_api
+      - cloudflared_tunnel_id
     environment:
+      HOMEPAGE_FILE_CLOUDFLARED_ACCOUNT_ID: "/run/secrets/cloudflared_account_id"
       HOMEPAGE_FILE_CLOUDFLARED_API: "/run/secrets/cloudflared_api"
+      HOMEPAGE_FILE_CLOUDFLARED_TUNNEL_ID: "/run/secrets/cloudflared_tunnel_id"
 
 secrets:
   cloudflared_api:
     environment: "CLOUDFLARED_API"
+  cloudflared_account_id:
+    environment: "CLOUDFLARED_ACCOUNT_ID"
+  cloudflared_tunnel_id:
+    environment: "CLOUDFLARED_TUNNEL_ID"
+  cloudflared_token:
+    environment: "CLOUDFLARED_TOKEN"

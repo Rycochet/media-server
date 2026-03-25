@@ -37,7 +37,7 @@ services:
       - "homepage.widget.type=seerr"
       - "homepage.widget.url=http://seerr:5055"
       - "homepage.widget.key={{HOMEPAGE_FILE_SEERR_API}}"
-      - 'homepage.widget.fields=["pending", "approved", "completed, "issues"]'
+      - 'homepage.widget.fields=["pending", "approved", "completed", "issues"]'
 
       - "traefik.enable=true"
       - "traefik.http.routers.seerr.rule=Host(`seerr.$DOMAIN`) || Host(`ask.$DOMAIN`)"

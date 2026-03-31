@@ -74,6 +74,10 @@ services:
       - "--entryPoints.websecure.http.tls.domains[0].sans=*.$DOMAIN"
       # - "--entryPoints.websecure.http.tls.domains[1].main=other.com"
       # - "--entryPoints.websecure.http.tls.domains[1].sans=*.other.com"
+      # Support for cloudflared IP forwarding
+      # - "--accesslog.fields.defaultmode=keep"
+      - "--experimental.plugins.cloudflarewarp.modulename=github.com/BilikoX/cloudflarewarp"
+      - "--experimental.plugins.cloudflarewarp.version=v1.3.4"
     ports:
       - "80:80"
       - "443:443"

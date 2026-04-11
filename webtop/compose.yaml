@@ -33,7 +33,8 @@ services:
       NO_DECOR: "true"
       # Auto-install LSIO mods and packages
       DOCKER_MODS: "linuxserver/mods:universal-package-install"
-      INSTALL_PACKAGES: "libc6-compat|mkvtoolnix|bento4|ffmpeg"
+      INSTALL_PACKAGES: "${WEBTOP_PACKAGES}"
+      INSTALL_PIP_PACKAGES: "${WEBTOP_PIP_PACKAGES}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"

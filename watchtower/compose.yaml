@@ -27,10 +27,10 @@ services:
       WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
       WATCHTOWER_INCLUDE_STOPPED: "true"
       WATCHTOWER_LABEL_TAKE_PRECEDENCE: "true"
-      WATCHTOWER_NO_RESTART: "true" # https://github.com/nicholas-fedor/watchtower/issues/1413
       WATCHTOWER_POLL_INTERVAL: "3600"
       WATCHTOWER_REMOVE_VOLUMES: "true"
       WATCHTOWER_TIMEOUT: "${WATCHTOWER_TIMEOUT:-30s}"
+      WATCHTOWER_USE_COMPOSE_DEPENDS_ON: "false"
     # volumes:
     #   - "<PATH_TO_HOME_DIR>/.docker/config.json:/config.json"
     labels:

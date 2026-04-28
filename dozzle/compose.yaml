@@ -1,8 +1,8 @@
 services:
   dozzle:
     container_name: dozzle
-    image: ${DOZZLE_IMAGE:-amir20/dozzle}:${DOZZLE_IMAGE_TAG:-latest}
-    profiles: ["${DOZZLE_PROFILE:-information}"]
+    image: ${DOZZLE_IMAGE:-amir20/dozzle}:${DOZZLE_IMAGE_TAG:-v10}
+    profiles: [ "${DOZZLE_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -38,8 +38,5 @@ services:
       - "traefik.http.middlewares.dozzle.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: ["CMD", "/dozzle", "healthcheck"]
+      start_period: "30s"
+      test: [ "CMD", "/dozzle", "healthcheck" ]

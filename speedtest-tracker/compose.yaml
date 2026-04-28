@@ -2,7 +2,7 @@ services:
   speedtest-tracker:
     container_name: speedtest-tracker
     image: ${SPEEDTEST_TRACKER_IMAGE:-lscr.io/linuxserver/speedtest-tracker}:${SPEEDTEST_TRACKER_IMAGE_TAG:-latest}
-    profiles: ["${SPEEDTEST_TRACKER_PROFILE:-media}"]
+    profiles: [ "${SPEEDTEST_TRACKER_PROFILE:-media}" ]
     restart: unless-stopped
     networks:
       - external
@@ -54,11 +54,8 @@ services:
       - "traefik.http.middlewares.speedtest-tracker.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:80/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:80/"
 
   homepage:
     secrets:

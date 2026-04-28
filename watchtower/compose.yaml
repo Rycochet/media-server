@@ -1,7 +1,7 @@
 services:
   watchtower:
     container_name: watchtower
-    image: ${WATCHTOWER_IMAGE:-nickfedor/watchtower}:${WATCHTOWER_IMAGE_TAG:-latest}
+    image: ${WATCHTOWER_IMAGE:-nickfedor/watchtower}:${WATCHTOWER_IMAGE_TAG:-1}
     profiles: ["${WATCHTOWER_PROFILE:-infrastructure}"]
     restart: unless-stopped
     networks:
@@ -34,8 +34,6 @@ services:
     # volumes:
     #   - "<PATH_TO_HOME_DIR>/.docker/config.json:/config.json"
     labels:
-      - "com.centurylinklabs.watchtower.monitor-only=true"
-
       - "deunhealth.restart.on.unhealthy=true"
 
       - "homepage.group=Information"

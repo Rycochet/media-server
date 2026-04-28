@@ -2,7 +2,7 @@ services:
   traefik:
     container_name: traefik
     image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
-    profiles: ["${TRAEFIK_PROFILE:-network}"]
+    profiles: [ "${TRAEFIK_PROFILE:-network}" ]
     extends:
       file: ../compose.extend.yaml
       service: "cf-${USE_CLOUDFLARED:-true}"
@@ -105,8 +105,5 @@ services:
       - "traefik.http.middlewares.traefik.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "traefik healthcheck --ping"
+      start_period: "30s"
+      test: ["CMD", "traefik", "healthcheck", "--ping"]

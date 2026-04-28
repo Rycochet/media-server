@@ -2,7 +2,7 @@ services:
   lidarr:
     container_name: lidarr
     image: ${LIDARR_IMAGE:-lscr.io/linuxserver/lidarr}:${LIDARR_IMAGE_TAG:-latest}
-    profiles: ["${LIDARR_PROFILE:-media}"]
+    profiles: [ "${LIDARR_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml
       service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
@@ -52,11 +52,8 @@ services:
       - "traefik.http.middlewares.lidarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8686/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8686/"
 
   homepage:
     secrets:

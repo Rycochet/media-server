@@ -28,8 +28,5 @@ services:
       - "homepage.description=Cloudflare captcha bypass"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
       start_period: "2s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8191/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8191/"

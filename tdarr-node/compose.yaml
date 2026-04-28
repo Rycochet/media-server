@@ -2,7 +2,7 @@ services:
   tdarr-node:
     container_name: tdarr-node
     image: ${TDARR_NODE_IMAGE:-haveagitgat/tdarr_node}:${TDARR_NODE_IMAGE_TAG:-latest}
-    profiles: ["${TDARR_NODE_PROFILE:-quality}"]
+    profiles: [ "${TDARR_NODE_PROFILE:-quality}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -38,4 +38,10 @@ services:
       - "$PATH_TV:/data/tv"
     labels:
       - "com.centurylinklabs.watchtower.monitor-only=true"
+      - "com.centurylinklabs.watchtower.depends-on=tdarr"
+
       - "deunhealth.restart.on.unhealthy=false"
+
+    healthcheck:
+      start_period: "150s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://tdarr:8266/api/v2/get-nodes | grep -q Server-Node"

@@ -2,7 +2,7 @@ services:
   kapowarr:
     container_name: kapowarr
     image: ${KAPOWARR_IMAGE:-mrcas/kapowarr}:${KAPOWARR_IMAGE_TAG:-latest}
-    profiles: ["${KAPOWARR_PROFILE:-library}"]
+    profiles: [ "${KAPOWARR_PROFILE:-library}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -46,8 +46,5 @@ services:
       - "traefik.http.middlewares.kapowarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
+      start_period: "30s"
       test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5656'"

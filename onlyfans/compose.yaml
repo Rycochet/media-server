@@ -1,7 +1,7 @@
 services:
   onlyfans:
     container_name: onlyfans
-    image: ${ONLYFANS_IMAGE:-ghcr.io/datawhores/of-scraper}:${ONLYFANS_IMAGE_TAG:-latest}
+    image: ${ONLYFANS_IMAGE:-ghcr.io/datawhores/of-scraper}:${ONLYFANS_IMAGE_TAG:-stable}
     profiles: ["${ONLYFANS_PROFILE:-download}"]
     restart: unless-stopped
     networks:

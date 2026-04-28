@@ -2,7 +2,7 @@ services:
   readarr:
     container_name: readarr
     image: ${READARR_IMAGE:-lscr.io/linuxserver/readarr}:${READARR_IMAGE_TAG:-0.4.18-develop}
-    profiles: ["${READARR_PROFILE:-media}"]
+    profiles: [ "${READARR_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml
       service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
@@ -52,11 +52,8 @@ services:
       - "traefik.http.middlewares.readarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8787/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8787/"
 
   homepage:
     secrets:

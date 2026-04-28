@@ -1,7 +1,7 @@
 services:
   beszel:
     container_name: beszel
-    image: ${BESZEL_IMAGE:-henrygd/beszel}:${BESZEL_IMAGE_TAG:-latest}
+    image: ${BESZEL_IMAGE:-henrygd/beszel}:${BESZEL_IMAGE_TAG:-0}
     profiles: ["${BESZEL_PROFILE:-information}"]
     restart: unless-stopped
     networks:
@@ -53,15 +53,12 @@ services:
       - "traefik.http.middlewares.beszel.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "2s"
+      start_period: "30s"
       test: ["CMD", "/beszel", "health", "--url", "http://localhost:8090"]
 
   beszel-agent:
     container_name: beszel-agent
-    image: ${BESZEL_AGENT_IMAGE:-henrygd/beszel-agent-nvidia}:${BESZEL_AGENT_IMAGE_TAG:-latest}
+    image: ${BESZEL_AGENT_IMAGE:-henrygd/beszel-agent-nvidia}:${BESZEL_AGENT_IMAGE_TAG:-0}
     profiles: ["${BESZEL_AGENT_PROFILE:-information}"]
     extends:
       file: ../compose.extend.yaml
@@ -96,8 +93,5 @@ services:
       - "traefik.enable=false"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "2s"
+      start_period: "30s"
       test: ["CMD", "/agent", "health"]

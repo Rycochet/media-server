@@ -2,7 +2,7 @@ services:
   bazarr:
     container_name: bazarr
     image: ${BAZARR_IMAGE:-lscr.io/linuxserver/bazarr}:${BAZARR_IMAGE_TAG:-latest}
-    profiles: ["${BAZARR_PROFILE:-media}"]
+    profiles: [ "${BAZARR_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml
       service: "vpn-${USE_VPN:-false}"
@@ -52,10 +52,7 @@ services:
       - "traefik.http.middlewares.bazarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
+      start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:6767/"
 
   homepage:

@@ -2,7 +2,7 @@ services:
   manyfold:
     container_name: manyfold
     image: ${MANYFOLD_IMAGE:-ghcr.io/manyfold3d/manyfold-solo}:${MANYFOLD_IMAGE_TAG:-latest}
-    profiles: ["${MANYFOLD_PROFILE:-library}"]
+    profiles: [ "${MANYFOLD_PROFILE:-library}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -46,8 +46,5 @@ services:
       - "traefik.http.middlewares.manyfold.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "wget --no-verbose --tries=1 --spider http://localhost:3214/health || exit 1"
+      start_period: "30s"
+      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:3214/health || exit 1"

@@ -2,7 +2,7 @@ services:
   chaptarr:
     container_name: chaptarr
     image: ${CHAPTARR_IMAGE:-robertlordhood/chaptarr}:${CHAPTARR_IMAGE_TAG:-latest}
-    profiles: ["${CHAPTARR_PROFILE:-media}"]
+    profiles: [ "${CHAPTARR_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml
       service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
@@ -53,11 +53,8 @@ services:
       - "traefik.http.middlewares.chaptarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "wget --no-verbose --tries=1 --spider http://localhost:8789/ping || exit 1"
+      start_period: "30s"
+      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:8789/ping || exit 1"
 
   homepage:
     secrets:

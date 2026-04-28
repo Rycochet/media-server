@@ -2,7 +2,7 @@ services:
   adguardhome:
     container_name: adguardhome
     image: ${ADGUARDHOME_IMAGE:-adguard/adguardhome}:${ADGUARDHOME_IMAGE_TAG:-latest}
-    profiles: ["${ADGUARDHOME_PROFILE:-network}"]
+    profiles: [ "${ADGUARDHOME_PROFILE:-network}" ]
     restart: unless-stopped
     networks:
       - external
@@ -56,8 +56,5 @@ services:
       - "traefik.http.middlewares.adguardhome.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "wget --no-verbose --tries=1 --spider http://localhost:${ADGUARDHOME_PORT:-80}/ || exit 1"
+      start_period: "30s"
+      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:${ADGUARDHOME_PORT:-80}/ || exit 1"

@@ -1,8 +1,8 @@
 services:
   scrutiny:
     container_name: scrutiny
-    image: ${SCRUTINY_IMAGE:-ghcr.io/analogj/scrutiny}:${SCRUTINY_IMAGE_TAG:-latest}
-    profiles: ["${SCRUTINY_PROFILE:-information}"]
+    image: ${SCRUTINY_IMAGE:-ghcr.io/analogj/scrutiny}:${SCRUTINY_IMAGE_TAG:-v0-omnibus}
+    profiles: [ "${SCRUTINY_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -41,8 +41,5 @@ services:
       - "traefik.http.middlewares.scrutiny.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8080/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8080/"

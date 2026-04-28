@@ -2,7 +2,7 @@ services:
   whisparr:
     container_name: whisparr
     image: ${WHISPARR_IMAGE:-ghcr.io/hotio/whisparr}:${WHISPARR_IMAGE_TAG:-v3}
-    profiles: ["${WHISPARR_PROFILE:-media}"]
+    profiles: [ "${WHISPARR_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml
       service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
@@ -52,11 +52,8 @@ services:
       - "traefik.http.middlewares.whisparr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:6969/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:6969/"
 
   homepage:
     secrets:

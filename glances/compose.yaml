@@ -2,7 +2,7 @@ services:
   glances:
     container_name: glances
     image: ${GLANCES_IMAGE:-nicolargo/glances}:${GLANCES_IMAGE_TAG:-ubuntu-latest-full}
-    profiles: ["${GLANCES_PROFILE:-information}"]
+    profiles: [ "${GLANCES_PROFILE:-information}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -57,8 +57,5 @@ services:
       - "traefik.http.middlewares.glances.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "15s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
+      start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:61208/api/4/status"

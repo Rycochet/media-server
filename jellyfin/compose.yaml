@@ -2,7 +2,7 @@ services:
   jellyfin:
     container_name: jellyfin
     image: ${JELLYFIN_IMAGE:-lscr.io/linuxserver/jellyfin}:${JELLYFIN_IMAGE_TAG:-latest}
-    profiles: ["${JELLYFIN_PROFILE:-library}"]
+    profiles: [ "${JELLYFIN_PROFILE:-library}" ]
     extends:
       file: ../compose.extend.yaml
       service: "cf-${USE_CLOUDFLARED:-true}_gpu-${USE_GPU:-none}"
@@ -60,11 +60,8 @@ services:
       - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8096/health"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8096/health"
 
   homepage:
     secrets:

@@ -1,8 +1,8 @@
 services:
   pgadmin:
     container_name: pgadmin
-    image: ${PGADMIN_IMAGE:-dpage/pgadmin4}:${PGADMIN_IMAGE_TAG:-latest}
-    profiles: ["${PGADMIN_PROFILE:-media}"]
+    image: ${PGADMIN_IMAGE:-dpage/pgadmin4}:${PGADMIN_IMAGE_TAG:-9}
+    profiles: [ "${PGADMIN_PROFILE:-media}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -40,8 +40,5 @@ services:
       - "traefik.http.middlewares.pgadmin.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "wget --no-verbose --tries=1 --spider http://localhost/ || exit 1"
+      start_period: "30s"
+      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost/ || exit 1"

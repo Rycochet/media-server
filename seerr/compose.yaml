@@ -1,8 +1,8 @@
 services:
   seerr:
     container_name: seerr
-    image: ${SEERR_IMAGE:-ghcr.io/seerr-team/seerr}:${SEERR_IMAGE_TAG:-latest}
-    profiles: ["${SEERR_PROFILE:-information}"]
+    image: ${SEERR_IMAGE:-ghcr.io/seerr-team/seerr}:${SEERR_IMAGE_TAG:-v3}
+    profiles: [ "${SEERR_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
       - external
@@ -37,7 +37,7 @@ services:
       - "homepage.widget.type=seerr"
       - "homepage.widget.url=http://seerr:5055"
       - "homepage.widget.key={{HOMEPAGE_FILE_SEERR_API}}"
-      - 'homepage.widget.fields=["pending", "approved", "completed", "issues"]'
+      - "homepage.widget.fields=[\"pending\", \"approved\", \"completed\", \"issues\"]"
 
       - "traefik.enable=true"
       - "traefik.http.routers.seerr.rule=Host(`seerr.$DOMAIN`) || Host(`ask.$DOMAIN`)"
@@ -47,11 +47,8 @@ services:
       - "traefik.http.middlewares.seerr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1"
+      start_period: "30s"
+      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:5055/api/v1/status || exit 1"
 
   homepage:
     secrets:

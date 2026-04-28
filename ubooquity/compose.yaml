@@ -2,7 +2,7 @@ services:
   ubooquity:
     container_name: ubooquity
     image: ${UBOOQUITY_IMAGE:-lscr.io/linuxserver/ubooquity}:${UBOOQUITY_IMAGE_TAG:-latest}
-    profiles: ["${UBOOQUITY_PROFILE:-media}"]
+    profiles: [ "${UBOOQUITY_PROFILE:-media}" ]
     restart: unless-stopped
     networks:
       - external
@@ -46,8 +46,5 @@ services:
       - "traefik.http.middlewares.ubooquity.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:2202/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:2202/"

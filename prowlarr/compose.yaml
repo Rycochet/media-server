@@ -2,7 +2,7 @@ services:
   prowlarr:
     container_name: prowlarr
     image: ${PROWLARR_IMAGE:-lscr.io/linuxserver/prowlarr}:${PROWLARR_IMAGE_TAG:-latest}
-    profiles: ["${PROWLARR_PROFILE:-download}"]
+    profiles: [ "${PROWLARR_PROFILE:-download}" ]
     extends:
       file: ../compose.extend.yaml
       service: "vpn-${USE_VPN:-false}"
@@ -50,11 +50,8 @@ services:
       - "traefik.http.middlewares.prowlarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:9696/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:9696/"
 
   homepage:
     secrets:

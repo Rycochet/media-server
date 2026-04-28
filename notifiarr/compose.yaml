@@ -2,8 +2,8 @@ services:
   notifiarr:
     container_name: notifiarr
     # YOu must use the "cuda" tag to support Nvidia GPU
-    image: ${NOTIFIARR_IMAGE:-ghcr.io/notifiarr/notifiarr}:${NOTIFIARR_IMAGE_TAG:-latest}
-    profiles: ["${NOTIFIARR_PROFILE:-information}"]
+    image: ${NOTIFIARR_IMAGE:-ghcr.io/notifiarr/notifiarr}:${NOTIFIARR_IMAGE_TAG:-0}
+    profiles: [ "${NOTIFIARR_PROFILE:-information}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -71,8 +71,5 @@ services:
       - "traefik.http.middlewares.notifiarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
+      start_period: "30s"
       test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5454'"

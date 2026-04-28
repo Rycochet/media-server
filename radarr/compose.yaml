@@ -2,7 +2,7 @@ services:
   radarr:
     container_name: radarr
     image: ${RADARR_IMAGE:-lscr.io/linuxserver/radarr}:${RADARR_IMAGE_TAG:-latest}
-    profiles: ["${RADARR_PROFILE:-media}"]
+    profiles: [ "${RADARR_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml
       service: "pg-${USE_POSTGRES:-false}_vpn-${USE_VPN:-false}"
@@ -52,11 +52,8 @@ services:
       - "traefik.http.middlewares.radarr.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:7878/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:7878/"
 
   homepage:
     secrets:

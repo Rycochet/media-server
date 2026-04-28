@@ -2,7 +2,7 @@ services:
   webtop:
     container_name: webtop
     image: ${WEBTOP_IMAGE:-lscr.io/linuxserver/webtop}:${WEBTOP_IMAGE_TAG:-latest}
-    profiles: ["${WEBTOP_PROFILE:-desktop}"]
+    profiles: [ "${WEBTOP_PROFILE:-desktop}" ]
     extends:
       file: ../compose.extend.yaml
       service: "vpn-${USE_VPN:-false}"
@@ -60,8 +60,5 @@ services:
       - "traefik.http.middlewares.webtop.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
+      start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:3000/"

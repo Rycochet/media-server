@@ -2,7 +2,7 @@ services:
   openspeedtest:
     container_name: openspeedtest
     image: ${OPENSPEEDTEST_IMAGE:-openspeedtest/latest}:${OPENSPEEDTEST_IMAGE_TAG:-latest}
-    profiles: ["${OPENSPEEDTEST_PROFILE:-network}"]
+    profiles: [ "${OPENSPEEDTEST_PROFILE:-network}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -36,8 +36,5 @@ services:
       - "traefik.http.middlewares.openspeedtest.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:3000/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:3000/"

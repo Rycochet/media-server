@@ -2,7 +2,7 @@ services:
   sabnzbd:
     container_name: sabnzbd
     image: ${SABNZBD_IMAGE:-lscr.io/linuxserver/sabnzbd}:${SABNZBD_IMAGE_TAG:-latest}
-    profiles: ["${SABNZBD_PROFILE:-download}"]
+    profiles: [ "${SABNZBD_PROFILE:-download}" ]
     extends:
       file: ../compose.extend.yaml
       service: "vpn-${USE_VPN:-false}"
@@ -51,11 +51,8 @@ services:
       - "traefik.http.middlewares.sabnzbd.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "curl --connect-timeout 15 --silent --show-error --fail http://localhost:8085/"
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8085/"
 
   homepage:
     secrets:

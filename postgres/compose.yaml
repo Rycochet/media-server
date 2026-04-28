@@ -2,7 +2,7 @@ services:
   postgres:
     container_name: postgres
     image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_IMAGE_TAG:-17-alpine}
-    profiles: ["${POSTGRES_PROFILE:-media}"]
+    profiles: [ "${POSTGRES_PROFILE:-media}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -31,8 +31,5 @@ services:
       - "traefik.enable=false"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "pg_isready -d postgres -U postgres"
+      start_period: "30s"
+      test: ["CMD", "pg_isready", "-d", "postgres", "-U", "postgres"]

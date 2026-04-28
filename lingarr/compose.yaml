@@ -2,7 +2,7 @@ services:
   lingarr:
     container_name: lingarr
     image: ${LINGARR_IMAGE:-lingarr/lingarr}:${LINGARR_IMAGE_TAG:-latest}
-    profiles: ["${LINGARR_PROFILE:-quality}"]
+    profiles: [ "${LINGARR_PROFILE:-quality}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -55,7 +55,5 @@ services:
 
     healthcheck:
       interval: "300s" # Note that it locks up during transcribe, so this must be longer than a movie
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
+      start_period: "30s"
       test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/8080'"

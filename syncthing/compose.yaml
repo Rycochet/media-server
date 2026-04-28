@@ -1,8 +1,8 @@
 services:
   syncthing:
     container_name: syncthing
-    image: ${SYNCTHING_IMAGE:-syncthing/syncthing}:${SYNCTHING_IMAGE_TAG:-latest}
-    profiles: ["${SYNCTHING_PROFILE:-download}"]
+    image: ${SYNCTHING_IMAGE:-syncthing/syncthing}:${SYNCTHING_IMAGE_TAG:-2}
+    profiles: [ "${SYNCTHING_PROFILE:-download}" ]
     extends:
       file: ../compose.extend.yaml
       service: "vpn-${USE_VPN:-false}"
@@ -10,7 +10,8 @@ services:
     networks:
       - external
       - internal
-    ports: # Allow other machines on the LAN
+    ports:
+      # Allow other machines on the LAN
       - "21027:21027/udp" # Local announce
       - "22000:22000/tcp" # TCP file transfers
       - "22000:22000/udp" # QUIC file transfers
@@ -65,10 +66,7 @@ services:
       - "traefik.http.middlewares.syncthing.headers.accessControlAllowOriginList=https://$DOMAIN"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
+      start_period: "30s"
       test: "curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1"
 
   homepage:

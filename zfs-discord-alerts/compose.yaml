@@ -2,7 +2,7 @@ services:
   zfs-discord-alerts:
     container_name: zfs-discord-alerts
     image: ${ZFS_DISCORD_ALERTS_IMAGE:-ghcr.io/rycochet/zfs-discord-alerts}:${ZFS_DISCORD_ALERTS_IMAGE_TAG:-latest}
-    profiles: ["${ZFS_DISCORD_ALERTS_PROFILE:-tools}"]
+    profiles: [ "${ZFS_DISCORD_ALERTS_PROFILE:-tools}" ]
     restart: unless-stopped
     read_only: true
     networks:
@@ -46,8 +46,5 @@ services:
       - "homepage.widget.mappings[2].format=number"
 
     healthcheck:
-      interval: "30s"
-      timeout: "5s"
-      retries: 3
-      start_period: "10s"
-      test: "wget --no-verbose --tries=1 --spider http://127.0.0.1:8080/_ping || exit 1"
+      start_period: "30s"
+      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1:8080/_ping || exit 1"

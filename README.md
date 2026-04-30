@@ -70,7 +70,6 @@ This is a list of all services, and the profiles they are started with. Note tha
 | prowlarr               | download    | Torrent / NNTP search proxy |
 | qbittorrent            | download    | Torrent downloader |
 | radarr                 | media       | Movies |
-| readarr                | media       | eBooks / Audiobooks |
 | sabnzbd                | download    | NNTP downloader |
 | scrutiny               | information | S.M.A.R.T. information |
 | seerr                  | information | Media requests and issue tracking |

@@ -2,7 +2,7 @@ services:
   error-pages:
     container_name: error-pages
     image: ${ERROR_PAGES_IMAGE:-ghcr.io/tarampampam/error-pages}:${ERROR_PAGES_IMAGE_TAG:-3}
-    profiles: ["${ERROR_PAGES_PROFILE:-network}"]
+    profiles: ["${ERROR_PAGES_PROFILE:-core}"]
     restart: unless-stopped
     networks:
       - internal

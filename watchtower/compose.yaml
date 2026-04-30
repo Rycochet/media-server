@@ -2,7 +2,7 @@ services:
   watchtower:
     container_name: watchtower
     image: ${WATCHTOWER_IMAGE:-nickfedor/watchtower}:${WATCHTOWER_IMAGE_TAG:-1}
-    profiles: ["${WATCHTOWER_PROFILE:-infrastructure}"]
+    profiles: ["${WATCHTOWER_PROFILE:-core}"]
     restart: unless-stopped
     networks:
       - external

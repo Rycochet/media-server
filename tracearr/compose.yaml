@@ -2,7 +2,7 @@ services:
   tracearr:
     container_name: tracearr
     image: ${TRACEARR_IMAGE:-ghcr.io/connorgallopo/tracearr}:${TRACEARR_IMAGE_TAG:-supervised}
-    profiles: ["${TRACEARR_PROFILE:-quality}"]
+    profiles: ["${TRACEARR_PROFILE:-library}"]
     restart: unless-stopped
     networks:
       - internal

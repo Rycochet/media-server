@@ -2,7 +2,7 @@ services:
   libretranslate:
     container_name: libretranslate
     image: ${LIBRETRANSLATE_IMAGE:-libretranslate/libretranslate}:${LIBRETRANSLATE_IMAGE_TAG:-latest}
-    profiles: ["${LIBRETRANSLATE_PROFILE:-quality}"]
+    profiles: ["${LIBRETRANSLATE_PROFILE:-tools}"]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"

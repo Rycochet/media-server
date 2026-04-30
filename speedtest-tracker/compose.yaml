@@ -2,7 +2,7 @@ services:
   speedtest-tracker:
     container_name: speedtest-tracker
     image: ${SPEEDTEST_TRACKER_IMAGE:-lscr.io/linuxserver/speedtest-tracker}:${SPEEDTEST_TRACKER_IMAGE_TAG:-latest}
-    profiles: [ "${SPEEDTEST_TRACKER_PROFILE:-media}" ]
+    profiles: [ "${SPEEDTEST_TRACKER_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
       - external

@@ -2,7 +2,7 @@ services:
   watchstate:
     container_name: watchstate
     image: ${WATCHSTATE_IMAGE:-ghcr.io/arabcoders/watchstate}:${WATCHSTATE_IMAGE_TAG:-latest}
-    profiles: ["${WATCHSTATE_PROFILE:-information}"]
+    profiles: ["${WATCHSTATE_PROFILE:-tools}"]
     restart: unless-stopped
     networks:
       - internal

@@ -2,7 +2,7 @@ services:
   pgadmin:
     container_name: pgadmin
     image: ${PGADMIN_IMAGE:-dpage/pgadmin4}:${PGADMIN_IMAGE_TAG:-9}
-    profiles: [ "${PGADMIN_PROFILE:-media}" ]
+    profiles: [ "${PGADMIN_PROFILE:-tools}" ]
     restart: unless-stopped
     networks:
       - internal

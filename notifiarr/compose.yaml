@@ -3,7 +3,7 @@ services:
     container_name: notifiarr
     # YOu must use the "cuda" tag to support Nvidia GPU
     image: ${NOTIFIARR_IMAGE:-ghcr.io/notifiarr/notifiarr}:${NOTIFIARR_IMAGE_TAG:-0}
-    profiles: [ "${NOTIFIARR_PROFILE:-information}" ]
+    profiles: [ "${NOTIFIARR_PROFILE:-tools}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"

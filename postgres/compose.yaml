@@ -2,7 +2,7 @@ services:
   postgres:
     container_name: postgres
     image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_IMAGE_TAG:-17-alpine}
-    profiles: [ "${POSTGRES_PROFILE:-media}" ]
+    profiles: [ "${POSTGRES_PROFILE:-tools}" ]
     restart: unless-stopped
     networks:
       - internal

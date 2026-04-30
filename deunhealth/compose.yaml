@@ -2,7 +2,7 @@ services:
   deunhealth:
     container_name: deunhealth
     image: ${DEUNHEALTH_IMAGE:-qmcgaw/deunhealth}:${DEUNHEALTH_IMAGE_TAG:-latest}
-    profiles: ["${DEUNHEALTH_PROFILE:-infrastructure}"]
+    profiles: ["${DEUNHEALTH_PROFILE:-core}"]
     restart: unless-stopped
     network_mode: none
     depends_on:

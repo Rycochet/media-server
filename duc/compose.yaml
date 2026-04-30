@@ -2,7 +2,7 @@ services:
   duc:
     container_name: duc
     image: ${DUC_IMAGE:-tigerdockermediocore/duc-docker}:${DUC_IMAGE_TAG:-1}
-    profiles: [ "${DUC_PROFILE:-disabled}" ]
+    profiles: [ "${DUC_PROFILE:-tools}" ]
     # restart: unless-stopped
     networks:
       - internal
@@ -22,7 +22,7 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Information"
+      - "homepage.group=Tools"
       - "homepage.name=DUC"
       - "homepage.icon=qdirstat.png"
       - "homepage.href=https://duc.$DOMAIN/"

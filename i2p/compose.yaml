@@ -2,7 +2,7 @@ services:
   i2p:
     container_name: i2p
     image: ${I2P_IMAGE:-geti2p/i2p}:${I2P_IMAGE_TAG:-latest}
-    profiles: ["${I2P_PROFILE:-disabled}"]
+    profiles: ["${I2P_PROFILE:-network}"]
     restart: unless-stopped
     networks:
       - external
@@ -26,7 +26,7 @@ services:
     labels:
       - "deunhealth.restart.on.unhealthy=true"
 
-      - "homepage.group=Download"
+      - "homepage.group=Tools"
       - "homepage.name=I2P"
       - "homepage.icon=i2p.png"
       - "homepage.href=https://i2p.$DOMAIN/"

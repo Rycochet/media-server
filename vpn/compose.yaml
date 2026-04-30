@@ -2,7 +2,7 @@ services:
   vpn:
     container_name: vpn
     image: ${VPN_IMAGE:-qmcgaw/gluetun}:${VPN_IMAGE_TAG:-v3}
-    profiles: ["${VPN_PROFILE:-network}"]
+    profiles: ["${VPN_PROFILE:-core}"]
     restart: unless-stopped
     networks:
       - external

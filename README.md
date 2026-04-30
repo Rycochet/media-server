@@ -3,62 +3,111 @@
 > [!IMPORTANT]
 > This uses Cloudflare for incoming connections, NordVPN for outgoing, and Google Auth for logging in. If you cannot figure those out with help from google then this might not be the setup for you!
 
+> [!WARNING]
+> I do not use all of these services, so not everything is guaranteed to work.
+
 > [!NOTE]
 > This is the barebones setup for a media server, it does not include any config (although over time I may add more document and templates explaining what to do).
 
 <img width="1304" height="715" alt="image" src="https://github.com/user-attachments/assets/4bf99c07-ac29-4233-863e-af6cd92f10aa" />
-
-## Components
-
-> This is a partial list, the individual folders have every service, and I'll maybe add information for each over time.
-
-### Media Server
-
-* **AudioBookShelf**: Audiobook media server.
-* **Kapowarr**: Comic Books.
-* **Manyfold**: 3d model server.
-* **Overseerr**: Requests for Sonarr / Radarr.
-* **Plex Media Server**: Main media server.
-
-### Content Management
-
-* **Bazarr**: Subtitle Management (for Movies and TV Shows).
-* **Kometa**: Add overlays to posters for tv and movies in Plex.
-* **Imagemaid**: Delete unused posters in Plex.
-* **Lidarr**: Music Management.
-* **Plex-Find-Mismatch**: Find incorrect matches in Plex.
-* **Prowlarr**: Usenet and Torrent Search.
-* **qBittorrent**: Torrent downloads.
-* **Radarr**: Movie Management.
-* **SABnzbd**: Usenet downloads.
-* **Sonarr**: TV Show Management.
-* **Tdarr**: Transcode media for cnosistency and size.
-* **Titlecardmaker**: Add consistent posters to episodes in Plex.
-
-### System / Networking
-
-* **Cloudflared**: Cloudflare Tunnel (incoming web requests).
-* **DeUnhealth**: Restart unhealthy services.
-* **Error-Pages**: Better looking error pages.
-* **NordLynx** + **Socks5-Proxy**: VPN (outgoing connections).
-* **OpenSpeedTest**: Speed test app to server.
-* **Scrutiny**: S.M.A.R.T. information.
-* **SyncThing**: Synchronise libraries between multiple computers.
-* **TinyAuth**: Google OAuth login security.
-* **Traefik**: Webapp Routing.
-* **Watchtower**: Automatic updating of services.
-
-### Information
-
-* **Glances**: (Hardware) Server Status.
-* **Homer**: Dashboard
-* **Tautulli**: Plex Server Status.
 
 ## Concept
 
 Every service uses a similar folder layout, this includes having a `config` folder inside the service folder for easier backup and configuration.
 
 When one service depends on another it should only be started first (with a couple of exceptions that require them to be healthy first).
+
+There are some included scripts for use within various services directly - you do not need to install python or have anything more than `bash` available on the server.
+
+### Services
+
+This is a list of all services, and the profiles they are started with. Note that only the `core` profiles are included in the `compose.yaml` file, everything else needs to be manually added.
+
+| NAME                   | PROFILE     | DESCRIPTION |
+| ---------------------- | ----------- | ----------- |
+| cloudflared            | core        | Cloudflare tunnel |
+| deunhealth             | core        | Bring unhealthy containers back up |
+| error-pages            | core        | Error pages |
+| socket-proxy           | core        | Secure access to the docker socket |
+| tinyauth               | core        | OAuth via Google |
+| traefik                | core        | HTTP routing |
+| vpn                    | core        | VPN + HTTP Proxy + Socks5 Proxy |
+| watchtower             | core        | Auto-update containers |
+| adguardhome            | network     | Ads & trackers blocking DNS server |
+| audiobookshelf         | library     | Audiobooks library |
+| bazarr                 | media       | Subtitles |
+| beszel                 | information | System information |
+| chaptarr               | media       | Books / Audiobooks |
+| cleanuparr             | download    | Bad download handling |
+| docker-discord-alerts  | tools       | Notify Discord when docker containers change |
+| dozzle                 | information | Docker status |
+| duc                    | tools       | Disk usage |
+| emby                   | library     | Media library |
+| flaresolverr           | network     | Cloudflare captcha bypasss |
+| glances                | information | Operating system status |
+| homepage               | information | Dashboard |
+| i2p                    | network     | I2P Client |
+| imagemaid              | quality     | Cleanup Plex image cache |
+| jellyfin               | library     | Open source media library |
+| kapowarr               | library     | Comics |
+| kometa                 | quality     | Poster overlays, collections, playlists for Plex |
+| komga                  | library     | Comic library |
+| libretranslate         | tools       | Translation |
+| lidarr                 | media       | Music |
+| lingarr                | quality     | Subtitle translation |
+| manyfold               | library     | 3d models library |
+| minecraft              | games       | Minecraft |
+| mylar                  | media       | Comics |
+| neutarr                | download    | Missing media search |
+| notifiarr              | tools       | System notifications |
+| onlyfans               | download    | Download all subscriptions |
+| openspeedtest          | network     | Bandwidth test to server |
+| pgadmin                | tools       | Database admin |
+| plex                   | library     | Media library |
+| plex-find-mismatch     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |
+| portainer              | information | Container management |
+| postgres               | tools       | Database |
+| prowlarr               | download    | Torrent / NNTP search proxy |
+| qbittorrent            | download    | Torrent downloader |
+| radarr                 | media       | Movies |
+| readarr                | media       | eBooks / Audiobooks |
+| sabnzbd                | download    | NNTP downloader |
+| scrutiny               | information | S.M.A.R.T. information |
+| seerr                  | information | Media requests and issue tracking |
+| sonarr                 | media       | TV Shows |
+| sonarr_youtubedl       | disabled    | Download from Youtube |
+| speedtest-tracker      | information | Speedtest with history |
+| stash                  | tools       | Porn database |
+| subgen                 | quality     | Audio transription |
+| syncthing              | download    | Remote data synchronisation |
+| tautulli               | information | Plex stats |
+| tdarr                  | quality     | Transcoding / format shifting / audio normalisation |
+| tdarr_inform           | quality     | Notifications from sonarr / radarr / etc to tdarr |
+| tdarr-node             | quality     | Transcoding node for tdarr |
+| titlecardmaker         | quality     | Episode thumbnails for Plex |
+| tracearr               | library     | Plex & Emby monitoring |
+| ubooquity              | media       | Comics |
+| watchstate             | tools       | Sync media library watch state |
+| webtop                 | desktop     | Linux desktop |
+| whisparr               | media       | Porn |
+| whoami                 | network     | Who... Am... I...? |
+| windows                | desktop     | Windows desktop |
+| zfdash                 | information | ZFS administration |
+| zfs-discord-alerts     | tools       | Notify Discord when there are zfs problems |
+
+> [!NOTE]
+> The `core` PROFILE services are enabled in the `compose.yaml` file, you must add any others you wish to a `compose.override.yaml` file instead:
+> ```yaml
+> include:
+>   - whoami/compose.yaml
+> ```
+
+## Network
+
+This has two networks defined in `compose.yaml`.
+
+* The `internal` network does not have internet access, and is used for inter-service communication. All routing into the stack should come through `traefik` which acts as a bridge between the two.
+* The `external` network allows for a service to contact the internet directly. (Ideally services should be using the `http://vpn:8888` service as an http(s) proxy instead.)
 
 ## Installation
 
@@ -69,7 +118,7 @@ It is advised to use VSCode or similar that does syntax highlighting (ie, colors
 
 Duplicate the `.env.example` file as `.env`, all configuration needs to go in here.
 
-The easiest way to disable services is to edit the root `compose.yaml` file and comment out the services you don't want by placing a `#` at the beginning of the line.
+Create an empty `compose.override.yaml` file, and copy the commented block of `include:` services into it, then to enable a service you can simply uncomment that line. For some services have a look for included template files that want copying into theit `config/` folders and renaming.
 
 ### Google
 
@@ -93,7 +142,7 @@ The easiest way to disable services is to edit the root `compose.yaml` file and 
 1. Sign up for Zero Trust - you can choose the personal 0-cost.
 1. Go to Networks -> Tunnels
     1. Create a Tunnel, name it for your domain
-    1. Copy the "Run the following command" suggestion, paste it as `CLOUDFLARED_TOKEN` in `.env` then remove the `cloudflared.exe service install ` prefix (including space).
+    1. Copy the "Run the following command" suggestion, paste it as `CLOUDFLARED_TOKEN` in `.env` then remove the `cloudflared.exe service install` prefix (including space).
     1. Create 2 public hostnames, one to your domain, and one to `*` at your domain
         * Both have a service of `https://traefik`
         * Both have Advanced -> TLS -> Origin Server Name as your domain

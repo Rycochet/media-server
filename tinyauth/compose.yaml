@@ -2,7 +2,7 @@ services:
   tinyauth:
     container_name: tinyauth
     image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v5-distroless}
-    profiles: ["${TINYAUTH_PROFILE:-network}"]
+    profiles: ["${TINYAUTH_PROFILE:-core}"]
     restart: unless-stopped
     networks:
       - external

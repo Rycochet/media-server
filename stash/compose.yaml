@@ -2,7 +2,7 @@ services:
   stash:
     container_name: stash
     image: ${STASH_IMAGE:-stashapp/stash}:${STASH_IMAGE_TAG:-latest}
-    profiles: [ "${STASH_PROFILE:-media}" ]
+    profiles: [ "${STASH_PROFILE:-tools}" ]
     restart: unless-stopped
     networks:
       - internal

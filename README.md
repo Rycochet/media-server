@@ -1,5 +1,21 @@
 # Media Server with Docker Compose
 
+- [Media Server with Docker Compose](#media-server-with-docker-compose)
+  - [Concept](#concept)
+  - [Network](#network)
+  - [Installation](#installation)
+    - [Google](#google)
+    - [Cloudflare](#cloudflare)
+      - [Domain name](#domain-name)
+      - [Tunnel (incoming security)](#tunnel-incoming-security)
+      - [Make subdomains accessible](#make-subdomains-accessible)
+      - [Allow ssl certificates to be created](#allow-ssl-certificates-to-be-created)
+    - [NordVPN](#nordvpn)
+    - [Media Paths](#media-paths)
+    - [Plex](#plex)
+    - [Services](#services)
+  - [Bootstrap](#bootstrap)
+
 > [!IMPORTANT]
 > This uses Cloudflare for incoming connections, NordVPN for outgoing, and Google Auth for logging in. If you cannot figure those out with help from google then this might not be the setup for you!
 
@@ -7,7 +23,7 @@
 > I do not use all of these services, so not everything is guaranteed to work.
 
 > [!NOTE]
-> This is the barebones setup for a media server, it does not include any config (although over time I may add more document and templates explaining what to do).
+> This is the barebones setup for a media server, it does not include any config (although over time I may add more documentation and templates explaining what to do).
 
 <img width="1304" height="715" alt="image" src="https://github.com/user-attachments/assets/4bf99c07-ac29-4233-863e-af6cd92f10aa" />
 
@@ -18,6 +34,83 @@ Every service uses a similar folder layout, this includes having a `config` fold
 When one service depends on another it should only be started first (with a couple of exceptions that require them to be healthy first).
 
 There are some included scripts for use within various services directly - you do not need to install python or have anything more than `bash` available on the server.
+
+## Network
+
+This has two networks defined in `compose.yaml`.
+
+* The `internal` network does not have internet access, and is used for inter-service communication. All routing into the stack should come through `traefik` which acts as a bridge between the two.
+* The `external` network allows for a service to contact the internet directly. (Ideally services should be using the `http://vpn:8888` service as an http(s) proxy instead.)
+
+## Installation
+
+> [!IMPORTANT]
+> The `install.sh` script is not usable yet, these other steps are always going to be manual!
+
+It is advised to use VSCode or similar that does syntax highlighting (ie, colors) for the files you edit!
+
+Duplicate the `.env.example` file as `.env`, all configuration needs to go in here.
+
+Create an empty `compose.override.yaml` file, and copy the commented block of `include:` services into it, then to enable a service you can simply uncomment that line. For some services have a look for included template files that want copying into theit `config/` folders and renaming.
+
+### Google
+
+1. Add your email address as the `EMAIL` and `WHITELIST` in `.env`
+1. Follow these instructions: <https://developers.google.com/identity/protocols/oauth2>
+1. Add the `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env`
+1. Place a long random hexadecimal value in `OAUTH_SECRET` in .env`
+    * The best way is to use the output of `openssl rand -hex 16`
+
+### Cloudflare
+
+#### Domain name
+
+1. Make an account if you haven't already.
+1. Buy a domain, or if you already have one you can transfer the domain servers accross.
+    * Set this as the `DOMAIN` in `.env`
+    * Replace the `$DOMAIN` in `PLEX_URL` with this.
+
+#### Tunnel (incoming security)
+
+1. Sign up for Zero Trust - you can choose the personal 0-cost.
+1. Go to Networks -> Tunnels
+    1. Create a Tunnel, name it for your domain
+    1. Copy the "Run the following command" suggestion, paste it as `CLOUDFLARED_TOKEN` in `.env` then remove the `cloudflared.exe service install` prefix (including space).
+    1. Create 2 public hostnames, one to your domain, and one to `*` at your domain
+        * Both have a service of `https://traefik`
+        * Both have Advanced -> TLS -> Origin Server Name as your domain
+        * Both have Advanced -> TLS -> HTTP2 connection turned on
+
+#### Make subdomains accessible
+
+1. Go back to Account Home, then click on your domain name.
+1. Under the Domain (Zone) settings go to SSL/TLS -> Overview, and enable Full encryption.
+1. Under DNS -> Records, create a CNAME entry for `*` pointing at your domain.
+1. Under DNS -> Settings, enable DNSSEC.
+
+#### Allow ssl certificates to be created
+
+1. Click on your Profile in the top right, go to your profile, then click on API Tokens on the left.
+1. Create a Token using the Edit zone DNS template
+1. Allow it access to your domain under Zone Resources
+1. Copy the token to `CLOUDFLARE_API` in `.env`
+
+### NordVPN
+
+1. Make an account, click on NordVPN on the left, scroll down to API Key, create one and copy to `VPN_PRIVATE_KEY` in `.env`
+
+### Media Paths
+
+1. Make sure you set `PATH_DOWNLOADS` to a good download folder, this will be used by multiple services as a consistent location.
+1. Place all of your media paths in the `PATH_XYZ` variables in `.env` - add more as needed.
+
+### Plex
+
+1. Use these instructions to get `PLEX_TOKEN` in `.env` - <https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/>
+1. Ensure you have all the correct paths for Plex from the Media Paths section above. Internally we're going to map them all under the `/data/` folder.
+1. In your current Plex server go to Settings -> Library, and disable (and save) the "Empty trash automatically after every scan" option!
+1. Stop Plex Media Server!
+1. Copy (move is risky, but it's your library) the Plex Config folder starting at `Library` into `plex/config/` - so there is a folder in there called `Library`.
 
 ### Services
 
@@ -100,83 +193,6 @@ This is a list of all services, and the profiles they are started with. Note tha
 > include:
 >   - whoami/compose.yaml
 > ```
-
-## Network
-
-This has two networks defined in `compose.yaml`.
-
-* The `internal` network does not have internet access, and is used for inter-service communication. All routing into the stack should come through `traefik` which acts as a bridge between the two.
-* The `external` network allows for a service to contact the internet directly. (Ideally services should be using the `http://vpn:8888` service as an http(s) proxy instead.)
-
-## Installation
-
-> [!IMPORTANT]
-> The `install.sh` script is not usable yet, these other steps are always going to be manual!
-
-It is advised to use VSCode or similar that does syntax highlighting (ie, colors) for the files you edit!
-
-Duplicate the `.env.example` file as `.env`, all configuration needs to go in here.
-
-Create an empty `compose.override.yaml` file, and copy the commented block of `include:` services into it, then to enable a service you can simply uncomment that line. For some services have a look for included template files that want copying into theit `config/` folders and renaming.
-
-### Google
-
-1. Add your email address as the `EMAIL` and `WHITELIST` in `.env`
-1. Follow these instructions: <https://developers.google.com/identity/protocols/oauth2>
-1. Add the `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env`
-1. Place a long random hexadecimal value in `OAUTH_SECRET` in .env`
-    * The best way is to use the output of `openssl rand -hex 16`
-
-### Cloudflare
-
-#### Domain name
-
-1. Make an account if you haven't already.
-1. Buy a domain, or if you already have one you can transfer the domain servers accross.
-    * Set this as the `DOMAIN` in `.env`
-    * Replace the `$DOMAIN` in `PLEX_URL` with this.
-
-#### Tunnel (incoming security)
-
-1. Sign up for Zero Trust - you can choose the personal 0-cost.
-1. Go to Networks -> Tunnels
-    1. Create a Tunnel, name it for your domain
-    1. Copy the "Run the following command" suggestion, paste it as `CLOUDFLARED_TOKEN` in `.env` then remove the `cloudflared.exe service install` prefix (including space).
-    1. Create 2 public hostnames, one to your domain, and one to `*` at your domain
-        * Both have a service of `https://traefik`
-        * Both have Advanced -> TLS -> Origin Server Name as your domain
-        * Both have Advanced -> TLS -> HTTP2 connection turned on
-
-#### Make subdomains accessible
-
-1. Go back to Account Home, then click on your domain name.
-1. Under the Domain (Zone) settings go to SSL/TLS -> Overview, and enable Full encryption.
-1. Under DNS -> Records, create a CNAME entry for `*` pointing at your domain.
-1. Under DNS -> Settings, enable DNSSEC.
-
-#### Allow ssl certificates to be created
-
-1. Click on your Profile in the top right, go to your profile, then click on API Tokens on the left.
-1. Create a Token using the Edit zone DNS template
-1. Allow it access to your domain under Zone Resources
-1. Copy the token to `CLOUDFLARE_API` in `.env`
-
-### NordVPN
-
-1. Make an account, click on NordVPN on the left, scroll down to API Key, create one and copy to `VPN_PRIVATE_KEY` in `.env`
-
-### Media Paths
-
-1. Make sure you set `PATH_DOWNLOADS` to a good download folder, this will be used by multiple services as a consistent location.
-1. Place all of your media paths in the `PATH_XYZ` variables in `.env` - add more as needed.
-
-### Plex
-
-1. Use these instructions to get `PLEX_TOKEN` in `.env` - <https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/>
-1. Ensure you have all the correct paths for Plex from the Media Paths section above. Internally we're going to map them all under the `/data/` folder.
-1. In your current Plex server go to Settings -> Library, and disable (and save) the "Empty trash automatically after every scan" option!
-1. Stop Plex Media Server!
-1. Copy (move is risky, but it's your library) the Plex Config folder starting at `Library` into `plex/config/` - so there is a folder in there called `Library`.
 
 ## Bootstrap
 

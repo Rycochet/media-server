@@ -21,7 +21,7 @@ services:
       - "deunhealth.restart.on.unhealthy=true"
 
       - "homepage.group=Tools"
-      - "homepage.name=WhoaAmI"
+      - "homepage.name=WhoAmI"
       - "homepage.icon=double-take.png"
       - "homepage.href=https://whoami.$DOMAIN/"
       - "homepage.description=Who... Am... I...?"

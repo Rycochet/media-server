@@ -40,7 +40,7 @@ services:
       - "com.centurylinklabs.watchtower.monitor-only=true"
       - "com.centurylinklabs.watchtower.depends-on=tdarr"
 
-      - "deunhealth.restart.on.unhealthy=false"
+      - "deunhealth.restart.on.unhealthy=true"
 
     healthcheck:
       start_period: "150s"

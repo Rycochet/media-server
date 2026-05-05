@@ -1,0 +1,85 @@
+services:
+  pocket-id:
+    container_name: pocket-id
+    image: ${POCKETID_IMAGE:-ghcr.io/pocket-id/pocket-id}:${POCKETID_IMAGE_TAG:-v2-distroless}
+    profiles: [ "${POCKETID_PROFILE:-tools}" ]
+    restart: unless-stopped
+    networks:
+      - internal
+      - external # needed for maxmind geo-ip
+    depends_on:
+      socket-proxy:
+        condition: service_healthy
+        restart: false
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    user: "${PUID:-1000}:${PGID:-1000}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/app/data"
+    secrets:
+      - pocketid_encryption
+      - pocketid_maxmind
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      ANALYTICS_DISABLED: "true"
+      APP_NAME: "$DOMAIN"
+      APP_URL: "https://auth.$DOMAIN"
+      INTERNAL_APP_URL: "http://pocket-id:1411"
+      SESSION_DURATION: "${POCKETID_SESSION_EXPIRY:-86400}" # Default is 24 hours
+      TRUST_PROXY: "true"
+      # UI_CONFIG_DISABLED: "true"
+      VERSION_CHECK_DISABLED: "true"
+      # Secrets
+      ENCRYPTION_KEY_FILE: "/run/secrets/pocketid_encryption"
+      MAXMIND_LICENSE_KEY_FILE: "/run/secrets/pocketid_maxmind"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Tools"
+      - "homepage.name=PocketID"
+      - "homepage.icon=pocket-id.png"
+      - "homepage.href=https://auth.$DOMAIN/"
+      - "homepage.description=Passkey authentication server"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.pocket-id.rule=Host(`auth.$DOMAIN`)"
+      - "traefik.http.routers.pocket-id.middlewares=error-pages"
+      - "traefik.http.services.pocket-id.loadbalancer.server.port=1411"
+    healthcheck:
+      start_period: "30s"
+
+  tinyauth:
+    secrets:
+      - pocketid_tinyauth_clientsecret
+    environment:
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID: "${POCKETID_TINYAUTH_CLIENTID:-}"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRETFILE: "/run/secrets/pocketid_tinyauth_clientsecret"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: "https://auth.$DOMAIN/authorize"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: "https://auth.$DOMAIN/api/oidc/token"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://auth.$DOMAIN/api/oidc/userinfo"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL: "https://tinyauth.$DOMAIN/api/oauth/callback/pocketid"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: "openid email profile groups"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME: "Pocket ID"
+
+  traefik:
+    networks:
+      internal:
+        aliases:
+          - "auth.$DOMAIN"
+
+secrets:
+  pocketid_encryption:
+    environment: "POCKETID_ENCRYPTION_KEY"
+  pocketid_maxmind:
+    environment: "POCKETID_MAXMIND_KEY"
+  pocketid_tinyauth_clientsecret:
+    environment: "POCKETID_TINYAUTH_CLIENTSECRET"

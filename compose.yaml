@@ -62,6 +62,7 @@ include:
   # - pgadmin/compose.yaml #                | tools       | Database admin |
   # - plex/compose.yaml #                   | library     | Media library |
   # - plex-find-mismatch/compose.yaml #     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |
+  # - pocket-id/compose.yaml #              | tools       | Passkey authentication server |
   # - portainer/compose.yaml #              | information | Container management |
   # - postgres/compose.yaml #               | tools       | Database |
   # - prowlarr/compose.yaml #               | download    | Torrent / NNTP search proxy |

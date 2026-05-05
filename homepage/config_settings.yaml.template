@@ -12,19 +12,19 @@ layout:
     columns: 5
     Information:
       icon: mdi-eye
-    Libraries:
-      icon: mdi-play-circle
+    Grouped:
+      header: false
+      style: column
+      Libraries:
+        icon: mdi-play-circle
+      Games:
+        icon: mdi-controller
     Download:
       icon: mdi-cloud-arrow-down
     Media:
       icon: mdi-multimedia
-    Grouped:
-      header: false
-      style: column
-      Tools:
-        icon: mdi-cog
-      Games:
-        icon: mdi-controller
+    Tools:
+      icon: mdi-cog
 
   Bookmarks:
     icon: mdi-bookmark

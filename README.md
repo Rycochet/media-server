@@ -159,6 +159,7 @@ This is a list of all services, and the profiles they are started with. Note tha
 | pgadmin                | tools       | Database admin |
 | plex                   | library     | Media library |
 | plex-find-mismatch     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |
+| pocket-id              | tools       | Passkey authentication server |
 | portainer              | information | Container management |
 | postgres               | tools       | Database |
 | prowlarr               | download    | Torrent / NNTP search proxy |

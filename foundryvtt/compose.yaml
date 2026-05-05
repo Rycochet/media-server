@@ -25,6 +25,7 @@ services:
       - "./config:/data"
       - "./tmp:/tmp"
     secrets:
+      - foundryvtt_admin_key
       - foundryvtt_username
       - foundryvtt_password
     environment:
@@ -43,6 +44,7 @@ services:
       FOUNDRY_TEMP_DIR: "/tmp"
       FOUNDRYVTT_HOSTNAME: "${DOMAIN}"
       # Secrets
+      FOUNDRY_ADMIN_KEY_FILE: "/run/secrets/foundryvtt_admin_key"
       FOUNDRY_USERNAME_FILE: "/run/secrets/foundryvtt_username"
       FOUNDRY_PASSWORD_FILE: "/run/secrets/foundryvtt_password"
     labels:
@@ -52,14 +54,16 @@ services:
       - "homepage.name=FoundryVTT"
       - "homepage.icon=foundry-vtt.png"
       - "homepage.href=https://rpg.$DOMAIN/"
-      - "homepage.description=Foundry Virtual Tabletop for RPGs"
+      - "homepage.description=Virtual Tabletop for RPGs"
 
       - "traefik.enable=true"
-      - "traefik.http.routers.foundryvtt.rule=Host(`foundryvtt.$DOMAIN`) || Host(`rpg.$DOMAIN`)"
+      - "traefik.http.routers.foundryvtt.rule=Host(`rpg.$DOMAIN`)"
       - "traefik.http.routers.foundryvtt.middlewares=tinyauth,error-pages"
       - "traefik.http.services.foundryvtt.loadbalancer.server.port=30000"
 
 secrets:
+  foundryvtt_admin_key:
+    environment: "FOUNDRYVTT_ADMIN_KEY"
   foundryvtt_username:
     environment: "FOUNDRYVTT_USERNAME"
   foundryvtt_password:

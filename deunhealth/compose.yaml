@@ -4,7 +4,8 @@ services:
     image: ${DEUNHEALTH_IMAGE:-qmcgaw/deunhealth}:${DEUNHEALTH_IMAGE_TAG:-latest}
     profiles: ["${DEUNHEALTH_PROFILE:-core}"]
     restart: unless-stopped
-    network_mode: none
+    networks:
+      - internal
     depends_on:
       socket-proxy:
         condition: service_healthy

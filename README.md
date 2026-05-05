@@ -137,6 +137,7 @@ This is a list of all services, and the profiles they are started with. Note tha
 | duc                    | tools       | Disk usage |
 | emby                   | library     | Media library |
 | flaresolverr           | network     | Cloudflare captcha bypasss |
+| foundryvtt             | games       | Foundry Virtual Tabletop for RPGs |
 | glances                | information | Operating system status |
 | homepage               | information | Dashboard |
 | i2p                    | network     | I2P Client |
@@ -191,7 +192,7 @@ This is a list of all services, and the profiles they are started with. Note tha
 > The `core` PROFILE services are enabled in the `compose.yaml` file, you must add any others you wish to a `compose.override.yaml` file instead:
 > ```yaml
 > include:
->   - whoami/compose.yaml
+>   - whoami/compose.yaml # Use the name of the service above followed by "/compose.yaml"
 > ```
 
 ## Bootstrap

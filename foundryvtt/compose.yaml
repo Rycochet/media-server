@@ -1,0 +1,66 @@
+services:
+  foundryvtt:
+    container_name: foundryvtt
+    # image: ${FOUNDRYVTT_IMAGE:-ghcr.io/felddy/foundryvtt}:${FOUNDRYVTT_IMAGE_TAG:-14}
+    build: https://github.com/Rycochet/foundryvtt-docker.git # Adds docker secrets per env variable
+    profiles: [ "${FOUNDRYVTT_PROFILE:-games}" ]
+    restart: unless-stopped
+    networks:
+      - internal
+      - external
+    depends_on:
+      socket-proxy:
+        condition: service_healthy
+        restart: false
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/data"
+      - "./tmp:/tmp"
+    secrets:
+      - foundryvtt_username
+      - foundryvtt_password
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      CONTAINER_PRESERVE_CONFIG: "true"
+      CONTAINER_UMASK: "0000"
+      DOCKER_HOST: "tcp://socket-proxy:2375"
+      FOUNDRY_COMPRESS_WEBSOCKET: "true"
+      FOUNDRY_HOSTNAME: "rpg.$DOMAIN"
+      FOUNDRY_IP_DISCOVERY: "false"
+      FOUNDRY_MINIFY_STATIC_FILES: "true"
+      FOUNDRY_PROXY_SSL: "true"
+      FOUNDRY_TELEMETRY: "false"
+      FOUNDRY_TEMP_DIR: "/tmp"
+      FOUNDRYVTT_HOSTNAME: "${DOMAIN}"
+      # Secrets
+      FOUNDRY_USERNAME_FILE: "/run/secrets/foundryvtt_username"
+      FOUNDRY_PASSWORD_FILE: "/run/secrets/foundryvtt_password"
+    labels:
+      - "deunhealth.restart.on.unhealthy=true"
+
+      - "homepage.group=Games"
+      - "homepage.name=FoundryVTT"
+      - "homepage.icon=foundry-vtt.png"
+      - "homepage.href=https://rpg.$DOMAIN/"
+      - "homepage.description=Foundry Virtual Tabletop for RPGs"
+
+      - "traefik.enable=true"
+      - "traefik.http.routers.foundryvtt.rule=Host(`foundryvtt.$DOMAIN`) || Host(`rpg.$DOMAIN`)"
+      - "traefik.http.routers.foundryvtt.middlewares=tinyauth,error-pages"
+      - "traefik.http.services.foundryvtt.loadbalancer.server.port=30000"
+
+secrets:
+  foundryvtt_username:
+    environment: "FOUNDRYVTT_USERNAME"
+  foundryvtt_password:
+    environment: "FOUNDRYVTT_PASSWORD"

@@ -62,3 +62,9 @@ services:
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8096/"
+
+  traefik:
+    networks:
+      internal:
+        aliases:
+          - "emby.$DOMAIN"

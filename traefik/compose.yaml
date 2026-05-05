@@ -8,12 +8,8 @@ services:
       service: "cf-${USE_CLOUDFLARED:-true}"
     restart: unless-stopped
     networks:
-      external:
-      internal:
-        aliases:
-          - "emby.$DOMAIN"
-          - "jellyfin.$DOMAIN"
-          - "plex.$DOMAIN"
+      - external
+      - internal
     logging:
       driver: "json-file"
       options:

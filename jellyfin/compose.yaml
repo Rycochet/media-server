@@ -69,6 +69,12 @@ services:
     environment:
       HOMEPAGE_FILE_JELLYFIN_API: "/run/secrets/jellyfin_api"
 
+  traefik:
+    networks:
+      internal:
+        aliases:
+          - "jellyfin.$DOMAIN"
+
 secrets:
   jellyfin_api:
     environment: "JELLYFIN_API"

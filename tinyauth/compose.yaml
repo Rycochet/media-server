@@ -2,7 +2,7 @@ services:
   tinyauth:
     container_name: tinyauth
     image: ${TINYAUTH_IMAGE:-ghcr.io/steveiliop56/tinyauth}:${TINYAUTH_IMAGE_TAG:-v5-distroless}
-    profiles: ["${TINYAUTH_PROFILE:-core}"]
+    profiles: [ "${TINYAUTH_PROFILE:-core}" ]
     restart: unless-stopped
     networks:
       - external
@@ -16,6 +16,7 @@ services:
       - google_client_secret
     environment:
       # Image
+      DOCKER_HOST: "tcp://socket-proxy:2375"
       TINYAUTH_ANALYTICS_ENABLED: "false"
       TINYAUTH_APPURL: "https://tinyauth.$DOMAIN"
       TINYAUTH_AUTH_SECURECOOKIE: "true"

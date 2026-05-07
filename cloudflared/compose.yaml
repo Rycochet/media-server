@@ -19,20 +19,17 @@ services:
       TUNNEL_TOKEN_FILE: "/run/secrets/cloudflared_token"
       TUNNEL_LOGLEVEL: "info"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Information"
-      - "homepage.name=Cloudflared"
-      - "homepage.icon=cloudflare.png"
-      - "homepage.href=https://dash.cloudflare.com/"
-      - "homepage.description=Cloudflare Status"
-      - "homepage.widget.type=cloudflared"
-      - "homepage.widget.accountid={{HOMEPAGE_FILE_CLOUDFLARED_ACCOUNT_ID}}"
-      - "homepage.widget.tunnelid={{HOMEPAGE_FILE_CLOUDFLARED_TUNNEL_ID}}"
-      - "homepage.widget.key={{HOMEPAGE_FILE_CLOUDFLARED_API}}"
-
-      - "traefik.enable=false"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Information"
+      homepage.name: "Cloudflared"
+      homepage.icon: "cloudflare.png"
+      homepage.href: "https://dash.cloudflare.com/"
+      homepage.description: "Cloudflare Status"
+      homepage.widget.type: "cloudflared"
+      homepage.widget.accountid: "{{HOMEPAGE_FILE_CLOUDFLARED_ACCOUNT_ID}}"
+      homepage.widget.tunnelid: "{{HOMEPAGE_FILE_CLOUDFLARED_TUNNEL_ID}}"
+      homepage.widget.key: "{{HOMEPAGE_FILE_CLOUDFLARED_API}}"
+      traefik.enable: "false"
     healthcheck:
       start_period: "30s"
       test: [ "CMD", "cloudflared", "tunnel", "--metrics", "0.0.0.0:20241", "ready" ]

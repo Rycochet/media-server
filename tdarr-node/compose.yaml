@@ -37,11 +37,9 @@ services:
       - "$PATH_MOVIES:/data/movies"
       - "$PATH_TV:/data/tv"
     labels:
-      - "com.centurylinklabs.watchtower.monitor-only=true"
-      - "com.centurylinklabs.watchtower.depends-on=tdarr"
-
-      - "deunhealth.restart.on.unhealthy=true"
-
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      com.centurylinklabs.watchtower.depends-on: "tdarr"
+      deunhealth.restart.on.unhealthy: "false"
     healthcheck:
       start_period: "150s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://tdarr:8266/api/v2/get-nodes | grep -q Server-Node"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://tdarr:8266/api/v2/get-nodes | grep -q \"$$nodeName\""

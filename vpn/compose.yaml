@@ -31,32 +31,27 @@ services:
       VPN_SERVICE_PROVIDER: "${VPN_SERVICE_PROVIDER}"
       VPN_TYPE: "wireguard"
       WIREGUARD_PRIVATE_KEY: "${VPN_WIREGUARD_PRIVATE_KEY}"
-
       SERVER_COUNTRIES: "${VPN_SERVER_COUNTRIES:-United States}"
       SERVER_REGIONS: "${VPN_SERVER_REGIONS}"
       SERVER_CITIES: "${VPN_SERVER_CITIES}"
       SERVER_HOSTNAMES: "${VPN_SERVER_HOSTNAMES}"
       SERVER_CATEGORIES: "${VPN_SERVER_CATEGORIES}"
-
       DNS_UPSTREAM_RESOLVER_TYPE: "doh"
-
       HTTPPROXY: "on"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/dev/net/tun:/dev/net/tun"
       - "./config.toml:/gluetun/auth/config.toml:ro"
     labels:
-      - "deunhealth.restart.on.unhealthy=false" # This can be unhealthy but still be connected
-
-      - "homepage.group=Information"
-      - "homepage.name=VPN"
-      - "homepage.icon=gluetun.png"
-      - "homepage.description=Gluetun | HTTP - vpn:8888 | Socks5 - vpn:1080"
-      - "homepage.widget.type=gluetun"
-      - "homepage.widget.url=http://vpn:8000"
-      - "homepage.widget.version=2"
-
-      - "traefik.enable=false"
+      deunhealth.restart.on.unhealthy: "false" # This can be unhealthy but still be connected
+      homepage.group: "Information"
+      homepage.name: "VPN"
+      homepage.icon: "gluetun.png"
+      homepage.description: "Gluetun | HTTP - vpn:8888 | Socks5 - vpn:1080"
+      homepage.widget.type: "gluetun"
+      homepage.widget.url: "http://vpn:8000"
+      homepage.widget.version: "2"
+      traefik.enable: "false"
 
   proxy:
     container_name: proxy
@@ -78,5 +73,5 @@ services:
       PROXY_USER: "${PROXY_USER:-}"
       PROXY_PASSWORD: "${PROXY_PASSWORD:-}"
     labels:
-      - "deunhealth.restart.on.unhealthy=false"
-      - "traefik.enable=false"
+      deunhealth.restart.on.unhealthy: "false"
+      traefik.enable: "false"

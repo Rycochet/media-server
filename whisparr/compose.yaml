@@ -32,24 +32,21 @@ services:
       - "$PATH_ADULT:/data/adult"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Media"
-      - "homepage.name=Whisparr"
-      - "homepage.icon=whisparr.png"
-      - "homepage.href=https://whisparr.$DOMAIN/"
-      - "homepage.description=Porn"
-      - "homepage.widget.type=radarr" # v2 = sonarr, v3 = radarr
-      - "homepage.widget.url=http://whisparr:6969"
-      - "homepage.widget.key={{HOMEPAGE_FILE_WHISPARR_API}}"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.whisparr.rule=Host(`whisparr.$DOMAIN`)"
-      - "traefik.http.routers.whisparr.middlewares=whisparr,tinyauth,error-pages"
-      - "traefik.http.services.whisparr.loadbalancer.server.port=6969"
-      - "traefik.http.middlewares.whisparr.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.whisparr.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Media"
+      homepage.name: "Whisparr"
+      homepage.icon: "whisparr.png"
+      homepage.href: "https://whisparr.$DOMAIN/"
+      homepage.description: "Porn"
+      homepage.widget.type: "radarr" # v2 : " sonarr, v3 : " radarr
+      homepage.widget.url: "http://whisparr:6969"
+      homepage.widget.key: "{{HOMEPAGE_FILE_WHISPARR_API}}"
+      traefik.enable: "true"
+      traefik.http.routers.whisparr.rule: "Host(`whisparr.$DOMAIN`)"
+      traefik.http.routers.whisparr.middlewares: "whisparr,tinyauth,error-pages"
+      traefik.http.services.whisparr.loadbalancer.server.port: "6969"
+      traefik.http.middlewares.whisparr.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.whisparr.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:6969/"

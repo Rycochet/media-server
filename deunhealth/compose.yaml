@@ -23,5 +23,5 @@ services:
       # Image
       LOG_LEVEL: "info"
     labels:
-      - "deunhealth.restart.on.unhealthy=false"
-      - "traefik.enable=false"
+      deunhealth.restart.on.unhealthy: "false"
+      traefik.enable: "false"

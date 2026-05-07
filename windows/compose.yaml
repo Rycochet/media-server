@@ -46,17 +46,14 @@ services:
       - "./config:/storage"
       # - "media:/data"
     labels:
-      - "com.centurylinklabs.watchtower.monitor-only=true"
-
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Tools"
-      - "homepage.name=Windoes"
-      - "homepage.icon=windows.png"
-      - "homepage.href=https://windows.$DOMAIN/"
-      - "homepage.description=Windows 11 Desktop"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.windows.rule=Host(`windows.$DOMAIN`)"
-      - "traefik.http.routers.windows.middlewares=tinyauth,error-pages"
-      - "traefik.http.services.windows.loadbalancer.server.port=8006"
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "Windoes"
+      homepage.icon: "windows.png"
+      homepage.href: "https://windows.$DOMAIN/"
+      homepage.description: "Windows 11 Desktop"
+      traefik.enable: "true"
+      traefik.http.routers.windows.rule: "Host(`windows.$DOMAIN`)"
+      traefik.http.routers.windows.middlewares: "tinyauth,error-pages"
+      traefik.http.services.windows.loadbalancer.server.port: "8006"

@@ -30,21 +30,18 @@ services:
       - "./config:/config"
       - "$PATH_3D:/data/models"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Libraries"
-      - "homepage.name=Manyfold"
-      - "homepage.icon=manyfold.png"
-      - "homepage.href=https://manyfold.$DOMAIN/"
-      - "homepage.description=3D Model library"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.manyfold.rule=Host(`manyfold.$DOMAIN`)"
-      - "traefik.http.routers.manyfold.middlewares=manyfold,tinyauth,error-pages"
-      - "traefik.http.services.manyfold.loadbalancer.server.port=3214"
-      - "traefik.http.middlewares.manyfold.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.manyfold.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Libraries"
+      homepage.name: "Manyfold"
+      homepage.icon: "manyfold.png"
+      homepage.href: "https://manyfold.$DOMAIN/"
+      homepage.description: "3D Model library"
+      traefik.enable: "true"
+      traefik.http.routers.manyfold.rule: "Host(`manyfold.$DOMAIN`)"
+      traefik.http.routers.manyfold.middlewares: "manyfold,tinyauth,error-pages"
+      traefik.http.services.manyfold.loadbalancer.server.port: "3214"
+      traefik.http.middlewares.manyfold.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.manyfold.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:3214/health || exit 1"

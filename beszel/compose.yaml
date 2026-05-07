@@ -31,27 +31,24 @@ services:
       - "./config:/beszel_data"
       - "./config:/beszel_socket"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Information"
-      - "homepage.name=Beszel"
-      - "homepage.icon=beszel.png"
-      - "homepage.href=https://beszel.$DOMAIN/system/$DOMAIN"
-      - "homepage.description=System resource usage"
-      - "homepage.widget.type=beszel"
-      - "homepage.widget.url=http://beszel:8090"
-      - "homepage.widget.version=2"
-      - "homepage.widget.systemId=${DOMAIN}"
-      - "homepage.widget.username=${BESZEL_USERNAME:-}"
-      - "homepage.widget.password=${BESZEL_PASSWORD:-}"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.beszel.rule=Host(`beszel.$DOMAIN`)"
-      - "traefik.http.routers.beszel.middlewares=beszel,tinyauth,error-pages"
-      - "traefik.http.services.beszel.loadbalancer.server.port=8090"
-      - "traefik.http.middlewares.beszel.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.beszel.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Information"
+      homepage.name: "Beszel"
+      homepage.icon: "beszel.png"
+      homepage.href: "https://beszel.$DOMAIN/system/$DOMAIN"
+      homepage.description: "System resource usage"
+      homepage.widget.type: "beszel"
+      homepage.widget.url: "http://beszel:8090"
+      homepage.widget.version: "2"
+      homepage.widget.systemId: "${DOMAIN}"
+      homepage.widget.username: "${BESZEL_USERNAME:-}"
+      homepage.widget.password: "${BESZEL_PASSWORD:-}"
+      traefik.enable: "true"
+      traefik.http.routers.beszel.rule: "Host(`beszel.$DOMAIN`)"
+      traefik.http.routers.beszel.middlewares: "beszel,tinyauth,error-pages"
+      traefik.http.services.beszel.loadbalancer.server.port: "8090"
+      traefik.http.middlewares.beszel.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.beszel.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       start_period: "30s"
       test: ["CMD", "/beszel", "health", "--url", "http://localhost:8090"]
@@ -89,8 +86,8 @@ services:
       - "./config:/beszel_data"
       - "./config:/beszel_socket:ro"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-      - "traefik.enable=false"
+      deunhealth.restart.on.unhealthy: "true"
+      traefik.enable: "false"
 
     healthcheck:
       start_period: "30s"

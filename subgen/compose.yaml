@@ -64,13 +64,10 @@ services:
       - "$PATH_MOVIES:/data/movies"
       - "$PATH_TV:/data/tv"
     labels:
-      - "com.centurylinklabs.watchtower.monitor-only=true"
-
-      - "deunhealth.restart.on.unhealthy=false"
-
-      - "homepage.group=Tools"
-      - "homepage.name=Subgen"
-      - "homepage.icon=/images/subgen.png"
-      - "homepage.description=Audio transcaription"
-
-      - "traefik.enable=false"
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      deunhealth.restart.on.unhealthy: "false"
+      homepage.group: "Tools"
+      homepage.name: "Subgen"
+      homepage.icon: "/images/subgen.png"
+      homepage.description: "Audio transcaription"
+      traefik.enable: "false"

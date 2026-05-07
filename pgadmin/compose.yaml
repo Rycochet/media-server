@@ -24,21 +24,18 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/var/lib/pgadmin"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Tools"
-      - "homepage.name=PGAdmin"
-      - "homepage.icon=pgadmin.png"
-      - "homepage.href=https://pgadmin.$DOMAIN/"
-      - "homepage.description=Postgres administration"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.$DOMAIN`)"
-      - "traefik.http.routers.pgadmin.middlewares=pgadmin,tinyauth,error-pages"
-      - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
-      - "traefik.http.middlewares.pgadmin.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.pgadmin.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "PGAdmin"
+      homepage.icon: "pgadmin.png"
+      homepage.href: "https://pgadmin.$DOMAIN/"
+      homepage.description: "Postgres administration"
+      traefik.enable: "true"
+      traefik.http.routers.pgadmin.rule: "Host(`pgadmin.$DOMAIN`)"
+      traefik.http.routers.pgadmin.middlewares: "pgadmin,tinyauth,error-pages"
+      traefik.http.services.pgadmin.loadbalancer.server.port: "80"
+      traefik.http.middlewares.pgadmin.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.pgadmin.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost/ || exit 1"

@@ -27,21 +27,18 @@ services:
       - "./config:/root/.config/ZfDash"
       - "./config:/opt/zfdash/data"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Tools"
-      - "homepage.name=ZFDash"
-      - "homepage.icon=sh-openzfs.png"
-      - "homepage.href=https://zfdash.$DOMAIN/"
-      - "homepage.description=ZFS administration"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.zfdash.rule=Host(`zfdash.$DOMAIN`)"
-      - "traefik.http.routers.zfdash.middlewares=zfdash,tinyauth,error-pages"
-      - "traefik.http.services.zfdash.loadbalancer.server.port=5001"
-      - "traefik.http.middlewares.zfdash.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.zfdash.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "ZFDash"
+      homepage.icon: "sh-openzfs.png"
+      homepage.href: "https://zfdash.$DOMAIN/"
+      homepage.description: "ZFS administration"
+      traefik.enable: "true"
+      traefik.http.routers.zfdash.rule: "Host(`zfdash.$DOMAIN`)"
+      traefik.http.routers.zfdash.middlewares: "zfdash,tinyauth,error-pages"
+      traefik.http.services.zfdash.loadbalancer.server.port: "5001"
+      traefik.http.middlewares.zfdash.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.zfdash.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       start_period: "30s"
       test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5001'"

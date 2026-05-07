@@ -55,21 +55,18 @@ services:
       - "$PATH_MUSIC:/data/music:ro"
       - "$PATH_TV:/data/tv:ro"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Tools"
-      - "homepage.name=Notifiarr"
-      - "homepage.icon=notifiarr.png"
-      - "homepage.href=https://notifiarr.$DOMAIN/"
-      - "homepage.description=System notifications"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.notifiarr.rule=Host(`notifiarr.$DOMAIN`)"
-      - "traefik.http.routers.notifiarr.middlewares=notifiarr,tinyauth,error-pages"
-      - "traefik.http.services.notifiarr.loadbalancer.server.port=5454"
-      - "traefik.http.middlewares.notifiarr.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.notifiarr.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "Notifiarr"
+      homepage.icon: "notifiarr.png"
+      homepage.href: "https://notifiarr.$DOMAIN/"
+      homepage.description: "System notifications"
+      traefik.enable: "true"
+      traefik.http.routers.notifiarr.rule: "Host(`notifiarr.$DOMAIN`)"
+      traefik.http.routers.notifiarr.middlewares: "notifiarr,tinyauth,error-pages"
+      traefik.http.services.notifiarr.loadbalancer.server.port: "5454"
+      traefik.http.middlewares.notifiarr.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.notifiarr.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       start_period: "30s"
       test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5454'"

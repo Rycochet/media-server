@@ -29,32 +29,29 @@ services:
       - "./config:/config"
       - "./logs:/config/logs"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Tools"
-      - "homepage.name=Tautulli"
-      - "homepage.icon=tautulli.png"
-      - "homepage.href=https://tautulli.$DOMAIN/"
-      - "homepage.description=Plex monitoring"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.tautulli.rule=Host(`tautulli.$DOMAIN`)"
-      - "traefik.http.routers.tautulli.middlewares=tautulli,tinyauth,error-pages"
-      - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
-      - "traefik.http.middlewares.tautulli.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.tautulli.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "Tautulli"
+      homepage.icon: "tautulli.png"
+      homepage.href: "https://tautulli.$DOMAIN/"
+      homepage.description: "Plex monitoring"
+      traefik.enable: "true"
+      traefik.http.routers.tautulli.rule: "Host(`tautulli.$DOMAIN`)"
+      traefik.http.routers.tautulli.middlewares: "tautulli,tinyauth,error-pages"
+      traefik.http.services.tautulli.loadbalancer.server.port: "8181"
+      traefik.http.middlewares.tautulli.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.tautulli.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8181/"
 
   plex:
     labels:
-      - "homepage.widgets[1].type=tautulli"
-      - "homepage.widgets[1].url=http://tautulli:8181"
-      - "homepage.widgets[1].key={{HOMEPAGE_FILE_TAUTULLI_API}}"
-      - "homepage.widgets[1].showEpisodeNumber=true"
-      - "homepage.widgets[1].expandOneStreamToTwoRows=false"
+      homepage.widgets[1].type: "tautulli"
+      homepage.widgets[1].url: "http://tautulli:8181"
+      homepage.widgets[1].key: "{{HOMEPAGE_FILE_TAUTULLI_API}}"
+      homepage.widgets[1].showEpisodeNumber: "true"
+      homepage.widgets[1].expandOneStreamToTwoRows: "false"
 
   homepage:
     secrets:

@@ -35,23 +35,19 @@ services:
       - "$PATH_MOVIES:/data/movies"
       - "$PATH_TV:/data/tv"
     labels:
-      - "com.centurylinklabs.watchtower.monitor-only=true"
-
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Tools"
-      - "homepage.name=Lingarr"
-      - "homepage.icon=/images/lingarr.png"
-      - "homepage.href=https://lingarr.$DOMAIN/"
-      - "homepage.description=Subtitle translation"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.lingarr.rule=Host(`lingarr.$DOMAIN`)"
-      - "traefik.http.routers.lingarr.middlewares=lingarr,tinyauth,error-pages"
-      - "traefik.http.services.lingarr.loadbalancer.server.port=8080"
-      - "traefik.http.middlewares.lingarr.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.lingarr.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "Lingarr"
+      homepage.icon: "/images/lingarr.png"
+      homepage.href: "https://lingarr.$DOMAIN/"
+      homepage.description: "Subtitle translation"
+      traefik.enable: "true"
+      traefik.http.routers.lingarr.rule: "Host(`lingarr.$DOMAIN`)"
+      traefik.http.routers.lingarr.middlewares: "lingarr,tinyauth,error-pages"
+      traefik.http.services.lingarr.loadbalancer.server.port: "8080"
+      traefik.http.middlewares.lingarr.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.lingarr.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       interval: "300s" # Note that it locks up during transcribe, so this must be longer than a movie
       start_period: "30s"

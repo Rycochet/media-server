@@ -29,20 +29,18 @@ services:
     volumes:
       - "./config:/data"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Tools"
-      - "homepage.name=Tinyauth"
-      - "homepage.icon=tinyauth.png"
-      - "homepage.href=https://tinyauth.$DOMAIN"
-      - "homepage.description=OAuth handling"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.tinyauth.rule=Host(`tinyauth.$DOMAIN`)"
-      - "traefik.http.services.tinyauth.loadbalancer.server.port=3000"
-      - "traefik.http.middlewares.tinyauth.forwardauth.address=http://tinyauth:3000/api/auth/traefik"
-      - "traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders=remote-user,remote-groups"
-      - "traefik.http.middlewares.tinyauth.forwardauth.maxResponseBodySize=32768"
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "Tinyauth"
+      homepage.icon: "tinyauth.png"
+      homepage.href: "https://tinyauth.$DOMAIN"
+      homepage.description: "OAuth handling"
+      traefik.enable: "true"
+      traefik.http.routers.tinyauth.rule: "Host(`tinyauth.$DOMAIN`)"
+      traefik.http.services.tinyauth.loadbalancer.server.port: "3000"
+      traefik.http.middlewares.tinyauth.forwardauth.address: "http://tinyauth:3000/api/auth/traefik"
+      traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: "remote-user,remote-groups"
+      traefik.http.middlewares.tinyauth.forwardauth.maxResponseBodySize: "32768"
 
 secrets:
   google_client_secret:

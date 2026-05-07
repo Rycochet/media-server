@@ -29,21 +29,18 @@ services:
       - "./config:/config"
       - "./backup:/config/backups"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Download"
-      - "homepage.name=Cleanuparr"
-      - "homepage.icon=cleanuperr.png"
-      - "homepage.href=https://cleanuparr.$DOMAIN/"
-      - "homepage.description=Bad download handling"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.cleanuparr.rule=Host(`cleanuparr.$DOMAIN`)"
-      - "traefik.http.routers.cleanuparr.middlewares=cleanuparr,tinyauth,error-pages"
-      - "traefik.http.services.cleanuparr.loadbalancer.server.port=11011"
-      - "traefik.http.middlewares.cleanuparr.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.cleanuparr.headers.accessControlAllowOriginList=https://$DOMAIN"
-
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Download"
+      homepage.name: "Cleanuparr"
+      homepage.icon: "cleanuperr.png"
+      homepage.href: "https://cleanuparr.$DOMAIN/"
+      homepage.description: "Bad download handling"
+      traefik.enable: "true"
+      traefik.http.routers.cleanuparr.rule: "Host(`cleanuparr.$DOMAIN`)"
+      traefik.http.routers.cleanuparr.middlewares: "cleanuparr,tinyauth,error-pages"
+      traefik.http.services.cleanuparr.loadbalancer.server.port: "11011"
+      traefik.http.middlewares.cleanuparr.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.cleanuparr.headers.accessControlAllowOriginList: "https://$DOMAIN"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:11011/"

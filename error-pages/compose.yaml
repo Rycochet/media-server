@@ -15,19 +15,19 @@ services:
       # Image
       TEMPLATE_NAME: "lost-in-space"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "traefik.enable=true"
-      - "traefik.http.services.error-pages.loadbalancer.server.port=8080"
+      deunhealth.restart.on.unhealthy: "true"
+      traefik.enable: "true"
+      traefik.http.services.error-pages.loadbalancer.server.port: "8080"
       # use as "fallback" for any NON-registered services (with priority below normal)
-      - "traefik.http.routers.error-pages.rule=Host(`error-pages.$DOMAIN`) || HostRegexp(`.+`)"
-      - "traefik.http.routers.error-pages.priority=10"
-      # - "traefik.http.routers.error-pages.entrypoints=web"
-      - "traefik.http.routers.error-pages.middlewares=error-pages"
+      traefik.http.routers.error-pages.rule: "Host(`error-pages.$DOMAIN`) || HostRegexp(`.+`)"
+      traefik.http.routers.error-pages.priority: "10"
+      # traefik.http.routers.error-pages.entrypoints: "web"
+      traefik.http.routers.error-pages.middlewares: "error-pages"
       # "error-pages" middleware settings
-      - "traefik.http.middlewares.error-pages.errors.status=400-599"
-      - "traefik.http.middlewares.error-pages.errors.service=error-pages"
-      - "traefik.http.middlewares.error-pages.errors.query=/{status}.html"
+      traefik.http.middlewares.error-pages.errors.status: "400-599"
+      traefik.http.middlewares.error-pages.errors.service: "error-pages"
+      traefik.http.middlewares.error-pages.errors.query: "/{status}.html"
 
 # Add to others:
-      # - "traefik.http.routers.external.middlewares=error-pages"
+    # labels:
+    #   traefik.http.routers.external.middlewares: "error-pages"

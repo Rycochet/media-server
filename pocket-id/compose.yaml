@@ -42,18 +42,16 @@ services:
       ENCRYPTION_KEY_FILE: "/run/secrets/pocketid_encryption"
       MAXMIND_LICENSE_KEY_FILE: "/run/secrets/pocketid_maxmind"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Tools"
-      - "homepage.name=PocketID"
-      - "homepage.icon=pocket-id.png"
-      - "homepage.href=https://auth.$DOMAIN/"
-      - "homepage.description=Passkey authentication server"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.pocket-id.rule=Host(`auth.$DOMAIN`)"
-      - "traefik.http.routers.pocket-id.middlewares=error-pages"
-      - "traefik.http.services.pocket-id.loadbalancer.server.port=1411"
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "PocketID"
+      homepage.icon: "pocket-id.png"
+      homepage.href: "https://auth.$DOMAIN/"
+      homepage.description: "Passkey authentication server"
+      traefik.enable: "true"
+      traefik.http.routers.pocket-id.rule: "Host(`auth.$DOMAIN`)"
+      traefik.http.routers.pocket-id.middlewares: "error-pages"
+      traefik.http.services.pocket-id.loadbalancer.server.port: "1411"
     healthcheck:
       start_period: "30s"
 
@@ -79,7 +77,7 @@ services:
       ROLE_ADMIN: "${POCKETID_FOUNDRYVTT_ROLE_ADMIN:-dm}"
       ROLE_PLAYER: "${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
     labels:
-      - "tinyauth.apps.foundryvtt.oauth.groups=${POCKETID_FOUNDRYVTT_ROLE_ADMIN:-dm},${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
+      tinyauth.apps.foundryvtt.oauth.groups: "${POCKETID_FOUNDRYVTT_ROLE_ADMIN:-dm},${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
 
   traefik:
     networks:

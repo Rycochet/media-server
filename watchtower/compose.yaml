@@ -34,14 +34,12 @@ services:
     # volumes:
     #   - "<PATH_TO_HOME_DIR>/.docker/config.json:/config.json"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Information"
-      - "homepage.name=Watchtower"
-      - "homepage.icon=watchtower.png"
-      - "homepage.description=Docker image updates"
-      - "homepage.widget.type=watchtower"
-      - "homepage.widget.url=http://watchtower:8080"
-      - "homepage.widget.key=${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
-
-      - "traefik.enable=false"
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Information"
+      homepage.name: "Watchtower"
+      homepage.icon: "watchtower.png"
+      homepage.description: "Docker image updates"
+      homepage.widget.type: "watchtower"
+      homepage.widget.url: "http://watchtower:8080"
+      homepage.widget.key: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
+      traefik.enable: "false"

@@ -48,18 +48,16 @@ services:
       FOUNDRY_USERNAME_FILE: "/run/secrets/foundryvtt_username"
       FOUNDRY_PASSWORD_FILE: "/run/secrets/foundryvtt_password"
     labels:
-      - "deunhealth.restart.on.unhealthy=true"
-
-      - "homepage.group=Games"
-      - "homepage.name=FoundryVTT"
-      - "homepage.icon=foundry-vtt.png"
-      - "homepage.href=https://rpg.$DOMAIN/"
-      - "homepage.description=Virtual Tabletop for RPGs"
-
-      - "traefik.enable=true"
-      - "traefik.http.routers.foundryvtt.rule=Host(`rpg.$DOMAIN`)"
-      - "traefik.http.routers.foundryvtt.middlewares=tinyauth,error-pages"
-      - "traefik.http.services.foundryvtt.loadbalancer.server.port=30000"
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Games"
+      homepage.name: "FoundryVTT"
+      homepage.icon: "foundry-vtt.png"
+      homepage.href: "https://rpg.$DOMAIN/"
+      homepage.description: "Virtual Tabletop for RPGs"
+      traefik.enable: "true"
+      traefik.http.routers.foundryvtt.rule: "Host(`rpg.$DOMAIN`)"
+      traefik.http.routers.foundryvtt.middlewares: "tinyauth,error-pages"
+      traefik.http.services.foundryvtt.loadbalancer.server.port: "30000"
     healthcheck:
       start_period: "30s"
 

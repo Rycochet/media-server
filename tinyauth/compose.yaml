@@ -41,6 +41,7 @@ services:
       traefik.http.middlewares.tinyauth.forwardauth.address: "http://tinyauth:3000/api/auth/traefik"
       traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: "remote-user,remote-groups"
       traefik.http.middlewares.tinyauth.forwardauth.maxResponseBodySize: "32768"
+      traefik.http.middlewares.tinyauth.forwardauth.trustForwardHeader: "true"
 
 secrets:
   google_client_secret:

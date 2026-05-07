@@ -39,6 +39,7 @@ services:
       FOUNDRY_HOSTNAME: "rpg.$DOMAIN"
       FOUNDRY_IP_DISCOVERY: "false"
       FOUNDRY_MINIFY_STATIC_FILES: "true"
+      FOUNDRY_PROXY_PORT: "443"
       FOUNDRY_PROXY_SSL: "true"
       FOUNDRY_TELEMETRY: "false"
       FOUNDRY_TEMP_DIR: "/tmp"
@@ -56,7 +57,7 @@ services:
       homepage.description: "Virtual Tabletop for RPGs"
       traefik.enable: "true"
       traefik.http.routers.foundryvtt.rule: "Host(`rpg.$DOMAIN`)"
-      traefik.http.routers.foundryvtt.middlewares: "tinyauth,error-pages"
+      # traefik.http.routers.foundryvtt.middlewares: "error-pages"
       traefik.http.services.foundryvtt.loadbalancer.server.port: "30000"
     healthcheck:
       start_period: "30s"

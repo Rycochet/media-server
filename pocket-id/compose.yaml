@@ -78,6 +78,7 @@ services:
       ROLE_PLAYER: "${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
     labels:
       tinyauth.apps.foundryvtt.oauth.groups: "${POCKETID_FOUNDRYVTT_ROLE_ADMIN:-dm},${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
+      traefik.http.routers.foundryvtt.middlewares: "tinyauth,error-pages"
 
   traefik:
     networks:

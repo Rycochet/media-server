@@ -70,6 +70,17 @@ services:
       TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: "openid email profile groups"
       TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME: "Pocket ID"
 
+  foundryvtt:
+    environment:
+      AUTO_PROVISION: "true"
+      CONTAINER_PATCH_URLS: "https://github.com/MaienM/foundry-vtt-header-auth/releases/download/${POCKETID_FOUNDRYVTT_HEADER_VERSION:-v14.360.1}/patches.sh"
+      HEADER_USERNAME: "remote-user"
+      HEADER_ROLES: "remote-groups"
+      ROLE_ADMIN: "${POCKETID_FOUNDRYVTT_ROLE_ADMIN:-dm}"
+      ROLE_PLAYER: "${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
+    labels:
+      - "tinyauth.apps.foundryvtt.oauth.groups=${POCKETID_FOUNDRYVTT_ROLE_ADMIN:-dm},${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
+
   traefik:
     networks:
       internal:

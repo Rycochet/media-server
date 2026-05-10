@@ -26,14 +26,14 @@ services:
       homepage.group: "Tools"
       homepage.name: "Dozzle"
       homepage.icon: "dozzle.png"
-      homepage.href: "https://dozzle.$DOMAIN/"
+      homepage.href: "https://${DOZZLE_SUBDOMAIN:-dozzle}.${DOMAIN}/"
       homepage.description: "Docker container logs"
       traefik.enable: "true"
-      traefik.http.routers.dozzle.rule: "Host(`dozzle.$DOMAIN`)"
+      traefik.http.routers.dozzle.rule: "Host(`${DOZZLE_SUBDOMAIN:-dozzle}.${DOMAIN}`)"
       traefik.http.routers.dozzle.middlewares: "dozzle,tinyauth,error-pages"
       traefik.http.services.dozzle.loadbalancer.server.port: "8080"
       traefik.http.middlewares.dozzle.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.dozzle.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.dozzle.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: [ "CMD", "/dozzle", "healthcheck" ]

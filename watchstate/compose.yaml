@@ -2,7 +2,7 @@ services:
   watchstate:
     container_name: watchstate
     image: ${WATCHSTATE_IMAGE:-ghcr.io/arabcoders/watchstate}:${WATCHSTATE_IMAGE_TAG:-latest}
-    profiles: ["${WATCHSTATE_PROFILE:-tools}"]
+    profiles: [ "${WATCHSTATE_PROFILE:-tools}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -27,11 +27,11 @@ services:
       homepage.group: "Tools"
       homepage.name: "Watchstate"
       homepage.icon: "/images/watchstate.png"
-      homepage.href: "https://watchstate.$DOMAIN/"
+      homepage.href: "https://${WATCHSTATE_SUBDOMAIN:-watchstate}.${DOMAIN}/"
       homepage.description: "Sync media library watch state"
       traefik.enable: "true"
-      traefik.http.routers.watchstate.rule: "Host(`watchstate.$DOMAIN`)"
+      traefik.http.routers.watchstate.rule: "Host(`${WATCHSTATE_SUBDOMAIN:-watchstate}.${DOMAIN}`)"
       traefik.http.routers.watchstate.middlewares: "watchstate,tinyauth,error-pages"
       traefik.http.services.watchstate.loadbalancer.server.port: "8080"
       traefik.http.middlewares.watchstate.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.watchstate.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.watchstate.headers.accessControlAllowOriginList: "https://${DOMAIN}"

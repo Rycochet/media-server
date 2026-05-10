@@ -2,7 +2,7 @@ services:
   tdarr-inform:
     container_name: tdarr-inform
     image: ${TDARR_INFORM_IMAGE:-ghcr.io/deathbybandaid/tdarr_inform}:${TDARR_INFORM_IMAGE_TAG:-latest}
-    profiles: ["${TDARR_INFORM_PROFILE:-quality}"]
+    profiles: [ "${TDARR_INFORM_PROFILE:-quality}" ]
     restart: unless-stopped
     networks:
       - external
@@ -24,12 +24,12 @@ services:
       - "./config:/config"
     labels:
       deunhealth.restart.on.unhealthy: "true"
-      traefik.enable: "true"
-      traefik.http.routers.tdarr-inform.rule: "Host(`tdarr-inform.$DOMAIN`)"
-      traefik.http.routers.tdarr-inform.middlewares: "tinyauth,error-pages"
-      traefik.http.services.tdarr-inform.loadbalancer.server.port: "5004"
       homepage.group: "Tools"
       homepage.name: "Tdarr-inform"
       homepage.icon: "tdarr.png"
-      homepage.href: "https://tdarr-inform.$DOMAIN"
+      homepage.href: "https://${TDARR_INFORM_SUBDOMAIN:-tdarr-inform}.${DOMAIN}"
       homepage.description: "Tdarr notifications"
+      traefik.enable: "true"
+      traefik.http.routers.tdarr-inform.rule: "Host(`${TDARR_INFORM_SUBDOMAIN:-tdarr-inform}.${DOMAIN}`)"
+      traefik.http.routers.tdarr-inform.middlewares: "tinyauth,error-pages"
+      traefik.http.services.tdarr-inform.loadbalancer.server.port: "5004"

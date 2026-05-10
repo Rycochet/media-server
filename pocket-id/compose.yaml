@@ -31,8 +31,8 @@ services:
       TZ: "${TZ:-Europe/London}"
       # Image
       ANALYTICS_DISABLED: "true"
-      APP_NAME: "$DOMAIN"
-      APP_URL: "https://auth.$DOMAIN"
+      APP_NAME: "${DOMAIN}"
+      APP_URL: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}"
       INTERNAL_APP_URL: "http://pocket-id:1411"
       SESSION_DURATION: "${POCKETID_SESSION_EXPIRY:-86400}" # Default is 24 hours
       TRUST_PROXY: "true"
@@ -46,10 +46,10 @@ services:
       homepage.group: "Tools"
       homepage.name: "PocketID"
       homepage.icon: "pocket-id.png"
-      homepage.href: "https://auth.$DOMAIN/"
+      homepage.href: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}/"
       homepage.description: "Passkey authentication server"
       traefik.enable: "true"
-      traefik.http.routers.pocket-id.rule: "Host(`auth.$DOMAIN`)"
+      traefik.http.routers.pocket-id.rule: "Host(`${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}`)"
       traefik.http.routers.pocket-id.middlewares: "error-pages"
       traefik.http.services.pocket-id.loadbalancer.server.port: "1411"
     healthcheck:
@@ -61,10 +61,10 @@ services:
     environment:
       TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID: "${POCKETID_TINYAUTH_CLIENTID:-}"
       TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRETFILE: "/run/secrets/pocketid_tinyauth_clientsecret"
-      TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: "https://auth.$DOMAIN/authorize"
-      TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: "https://auth.$DOMAIN/api/oidc/token"
-      TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://auth.$DOMAIN/api/oidc/userinfo"
-      TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL: "https://tinyauth.$DOMAIN/api/oauth/callback/pocketid"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}/authorize"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}/api/oidc/token"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}/api/oidc/userinfo"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL: "https://${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}/api/oauth/callback/pocketid"
       TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: "openid email profile groups"
       TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME: "Pocket ID"
 
@@ -84,7 +84,7 @@ services:
     networks:
       internal:
         aliases:
-          - "auth.$DOMAIN"
+          - "${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}"
 
 secrets:
   pocketid_encryption:

@@ -66,8 +66,8 @@ services:
       - "--providers.file=true"
       - "--serverstransport.insecureskipverify=true"
       # Copy the whole "command:" section to compose.override.yaml and add extra domains as needed
-      - "--entryPoints.websecure.http.tls.domains[0].main=$DOMAIN"
-      - "--entryPoints.websecure.http.tls.domains[0].sans=*.$DOMAIN"
+      - "--entryPoints.websecure.http.tls.domains[0].main=${DOMAIN}"
+      - "--entryPoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
       # - "--entryPoints.websecure.http.tls.domains[1].main=other.com"
       # - "--entryPoints.websecure.http.tls.domains[1].sans=*.other.com"
       # Support for cloudflared IP forwarding
@@ -86,18 +86,18 @@ services:
       homepage.group: "Information"
       homepage.name: "Traefik"
       homepage.icon: "traefik.png"
-      homepage.href: "https://traefik.$DOMAIN/"
+      homepage.href: "https://${TRAEFIK_SUBDOMAIN:-traefik}.${DOMAIN}/"
       homepage.description: "Web Ingress"
       homepage.widget.type: "traefik"
       homepage.widget.url: "http://traefik:8080"
       traefik.enable: "true"
       traefik.http.routers.traefik.service: "api@internal"
-      traefik.http.routers.traefik.rule: "Host(`traefik.$DOMAIN`)"
+      traefik.http.routers.traefik.rule: "Host(`${TRAEFIK_SUBDOMAIN:-traefik}.${DOMAIN}`)"
       traefik.http.routers.traefik.middlewares: "traefik,tinyauth,error-pages"
       traefik.http.services.traefik.loadbalancer.server.port: "8080"
       traefik.http.middlewares.traefik.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.traefik.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.traefik.headers.accessControlAllowOriginList: "https://${DOMAIN}"
 
     healthcheck:
       start_period: "30s"
-      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      test: [ "CMD", "traefik", "healthcheck", "--ping" ]

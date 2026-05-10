@@ -29,7 +29,7 @@ services:
       PGID: "${PGID:-1000}"
       UMASK: "000"
       # Image
-      TITLE: "Webtop - $DOMAIN"
+      TITLE: "Webtop - ${DOMAIN}"
       NO_DECOR: "true"
       # Auto-install LSIO mods and packages
       DOCKER_MODS: "linuxserver/mods:universal-package-install"
@@ -47,14 +47,14 @@ services:
       homepage.group: "Tools"
       homepage.name: "Webtop"
       homepage.icon: "webtop.png"
-      homepage.href: "https://webtop.$DOMAIN/"
+      homepage.href: "https://${WEBTOP_SUBDOMAIN:-webtop}.${DOMAIN}/"
       homepage.description: "Linux Desktop"
       traefik.enable: "true"
-      traefik.http.routers.webtop.rule: "Host(`webtop.$DOMAIN`)"
+      traefik.http.routers.webtop.rule: "Host(`${WEBTOP_SUBDOMAIN:-webtop}.${DOMAIN}`)"
       traefik.http.routers.webtop.middlewares: "webtop,tinyauth,error-pages"
       traefik.http.services.webtop.loadbalancer.server.port: "3000"
       traefik.http.middlewares.webtop.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.webtop.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.webtop.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:3000/"

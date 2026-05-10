@@ -18,14 +18,14 @@ services:
       # Image
       DOCKER_HOST: "tcp://socket-proxy:2375"
       TINYAUTH_ANALYTICS_ENABLED: "false"
-      TINYAUTH_APPURL: "https://tinyauth.$DOMAIN"
+      TINYAUTH_APPURL: "https://${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}"
       TINYAUTH_AUTH_SECURECOOKIE: "true"
       TINYAUTH_AUTH_SESSIONEXPIRY: "${SESSION_EXPIRY:-86400}" # Default is 24 hours
       TINYAUTH_LOG_LEVEL: "warn"
       TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTID: "$GOOGLE_CLIENT_ID"
       TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTSECRETFILE: "/run/secrets/google_client_secret"
       TINYAUTH_OAUTH_WHITELIST: "${WHITELIST:?Set the WHITELIST to your google email address!}"
-      TINYAUTH_UI_TITLE: "$DOMAIN"
+      TINYAUTH_UI_TITLE: "${DOMAIN}"
     volumes:
       - "./config:/data"
     labels:
@@ -33,10 +33,10 @@ services:
       homepage.group: "Tools"
       homepage.name: "Tinyauth"
       homepage.icon: "tinyauth.png"
-      homepage.href: "https://tinyauth.$DOMAIN"
+      homepage.href: "https://${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}"
       homepage.description: "OAuth handling"
       traefik.enable: "true"
-      traefik.http.routers.tinyauth.rule: "Host(`tinyauth.$DOMAIN`)"
+      traefik.http.routers.tinyauth.rule: "Host(`${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}`)"
       traefik.http.services.tinyauth.loadbalancer.server.port: "3000"
       traefik.http.middlewares.tinyauth.forwardauth.address: "http://tinyauth:3000/api/auth/traefik"
       traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: "remote-user,remote-groups"

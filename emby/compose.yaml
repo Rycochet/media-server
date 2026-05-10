@@ -40,7 +40,7 @@ services:
       homepage.group: "Libraries"
       homepage.name: "Emby"
       homepage.icon: "emby.png"
-      homepage.href: "https://emby.$DOMAIN"
+      homepage.href: "https://${EMBY_SUBDOMAIN:-emby}.${DOMAIN}"
       homepage.weight: "-1"
       homepage.description: "Media Library"
       homepage.widget.type: "emby"
@@ -50,12 +50,12 @@ services:
       homepage.widget.showEpisodeNumber: "true"
       homepage.widget.expandOneStreamToTwoRows: "false"
       traefik.enable: "true"
-      traefik.http.routers.emby.rule: "Host(`emby.$DOMAIN`)"
+      traefik.http.routers.emby.rule: "Host(`${EMBY_SUBDOMAIN:-emby}.${DOMAIN}`)"
       traefik.http.routers.emby.middlewares: "emby,error-pages"
       traefik.http.services.emby.loadbalancer.server.port: "8096"
       traefik.http.services.emby.loadbalancer.server.scheme: "http"
       traefik.http.middlewares.emby.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.emby.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.emby.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8096/"
@@ -64,4 +64,4 @@ services:
     networks:
       internal:
         aliases:
-          - "emby.$DOMAIN"
+          - "${EMBY_SUBDOMAIN:-emby}.${DOMAIN}"

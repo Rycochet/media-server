@@ -2,7 +2,7 @@ services:
   windows:
     container_name: windows
     image: ${WINDOWS_IMAGE:-dockurr/windows}:${WINDOWS_IMAGE_TAG:-latest}
-    profiles: ["${WINDOWS_PROFILE:-desktop}"]
+    profiles: [ "${WINDOWS_PROFILE:-desktop}" ]
     extends:
       file: ../compose.extend.yaml
       service: "vpn-${USE_VPN:-false}"
@@ -51,9 +51,9 @@ services:
       homepage.group: "Tools"
       homepage.name: "Windoes"
       homepage.icon: "windows.png"
-      homepage.href: "https://windows.$DOMAIN/"
+      homepage.href: "https://${WINDOWS_SUBDOMAIN:-windows}.${DOMAIN}/"
       homepage.description: "Windows 11 Desktop"
       traefik.enable: "true"
-      traefik.http.routers.windows.rule: "Host(`windows.$DOMAIN`)"
+      traefik.http.routers.windows.rule: "Host(`${WINDOWS_SUBDOMAIN:-windows}.${DOMAIN}`)"
       traefik.http.routers.windows.middlewares: "tinyauth,error-pages"
       traefik.http.services.windows.loadbalancer.server.port: "8006"

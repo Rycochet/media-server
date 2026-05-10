@@ -43,11 +43,11 @@ services:
       - "/run"
     labels:
       deunhealth.restart.on.unhealthy: "true"
-      traefik.enable: "false"
       homepage.group: "Tools"
       homepage.name: "Socket-proxy"
       homepage.icon: "docker.png"
       homepage.description: "Docker socket proxy"
+      traefik.enable: "false"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:2375/_ping || exit 1"

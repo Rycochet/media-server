@@ -116,82 +116,85 @@ Create an empty `compose.override.yaml` file, and copy the commented block of `i
 
 This is a list of all services, and the profiles they are started with. Note that only the `core` profiles are included in the `compose.yaml` file, everything else needs to be manually added.
 
-| NAME                   | PROFILE     | DESCRIPTION |
-| ---------------------- | ----------- | ----------- |
-| cloudflared            | core        | Cloudflare tunnel |
-| deunhealth             | core        | Bring unhealthy containers back up |
-| error-pages            | core        | Error pages |
-| socket-proxy           | core        | Secure access to the docker socket |
-| tinyauth               | core        | OAuth via Google |
-| traefik                | core        | HTTP routing |
-| vpn                    | core        | VPN + HTTP Proxy + Socks5 Proxy |
-| watchtower             | core        | Auto-update containers |
-| adguardhome            | network     | Ads & trackers blocking DNS server |
-| audiobookshelf         | library     | Audiobooks library |
-| bazarr                 | media       | Subtitles |
-| beszel                 | information | System information |
-| chaptarr               | media       | Books / Audiobooks |
-| cleanuparr             | download    | Bad download handling |
-| docker-discord-alerts  | tools       | Notify Discord when docker containers change |
-| dozzle                 | information | Docker status |
-| duc                    | tools       | Disk usage |
-| emby                   | library     | Media library |
-| flaresolverr           | network     | Cloudflare captcha bypasss |
-| foundryvtt             | games       | Foundry Virtual Tabletop for RPGs |
-| glances                | information | Operating system status |
-| homepage               | information | Dashboard |
-| i2p                    | network     | I2P Client |
-| imagemaid              | quality     | Cleanup Plex image cache |
-| jellyfin               | library     | Open source media library |
-| kapowarr               | library     | Comics |
-| kometa                 | quality     | Poster overlays, collections, playlists for Plex |
-| komga                  | library     | Comic library |
-| libretranslate         | tools       | Translation |
-| lidarr                 | media       | Music |
-| lingarr                | quality     | Subtitle translation |
-| manyfold               | library     | 3d models library |
-| minecraft              | games       | Minecraft |
-| mylar                  | media       | Comics |
-| neutarr                | download    | Missing media search |
-| notifiarr              | tools       | System notifications |
-| onlyfans               | download    | Download all subscriptions |
-| openspeedtest          | network     | Bandwidth test to server |
-| pgadmin                | tools       | Database admin |
-| plex                   | library     | Media library |
-| plex-find-mismatch     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |
-| pocket-id              | tools       | Passkey authentication server |
-| portainer              | information | Container management |
-| postgres               | tools       | Database |
-| prowlarr               | download    | Torrent / NNTP search proxy |
-| qbittorrent            | download    | Torrent downloader |
-| radarr                 | media       | Movies |
-| sabnzbd                | download    | NNTP downloader |
-| scrutiny               | information | S.M.A.R.T. information |
-| seerr                  | information | Media requests and issue tracking |
-| sonarr                 | media       | TV Shows |
-| sonarr_youtubedl       | disabled    | Download from Youtube |
-| speedtest-tracker      | information | Speedtest with history |
-| stash                  | tools       | Porn database |
-| subgen                 | quality     | Audio transription |
-| syncthing              | download    | Remote data synchronisation |
-| tautulli               | information | Plex stats |
-| tdarr                  | quality     | Transcoding / format shifting / audio normalisation |
-| tdarr_inform           | quality     | Notifications from sonarr / radarr / etc to tdarr |
-| tdarr-node             | quality     | Transcoding node for tdarr |
-| titlecardmaker         | quality     | Episode thumbnails for Plex |
-| tracearr               | library     | Plex & Emby monitoring |
-| ubooquity              | media       | Comics |
-| uptime-kuma            | information | Status and uptime monitoring |
-| watchstate             | tools       | Sync media library watch state |
-| webtop                 | desktop     | Linux desktop |
-| whisparr               | media       | Porn |
-| whoami                 | network     | Who... Am... I...? |
-| windows                | desktop     | Windows desktop |
-| zfdash                 | information | ZFS administration |
-| zfs-discord-alerts     | tools       | Notify Discord when there are zfs problems |
+Where "SUBDOMAIN" is a tick it uses the same as the service name.
+
+| NAME                     | PROFILE       | DESCRIPTION | INTERNAL PORT | SUBDOMAIN |
+| ------------------------ | ------------- | ----------- | ------------- | --------- |
+| `cloudflared`            | `core`        | Cloudflare tunnel | *n/a* | ❌ |
+| `deunhealth`             | `core`        | Bring unhealthy containers back up | *n/a* | ❌ |
+| `error-pages`            | `core`        | Error pages | `8080` | ✔️ |
+| `socket-proxy`           | `core`        | Secure access to the docker socket | `2375` | ❌ |
+| `tinyauth`               | `core`        | OAuth via Google | `3000` | ✔️ |
+| `traefik`                | `core`        | HTTP routing | `8080` | ✔️ |
+| `vpn`                    | `core`        | VPN + HTTP Proxy + Socks5 Proxy | `8000` | ❌ |
+| `watchtower`             | `core`        | Auto-update containers | `8080` | ✔️ |
+| `adguardhome`            | `network`     | Ads & trackers blocking DNS server | `80` | ✔️ |
+| `audiobookshelf`         | `library`     | Audiobooks library | `80` | ✔️ |
+| `bazarr`                 | `media`       | Subtitles | `6767` | ✔️ |
+| `beszel`                 | `information` | System information | `8090` | ✔️ |
+| `chaptarr`               | `media`       | Books / Audiobooks | `8789` | ✔️ |
+| `cleanuparr`             | `download`    | Bad download handling | `11011` | ✔️ |
+| `docker-discord-alerts`  | `tools`       | Notify Discord when docker containers change | *n/a* | ❌ |
+| `dozzle`                 | `information` | Docker status | `8080` | ✔️ |
+| `duc`                    | `tools`       | Disk usage | `80` | ✔️ |
+| `emby`                   | `library`     | Media library | `8096` | ✔️ |
+| `flaresolverr`           | `network`     | Cloudflare captcha bypasss | `8191` | ❌ |
+| `foundryvtt`             | `games`       | Foundry Virtual Tabletop for RPGs | `30000` | `rpg` |
+| `glances`                | `information` | Operating system status | `61208` | ✔️ |
+| `homepage`               | `information` | Dashboard | `3000` | (*root*) |
+| `i2p`                    | `network`     | I2P Client | `7657` | ✔️ |
+| `imagemaid`              | `quality`     | Cleanup Plex image cache | *n/a* | ❌ |
+| `jellyfin`               | `library`     | Open source media library | `8096` | ✔️ |
+| `kapowarr`               | `library`     | Comics | `5656` | ✔️ |
+| `kometa`                 | `quality`     | Poster overlays, collections, playlists for Plex | *n/a* | ❌ |
+| `komga`                  | `library`     | Comic library | `25600` | ✔️ |
+| `libretranslate`         | `tools`       | Translation | `5000` | `translate` |
+| `lidarr`                 | `media`       | Music | `8686` | ✔️ |
+| `lingarr`                | `quality`     | Subtitle translation | `8080` | ✔️ |
+| `manyfold`               | `library`     | 3d models library | `3214` | ✔️ |
+| `minecraft`              | `games`       | Minecraft | `8080` | ✔️ |
+| `mylar`                  | `media`       | Comics | `8090` | ✔️ |
+| `neutarr`                | `download`    | Missing media search | `9705` | ✔️ |
+| `notifiarr`              | `tools`       | System notifications | `5454` | ✔️ |
+| `onlyfans`               | `download`    | Download all subscriptions | *n/a* | ❌ |
+| `openspeedtest`          | `network`     | Bandwidth test to server | `3000` | ✔️ |
+| `pgadmin`                | `tools`       | Database admin | `80` | ✔️ |
+| `plex`                   | `library`     | Media library | `32400` | ✔️ |
+| `plex-find-mismatch`     | `quality`     | Finds mismatches between tvdb/tmdb/imdb and Plex | *n/a* | ❌ |
+| `pocket-id`              | `tools`       | Passkey authentication server | `1411` | `auth` |
+| `portainer`              | `information` | Container management | `9000` | ✔️ |
+| `postgres`               | `tools`       | Database | *n/a* | ❌ |
+| `prowlarr`               | `download`    | Torrent / NNTP search proxy | `9696` | ✔️ |
+| `qbittorrent`            | `download`    | Torrent downloader | `8080` | ✔️ |
+| `radarr`                 | `media`       | Movies | `7878` | ✔️ |
+| `sabnzbd`                | `download`    | NNTP downloader | `8085` | ✔️ |
+| `scrutiny`               | `information` | S.M.A.R.T. information | `8080` | ✔️ |
+| `seerr`                  | `information` | Media requests and issue tracking | `5055` | `ask` |
+| `sonarr`                 | `media`       | TV Shows | `8989` | ✔️ |
+| `sonarr_youtubedl`       | `disabled`    | Download from Youtube | *n/a* | ❌ |
+| `speedtest-tracker`      | `information` | Speedtest with history | `80` | ✔️ |
+| `stash`                  | `tools`       | Porn database | `9999` | ✔️ |
+| `subgen`                 | `quality`     | Audio transription | *n/a* | ❌ |
+| `syncthing`              | `download`    | Remote data synchronisation | `8384` | ✔️ |
+| `tautulli`               | `information` | Plex stats | `8181` | ✔️ |
+| `tdarr`                  | `quality`     | Transcoding / format shifting / audio normalisation | `8265` | ✔️ |
+| `tdarr_inform`           | `quality`     | Notifications from sonarr / radarr / etc to tdarr | `5004` | ✔️ |
+| `tdarr-node`             | `quality`     | Transcoding node for tdarr | *n/a* | ❌ |
+| `titlecardmaker`         | `quality`     | Episode thumbnails for Plex | `4242` | ✔️ |
+| `tracearr`               | `library`     | Plex & Emby monitoring | `3000` | ✔️ |
+| `ubooquity`              | `media`       | Comics | `2202` | ✔️ |
+| `uptime-kuma`            | `information` | Status and uptime monitoring | `3001` | `status` |
+| `watchstate`             | `tools`       | Sync media library watch state | `8080` | ✔️ |
+| `webtop`                 | `desktop`     | Linux desktop | `3000` | ✔️ |
+| `whisparr`               | `media`       | Porn | `6969` | ✔️ |
+| `whoami`                 | `network`     | Who... Am... I...? | `80` | ✔️ |
+| `windows`                | `desktop`     | Windows desktop | `8006` | ✔️ |
+| `zfdash`                 | `information` | ZFS administration | `5001` | ✔️ |
+| `zfs-discord-alerts`     | `tools`       | Notify Discord when there are zfs problems | `8080` | ❌ |
 
 > [!NOTE]
 > The `core` PROFILE services are enabled in the `compose.yaml` file, you must add any others you wish to a `compose.override.yaml` file instead:
+>
 > ```yaml
 > include:
 >   - whoami/compose.yaml # Use the name of the service above followed by "/compose.yaml"

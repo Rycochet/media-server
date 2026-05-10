@@ -2,7 +2,7 @@ services:
   minecraft:
     container_name: minecraft
     image: ${MINECRAFT_IMAGE:-marctv/minecraft-papermc-server}:${MINECRAFT_IMAGE_TAG:-latest}
-    profiles: ["${MINECRAFT_PROFILE:-games}"]
+    profiles: [ "${MINECRAFT_PROFILE:-games}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -40,16 +40,16 @@ services:
       homepage.group: "Games"
       homepage.name: "Minecraft"
       homepage.icon: "minecraft.png"
-      homepage.href: "https://minecraft.$DOMAIN/"
+      homepage.href: "https://${MINECRAFT_SUBDOMAIN:-minecraft}.${DOMAIN}/"
       homepage.description: "Minecraft"
       homepage.widget.type: "minecraft"
       homepage.widget.url: "udp://minecraft:25565"
       traefik.enable: "true"
-      traefik.http.routers.minecraft.rule: "Host(`minecraft.$DOMAIN`)"
+      traefik.http.routers.minecraft.rule: "Host(`${MINECRAFT_SUBDOMAIN:-minecraft}.${DOMAIN}`)"
       traefik.http.routers.minecraft.middlewares: "minecraft,error-pages"
       traefik.http.services.minecraft.loadbalancer.server.port: "8080"
       traefik.http.middlewares.minecraft.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.minecraft.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.minecraft.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       timeout: "1s"
       start_period: "5m"

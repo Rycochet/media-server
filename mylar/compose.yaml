@@ -2,7 +2,7 @@ services:
   mylar:
     container_name: mylar
     image: ${MYLAR_IMAGE:-lscr.io/linuxserver/mylar3}:${MYLAR_IMAGE_TAG:-latest}
-    profiles: ["${MYLAR_PROFILE:-media}"]
+    profiles: [ "${MYLAR_PROFILE:-media}" ]
     restart: unless-stopped
     networks:
       - external
@@ -33,11 +33,11 @@ services:
       homepage.group: "Media"
       homepage.name: "Mylar"
       homepage.icon: "mylar.png"
-      homepage.href: "https://mylar.$DOMAIN/"
+      homepage.href: "https://${MYLAR_SUBDOMAIN:-mylar}.${DOMAIN}/"
       homepage.description: "Comic books"
       traefik.enable: "true"
-      traefik.http.routers.mylar.rule: "Host(`mylar.$DOMAIN`)"
+      traefik.http.routers.mylar.rule: "Host(`${MYLAR_SUBDOMAIN:-mylar}.${DOMAIN}`)"
       traefik.http.routers.mylar.middlewares: "mylar,tinyauth,error-pages"
       traefik.http.services.mylar.loadbalancer.server.port: "8090"
       traefik.http.middlewares.mylar.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.mylar.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.mylar.headers.accessControlAllowOriginList: "https://${DOMAIN}"

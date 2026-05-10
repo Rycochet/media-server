@@ -44,14 +44,14 @@ services:
       homepage.group: "Tools"
       homepage.name: "AdguardHome"
       homepage.icon: "adguard-home.png"
-      homepage.href: "https://adguardhome.$DOMAIN/"
+      homepage.href: "https://${ADGUARDHOME_SUBDOMAIN:-adguardhome}.${DOMAIN}/"
       homepage.description: "Ads & trackers blocking DNS server"
       traefik.enable: "true"
-      traefik.http.routers.adguardhome.rule: "Host(`adguardhome.$DOMAIN`)"
+      traefik.http.routers.adguardhome.rule: "Host(`${ADGUARDHOME_SUBDOMAIN:-adguardhome}.${DOMAIN}`)"
       traefik.http.routers.adguardhome.middlewares: "adguardhome,tinyauth,error-pages"
       traefik.http.services.adguardhome.loadbalancer.server.port: "${ADGUARDHOME_PORT:-80}" # IMPORTANT: The first-run needs 3000, then change back to 80 afterwards!
       traefik.http.middlewares.adguardhome.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.adguardhome.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.adguardhome.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:${ADGUARDHOME_PORT:-80}/ || exit 1"

@@ -21,12 +21,11 @@ services:
       TZ: "${TZ:-Europe/London}"
     labels:
       deunhealth.restart.on.unhealthy: "true"
-
       homepage.group: "Tools"
       homepage.name: "Flaresolverr"
       homepage.icon: "flaresolverr.png"
       homepage.description: "Cloudflare captcha bypass"
-
+      traefik.enable: "false"
     healthcheck:
       start_period: "2s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8191/"

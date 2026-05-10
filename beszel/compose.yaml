@@ -2,7 +2,7 @@ services:
   beszel:
     container_name: beszel
     image: ${BESZEL_IMAGE:-henrygd/beszel}:${BESZEL_IMAGE_TAG:-0}
-    profiles: ["${BESZEL_PROFILE:-information}"]
+    profiles: [ "${BESZEL_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -24,7 +24,7 @@ services:
       PUID: "${PUID:-1000}"
       PGID: "${PGID:-1000}"
       # Image
-      APP_URL: "https://beszel.$DOMAIN/"
+      APP_URL: "https://${BESZEL_SUBDOMAIN:-beszel}.${DOMAIN}/"
       USER_EMAIL: "${BESZEL_USERNAME:-}"
       USER_PASSWORD: "${BESZEL_PASSWORD:-}"
     volumes:
@@ -35,7 +35,7 @@ services:
       homepage.group: "Information"
       homepage.name: "Beszel"
       homepage.icon: "beszel.png"
-      homepage.href: "https://beszel.$DOMAIN/system/$DOMAIN"
+      homepage.href: "https://${BESZEL_SUBDOMAIN:-beszel}.${DOMAIN}/system/${DOMAIN}"
       homepage.description: "System resource usage"
       homepage.widget.type: "beszel"
       homepage.widget.url: "http://beszel:8090"
@@ -44,19 +44,19 @@ services:
       homepage.widget.username: "${BESZEL_USERNAME:-}"
       homepage.widget.password: "${BESZEL_PASSWORD:-}"
       traefik.enable: "true"
-      traefik.http.routers.beszel.rule: "Host(`beszel.$DOMAIN`)"
+      traefik.http.routers.beszel.rule: "Host(`${BESZEL_SUBDOMAIN:-beszel}.${DOMAIN}`)"
       traefik.http.routers.beszel.middlewares: "beszel,tinyauth,error-pages"
       traefik.http.services.beszel.loadbalancer.server.port: "8090"
       traefik.http.middlewares.beszel.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.beszel.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.beszel.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: ["CMD", "/beszel", "health", "--url", "http://localhost:8090"]
+      test: [ "CMD", "/beszel", "health", "--url", "http://localhost:8090" ]
 
   beszel-agent:
     container_name: beszel-agent
     image: ${BESZEL_AGENT_IMAGE:-henrygd/beszel-agent-nvidia}:${BESZEL_AGENT_IMAGE_TAG:-0}
-    profiles: ["${BESZEL_AGENT_PROFILE:-information}"]
+    profiles: [ "${BESZEL_AGENT_PROFILE:-information}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -91,4 +91,4 @@ services:
 
     healthcheck:
       start_period: "30s"
-      test: ["CMD", "/agent", "health"]
+      test: [ "CMD", "/agent", "health" ]

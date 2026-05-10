@@ -25,7 +25,7 @@ services:
       # Default
       TZ: "${TZ:-Europe/London}"
       # Image
-      ADVERTISE_IP: "https://plex.$DOMAIN:443/"
+      ADVERTISE_IP: "https://${PLEX_SUBDOMAIN:-plex}.${DOMAIN}:443/"
       PLEX_CLAIM: "$PLEX_CLAIM"
       PLEX_GID: "${PGID:-1000}"
       PLEX_UID: "${PUID:-1000}"
@@ -45,7 +45,7 @@ services:
       homepage.group: "Libraries"
       homepage.name: "Plex"
       homepage.icon: "plex.png"
-      homepage.href: "https://plex.$DOMAIN/web/index.html"
+      homepage.href: "https://${PLEX_SUBDOMAIN:-plex}.${DOMAIN}/web/index.html"
       homepage.weight: "-1"
       homepage.description: "Media Library"
       homepage.widgets[0].type: "plex"
@@ -53,12 +53,12 @@ services:
       homepage.widgets[0].key: "{{HOMEPAGE_FILE_PLEX_TOKEN}}"
       # Leaving space for Tautulli to extend this if it's running
       traefik.enable: "true"
-      traefik.http.routers.plex.rule: "Host(`plex.$DOMAIN`)"
+      traefik.http.routers.plex.rule: "Host(`${PLEX_SUBDOMAIN:-plex}.${DOMAIN}`)"
       traefik.http.routers.plex.middlewares: "plex,error-pages"
       traefik.http.services.plex.loadbalancer.server.port: "32400"
       traefik.http.services.plex.loadbalancer.server.scheme: "https"
       traefik.http.middlewares.plex.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.plex.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.plex.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:32400/identity"
@@ -73,7 +73,7 @@ services:
     networks:
       internal:
         aliases:
-          - "plex.$DOMAIN"
+          - "${PLEX_SUBDOMAIN:-plex}.${DOMAIN}"
 
 secrets:
   plex_token:

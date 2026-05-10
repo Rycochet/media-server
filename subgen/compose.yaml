@@ -2,7 +2,7 @@ services:
   subgen:
     container_name: subgen
     image: ${SUBGEN_IMAGE:-mccloud/subgen}:${SUBGEN_IMAGE_TAG:-latest}
-    profiles: ["${SUBGEN_PROFILE:-quality}"]
+    profiles: [ "${SUBGEN_PROFILE:-quality}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -54,9 +54,9 @@ services:
       # WEBHOOK_URL_COMPLETED: ""
 
       # For auto-transcribe - https://github.com/McCloudS/subgen#-jellyfin
-      # JELLYFINSERVER: "http://jellyfin:8096"
+      # JELLYFINSERVER: "http://${JELLYFIN_SUBDOMAIN:-jellyfin}:8096"
       # JELLYFINTOKEN: "${JELLYFIN_API}"
-      # PLEXSERVER: "https://plex.$DOMAIN:443"
+      # PLEXSERVER: "https://${PLEX_SUBDOMAIN:-plex}.${DOMAIN}:443"
       # PLEXTOKEN: "${PLEX_TOKEN}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
@@ -69,5 +69,5 @@ services:
       homepage.group: "Tools"
       homepage.name: "Subgen"
       homepage.icon: "/images/subgen.png"
-      homepage.description: "Audio transcaription"
+      homepage.description: "Audio transcription"
       traefik.enable: "false"

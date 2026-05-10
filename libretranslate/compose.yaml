@@ -2,7 +2,7 @@ services:
   libretranslate:
     container_name: libretranslate
     image: ${LIBRETRANSLATE_IMAGE:-libretranslate/libretranslate}:${LIBRETRANSLATE_IMAGE_TAG:-latest}
-    profiles: ["${LIBRETRANSLATE_PROFILE:-tools}"]
+    profiles: [ "${LIBRETRANSLATE_PROFILE:-tools}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -31,11 +31,11 @@ services:
       homepage.group: "Tools"
       homepage.name: "Libretranslate"
       homepage.icon: "google-translate.png"
-      homepage.href: "https://translate.$DOMAIN/"
+      homepage.href: "https://${LIBRETRANSLATE_SUBDOMAIN:-translate}.${DOMAIN}/"
       homepage.description: "Translation"
       traefik.enable: "true"
-      traefik.http.routers.libretranslate.rule: "Host(`translate.$DOMAIN`)"
+      traefik.http.routers.libretranslate.rule: "Host(`${LIBRETRANSLATE_SUBDOMAIN:-translate}.${DOMAIN}`)"
       traefik.http.routers.libretranslate.middlewares: "libretranslate,tinyauth,error-pages"
       traefik.http.services.libretranslate.loadbalancer.server.port: "5000"
       traefik.http.middlewares.libretranslate.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.libretranslate.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.libretranslate.headers.accessControlAllowOriginList: "https://${DOMAIN}"

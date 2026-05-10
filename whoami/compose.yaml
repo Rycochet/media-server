@@ -1,4 +1,3 @@
-
 services:
   whoami:
     container_name: whoami
@@ -22,9 +21,9 @@ services:
       homepage.group: "Tools"
       homepage.name: "WhoAmI"
       homepage.icon: "double-take.png"
-      homepage.href: "https://whoami.$DOMAIN/"
+      homepage.href: "https://${WHOAMI_SUBDOMAIN:-whoami}.${DOMAIN}/"
       homepage.description: "Who... Am... I...?"
       traefik.enable: "true"
-      traefik.http.routers.whoami.rule: "Host(`whoami.$DOMAIN`)"
+      traefik.http.routers.whoami.rule: "Host(`${WHOAMI_SUBDOMAIN:-whoami}.${DOMAIN}`)"
       traefik.http.routers.whoami.middlewares: "tinyauth,error-pages"
       traefik.http.services.whoami.loadbalancer.server.port: "80"

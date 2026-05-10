@@ -2,7 +2,7 @@ services:
   i2p:
     container_name: i2p
     image: ${I2P_IMAGE:-geti2p/i2p}:${I2P_IMAGE_TAG:-latest}
-    profiles: ["${I2P_PROFILE:-network}"]
+    profiles: [ "${I2P_PROFILE:-network}" ]
     restart: unless-stopped
     networks:
       - external
@@ -28,9 +28,9 @@ services:
       homepage.group: "Tools"
       homepage.name: "I2P"
       homepage.icon: "i2p.png"
-      homepage.href: "https://i2p.$DOMAIN/"
+      homepage.href: "https://${I2P_SUBDOMAIN:-i2p}.${DOMAIN}/"
       homepage.description: "I2P network"
       traefik.enable: "true"
-      traefik.http.routers.i2p.rule: "Host(`i2p.$DOMAIN`)"
+      traefik.http.routers.i2p.rule: "Host(`${I2P_SUBDOMAIN:-i2p}.${DOMAIN}`)"
       traefik.http.routers.i2p.middlewares: "tinyauth,error-pages"
       traefik.http.services.i2p.loadbalancer.server.port: "7657"

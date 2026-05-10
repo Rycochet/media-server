@@ -2,7 +2,7 @@ services:
   titlecardmaker:
     container_name: titlecardmaker
     image: ${TITLECARDMAKER_IMAGE:-ghcr.io/titlecardmaker/titlecardmaker-webui}:${TITLECARDMAKER_IMAGE_TAG:-latest}
-    profiles: ["${TITLECARDMAKER_PROFILE:-quality}"]
+    profiles: [ "${TITLECARDMAKER_PROFILE:-quality}" ]
     restart: unless-stopped
     networks:
       - external
@@ -36,9 +36,9 @@ services:
       homepage.group: "Tools"
       homepage.name: "TitleCardMaker"
       homepage.icon: "/images/titlecardmaker.png"
-      homepage.href: "https://titlecardmaker.$DOMAIN/"
+      homepage.href: "https://${TITLECARDMAKER_SUBDOMAIN:-titlecardmaker}.${DOMAIN}/"
       homepage.description: "Episode Posters"
       traefik.enable: "true"
-      traefik.http.routers.titlecardmaker.rule: "Host(`titlecardmaker.$DOMAIN`)"
+      traefik.http.routers.titlecardmaker.rule: "Host(`${TITLECARDMAKER_SUBDOMAIN:-titlecardmaker}.${DOMAIN}`)"
       traefik.http.routers.titlecardmaker.middlewares: "tinyauth,error-pages"
       traefik.http.services.titlecardmaker.loadbalancer.server.port: "4242"

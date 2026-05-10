@@ -35,15 +35,15 @@ services:
       homepage.group: "Libraries"
       homepage.name: "Kapowarr"
       homepage.icon: "kapowarr.png"
-      homepage.href: "https://kapowarr.$DOMAIN/"
+      homepage.href: "https://${KAPOWARR_SUBDOMAIN:-kapowarr}.${DOMAIN}/"
       homepage.description: "Comics"
 
       traefik.enable: "true"
-      traefik.http.routers.kapowarr.rule: "Host(`kapowarr.$DOMAIN`)"
+      traefik.http.routers.kapowarr.rule: "Host(`${KAPOWARR_SUBDOMAIN:-kapowarr}.${DOMAIN}`)"
       traefik.http.routers.kapowarr.middlewares: "kapowarr,tinyauth,error-pages"
       traefik.http.services.kapowarr.loadbalancer.server.port: "5656"
       traefik.http.middlewares.kapowarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.kapowarr.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.kapowarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
 
     healthcheck:
       start_period: "30s"

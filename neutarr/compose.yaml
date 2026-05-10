@@ -2,7 +2,7 @@ services:
   neutarr:
     container_name: neutarr
     image: ${NEUTARR_IMAGE:-iampuid0/neutarr}:${NEUTARR_IMAGE_TAG:-latest}
-    profiles: ["${NEUTARR_PROFILE:-download}"]
+    profiles: [ "${NEUTARR_PROFILE:-download}" ]
     extends:
       file: ../compose.extend.yaml
       service: "vpn-${USE_VPN:-false}"
@@ -30,7 +30,7 @@ services:
       homepage.group: "Download"
       homepage.name: "Neutarr"
       homepage.icon: "/images/neutarr.png"
-      homepage.href: "https://neutarr.$DOMAIN/"
+      homepage.href: "https://${NEUTARR_SUBDOMAIN:-neutarr}.${DOMAIN}/"
       homepage.description: "Missing media search"
       homepage.widget.type: "customapi"
       homepage.widget.method: "GET"
@@ -45,11 +45,11 @@ services:
       homepage.widget.mappings[2].field: "stats.sonarr.hunted"
       homepage.widget.mappings[2].format: "number"
       traefik.enable: "true"
-      traefik.http.routers.neutarr.rule: "Host(`neutarr.$DOMAIN`)"
+      traefik.http.routers.neutarr.rule: "Host(`${NEUTARR_SUBDOMAIN:-neutarr}.${DOMAIN}`)"
       traefik.http.routers.neutarr.middlewares: "neutarr,tinyauth,error-pages"
       traefik.http.services.neutarr.loadbalancer.server.port: "9705"
       traefik.http.middlewares.neutarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.neutarr.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.neutarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
 
   homepage:
     secrets:

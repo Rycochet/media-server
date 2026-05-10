@@ -2,7 +2,7 @@ services:
   homepage:
     container_name: homepage
     image: ${HOMEPAGE_IMAGE:-ghcr.io/gethomepage/homepage}:${HOMEPAGE_IMAGE_TAG:-v1}
-    profiles: ["${HOMEPAGE_PROFILE:-information}"]
+    profiles: [ "${HOMEPAGE_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
       - external
@@ -28,7 +28,7 @@ services:
       UMASK: "000"
       # Image
       DOCKER_HOST: "tcp://socket-proxy:2375"
-      HOMEPAGE_ALLOWED_HOSTS: "$DOMAIN"
+      HOMEPAGE_ALLOWED_HOSTS: "${DOMAIN}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/app/config"
@@ -52,8 +52,8 @@ services:
       homepage.widgets[0].mappings[0].field: "ip"
       homepage.widgets[0].mappings[0].format: "text"
       traefik.enable: "true"
-      traefik.http.routers.homepage.rule: "Host(`$DOMAIN`)"
+      traefik.http.routers.homepage.rule: "Host(`${DOMAIN}`)"
       traefik.http.routers.homepage.middlewares: "homepage,tinyauth,error-pages"
       traefik.http.services.homepage.loadbalancer.server.port: "3000"
       traefik.http.middlewares.homepage.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.homepage.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.homepage.headers.accessControlAllowOriginList: "https://${DOMAIN}"

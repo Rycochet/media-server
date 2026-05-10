@@ -2,7 +2,7 @@ services:
   plex-find-mismatch:
     container_name: plex-find-mismatch
     image: ${PLEX_FIND_MISMATCH_IMAGE:-rycochet/plex-find-mismatch}:${PLEX_FIND_MISMATCH_IMAGE_TAG:-latest}
-    profiles: ["${PLEX_FIND_MISMATCH_PROFILE:-quality}"]
+    profiles: [ "${PLEX_FIND_MISMATCH_PROFILE:-quality}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -22,7 +22,7 @@ services:
       TZ: "${TZ:-Europe/London}"
       # Image
       PLEX_TOKEN_FILE: "/run/secrets/plex_token"
-      PLEX_URL: "https://plex.$DOMAIN:443/"
+      PLEX_URL: "https://${PLEX_SUBDOMAIN:-plex}.${DOMAIN}:443/"
       CHECK_LIBRARY: "Movies,TV Shows"
       CHECK_UNMATCH: "false"
       # CHECK_NOW: "true"

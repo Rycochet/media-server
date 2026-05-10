@@ -12,7 +12,6 @@ services:
     networks:
       - internal
       - external
-    hostname: "notifiarr.$DOMAIN"
     depends_on:
       traefik:
         condition: service_started
@@ -59,14 +58,14 @@ services:
       homepage.group: "Tools"
       homepage.name: "Notifiarr"
       homepage.icon: "notifiarr.png"
-      homepage.href: "https://notifiarr.$DOMAIN/"
+      homepage.href: "https://${NOTIFIARR_SUBDOMAIN:-notifiarr}.${DOMAIN}/"
       homepage.description: "System notifications"
       traefik.enable: "true"
-      traefik.http.routers.notifiarr.rule: "Host(`notifiarr.$DOMAIN`)"
+      traefik.http.routers.notifiarr.rule: "Host(`${NOTIFIARR_SUBDOMAIN:-notifiarr}.${DOMAIN}`)"
       traefik.http.routers.notifiarr.middlewares: "notifiarr,tinyauth,error-pages"
       traefik.http.services.notifiarr.loadbalancer.server.port: "5454"
       traefik.http.middlewares.notifiarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.notifiarr.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.notifiarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5454'"

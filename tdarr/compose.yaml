@@ -2,7 +2,7 @@ services:
   tdarr:
     container_name: tdarr
     image: ${TDARR_IMAGE:-haveagitgat/tdarr}:${TDARR_IMAGE_TAG:-latest}
-    profiles: ["${TDARR_PROFILE:-quality}"]
+    profiles: [ "${TDARR_PROFILE:-quality}" ]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -52,17 +52,17 @@ services:
       homepage.group: "Media"
       homepage.name: "Tdarr"
       homepage.icon: "tdarr.png"
-      homepage.href: "https://tdarr.$DOMAIN/"
+      homepage.href: "https://${TDARR_SUBDOMAIN:-tdarr}.${DOMAIN}/"
       homepage.description: "Video transcoding"
       homepage.widget.type: "tdarr"
       homepage.widget.url: "http://tdarr:8265"
       traefik.enable: "true"
-      traefik.http.routers.tdarr.rule: "Host(`tdarr.$DOMAIN`)"
+      traefik.http.routers.tdarr.rule: "Host(`${TDARR_SUBDOMAIN:-tdarr}.${DOMAIN}`)"
       traefik.http.routers.tdarr.middlewares: "tdarr,tinyauth,error-pages"
       traefik.http.services.tdarr.loadbalancer.server.port: "8265"
       traefik.http.middlewares.tdarr.headers.accessControlAllowCredentials: "true"
       traefik.http.middlewares.tdarr.headers.accessControlAllowHeaders: "content-type"
-      traefik.http.middlewares.tdarr.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.tdarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "150s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8265/"

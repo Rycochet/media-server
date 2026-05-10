@@ -22,8 +22,8 @@ services:
       PGID: "${PGID:-1000}"
       UMASK: "000"
       # Manyfold
-      SECRET_KEY_BASE: "$DOMAIN"
-      PUBLIC_HOSTNAME: "manyfold.$DOMAIN"
+      SECRET_KEY_BASE: "${DOMAIN}"
+      PUBLIC_HOSTNAME: "${MANYFOLD_SUBDOMAIN:-manyfold}.${DOMAIN}"
       PUBLIC_PORT: "443"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
@@ -34,14 +34,14 @@ services:
       homepage.group: "Libraries"
       homepage.name: "Manyfold"
       homepage.icon: "manyfold.png"
-      homepage.href: "https://manyfold.$DOMAIN/"
+      homepage.href: "https://${MANYFOLD_SUBDOMAIN:-manyfold}.${DOMAIN}/"
       homepage.description: "3D Model library"
       traefik.enable: "true"
-      traefik.http.routers.manyfold.rule: "Host(`manyfold.$DOMAIN`)"
+      traefik.http.routers.manyfold.rule: "Host(`${MANYFOLD_SUBDOMAIN:-manyfold}.${DOMAIN}`)"
       traefik.http.routers.manyfold.middlewares: "manyfold,tinyauth,error-pages"
       traefik.http.services.manyfold.loadbalancer.server.port: "3214"
       traefik.http.middlewares.manyfold.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.manyfold.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.manyfold.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:3214/health || exit 1"

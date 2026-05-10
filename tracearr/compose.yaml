@@ -2,7 +2,7 @@ services:
   tracearr:
     container_name: tracearr
     image: ${TRACEARR_IMAGE:-ghcr.io/connorgallopo/tracearr}:${TRACEARR_IMAGE_TAG:-supervised}
-    profiles: ["${TRACEARR_PROFILE:-library}"]
+    profiles: [ "${TRACEARR_PROFILE:-library}" ]
     restart: unless-stopped
     networks:
       - internal
@@ -18,7 +18,7 @@ services:
         max-file: "3"
     environment:
       TZ: "${TZ:-Europe/London}"
-      CORS_ORIGIN: "https://tracearr.${DOMAIN}"
+      CORS_ORIGIN: "https://${TRACEARR_SUBDOMAIN:-tracearr}.${DOMAIN}"
       FORCE_DB_REINIT: "true"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
@@ -30,7 +30,7 @@ services:
       homepage.group: "Libraries"
       homepage.name: "Tracearr"
       homepage.icon: "tracearr.png"
-      homepage.href: "https://tracearr.$DOMAIN/"
+      homepage.href: "https://${TRACEARR_SUBDOMAIN:-tracearr}.${DOMAIN}/"
       homepage.description: "Plex and Emby Monitoring"
       homepage.widget.type: "tracearr"
       homepage.widget.url: "http://tracearr:3000"
@@ -38,11 +38,11 @@ services:
       homepage.widget.showEpisodeNumber: "true"
       homepage.widget.expandOneStreamToTwoRows: "false"
       traefik.enable: "true"
-      traefik.http.routers.tracearr.rule: "Host(`tracearr.$DOMAIN`)"
+      traefik.http.routers.tracearr.rule: "Host(`${TRACEARR_SUBDOMAIN:-tracearr}.${DOMAIN}`)"
       traefik.http.routers.tracearr.middlewares: "tracearr,tinyauth,error-pages"
       traefik.http.services.tracearr.loadbalancer.server.port: "3000"
       traefik.http.middlewares.tracearr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.tracearr.headers.accessControlAllowOriginList: "https://$DOMAIN"
+      traefik.http.middlewares.tracearr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
 
   homepage:
     secrets:

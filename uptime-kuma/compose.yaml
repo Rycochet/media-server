@@ -1,0 +1,49 @@
+services:
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: ${UPTIME_KUMA_IMAGE:-louislam/uptime-kuma}:${UPTIME_KUMA_IMAGE_TAG:-2-slim-rootless}
+    profiles: [ "${UPTIME_KUMA_PROFILE:-information}" ]
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    user: "${PGID:-1000}:${PUID:-1000}"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      DOCKER_HOST: "tcp://socket-proxy:2375"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/app/data"
+    labels:
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Information"
+      homepage.name: "Uptime Kuma"
+      homepage.icon: "uptime-kuma.png"
+      homepage.href: "https://status.$DOMAIN/dashboard"
+      homepage.description: "Status and uptime monitoring"
+      homepage.widget.type: "uptimekuma"
+      homepage.widget.url: "http://uptime-kuma:3001"
+      homepage.widget.slug: "default"
+      homepage.widget.fields: "[\"up\", \"down\", \"uptime\", \"incident\"]"
+      traefik.enable: "true"
+      traefik.http.routers.uptime-kuma.rule: "Host(`status.$DOMAIN`)"
+      traefik.http.routers.uptime-kuma.middlewares: "tinyauth,error-pages"
+      traefik.http.services.uptime-kuma.loadbalancer.server.port: "3001"
+      # Publicly viewable status without tinyauth protection
+      traefik.http.routers.status-kuma.rule: "Host(`status.$DOMAIN`) && PathRegexp(`(?i)^/($|status/default$|icon.svg$|api/status-page/|assets/)`)"
+      traefik.http.routers.status-kuma.middlewares: "status-kuma,error-pages"
+      traefik.http.routers.status-kuma.service: "uptime-kuma"
+      traefik.http.middlewares.status-kuma.redirectRegex.regex: "^https://status.$DOMAIN/$"
+      traefik.http.middlewares.status-kuma.redirectRegex.replacement: "https://status.$DOMAIN/status/default"
+    healthcheck:
+      start_period: "30s"

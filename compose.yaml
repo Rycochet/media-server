@@ -84,6 +84,7 @@ include:
   # - titlecardmaker/compose.yaml #         | quality     | Episode thumbnails for Plex |
   # - tracearr/compose.yaml #               | library     | Plex & Emby monitoring |
   # - ubooquity/compose.yaml #              | media       | Comics |
+  # - uptime-kuma/compose.yaml #            | information | Status and uptime monitoring |
   # - watchstate/compose.yaml #             | tools       | Sync media library watch state |
   # - webtop/compose.yaml #                 | desktop     | Linux desktop |
   # - whisparr/compose.yaml #               | media       | Porn |

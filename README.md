@@ -181,6 +181,7 @@ This is a list of all services, and the profiles they are started with. Note tha
 | titlecardmaker         | quality     | Episode thumbnails for Plex |
 | tracearr               | library     | Plex & Emby monitoring |
 | ubooquity              | media       | Comics |
+| uptime-kuma            | information | Status and uptime monitoring |
 | watchstate             | tools       | Sync media library watch state |
 | webtop                 | desktop     | Linux desktop |
 | whisparr               | media       | Porn |

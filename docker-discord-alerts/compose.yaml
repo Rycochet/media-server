@@ -6,15 +6,15 @@ services:
     restart: unless-stopped
     read_only: true
     networks:
-      - internal
       - external
+      - internal
     logging:
       driver: "json-file"
       options:
         max-size: "1m"
         max-file: "3"
     environment:
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       CONTAINERS: "${DOCKER_DISCORD_ALERTS_CONTAINERS:-*}"
       DISCORD_WEBHOOK_URL: "${DOCKER_DISCORD_ALERTS_WEBHOOK:?Set the DOCKER_DISCORD_ALERTS_WEBHOOK to your discord webhook!}"
       EVENTS: "${DOCKER_DISCORD_ALERTS_EVENTS:-default}"

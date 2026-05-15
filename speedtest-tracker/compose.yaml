@@ -42,7 +42,7 @@ services:
       homepage.description: "Speedtest with history"
       homepage.widget.type: "speedtest"
       homepage.widget.version: "2"
-      homepage.widget.url: "http://speedtest-tracker:80"
+      homepage.widget.url: "http://speedtest-tracker.internal:80"
       homepage.widget.key: "{{HOMEPAGE_FILE_SPEEDTEST_TRACKER_API}}"
       traefik.enable: "true"
       traefik.http.routers.speedtest-tracker.rule: "Host(`${SPEEDTEST_TRACKER_SUBDOMAIN:-speedtest-tracker}.${DOMAIN}`)"

@@ -1,7 +1,7 @@
 services:
   cloudflared:
     container_name: cloudflared
-    image: ${CLOUDFLARED_IMAGE:-cloudflare/cloudflared}:${CLOUDFLARED_IMAGE_TAG:-latest}
+    image: ${CLOUDFLARED_IMAGE:-docker.io/cloudflare/cloudflared}:${CLOUDFLARED_IMAGE_TAG:-latest}
     profiles: [ "${CLOUDFLARED_PROFILE:-core}" ]
     restart: unless-stopped
     networks:

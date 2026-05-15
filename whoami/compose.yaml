@@ -1,7 +1,7 @@
 services:
   whoami:
     container_name: whoami
-    image: ${WHOAMI_IMAGE:-traefik/whoami}:${WHOAMI_IMAGE_TAG:-latest}
+    image: ${WHOAMI_IMAGE:-docker.io/traefik/whoami}:${WHOAMI_IMAGE_TAG:-latest}
     profiles: [ "${WHOAMI_PROFILE:-network}" ]
     restart: unless-stopped
     read_only: true

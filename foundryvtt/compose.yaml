@@ -6,8 +6,8 @@ services:
     profiles: [ "${FOUNDRYVTT_PROFILE:-games}" ]
     restart: unless-stopped
     networks:
-      - internal
       - external
+      - internal
     depends_on:
       socket-proxy:
         condition: service_healthy
@@ -34,7 +34,7 @@ services:
       # Image
       CONTAINER_PRESERVE_CONFIG: "true"
       CONTAINER_UMASK: "0000"
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       FOUNDRY_COMPRESS_WEBSOCKET: "true"
       FOUNDRY_HOSTNAME: "${FOUNDRYVTT_SUBDOMAIN:-rpg}.${DOMAIN}"
       FOUNDRY_IP_DISCOVERY: "false"

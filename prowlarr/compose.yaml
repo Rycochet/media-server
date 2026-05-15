@@ -38,7 +38,7 @@ services:
       homepage.href: "https://${PROWLARR_SUBDOMAIN:-prowlarr}.${DOMAIN}/"
       homepage.description: "Search"
       homepage.widget.type: "prowlarr"
-      homepage.widget.url: "http://prowlarr:9696"
+      homepage.widget.url: "http://prowlarr.internal:9696"
       homepage.widget.key: "{{HOMEPAGE_FILE_PROWLARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.prowlarr.rule: "Host(`${PROWLARR_SUBDOMAIN:-prowlarr}.${DOMAIN}`)"

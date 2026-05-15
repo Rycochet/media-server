@@ -40,7 +40,7 @@ services:
       homepage.href: "https://${BAZARR_SUBDOMAIN:-bazarr}.${DOMAIN}/"
       homepage.description: "Subtitles"
       homepage.widget.type: "bazarr"
-      homepage.widget.url: "http://bazarr:6767"
+      homepage.widget.url: "http://bazarr.internal:6767"
       homepage.widget.key: "{{HOMEPAGE_FILE_BAZARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.bazarr.rule: "Host(`${BAZARR_SUBDOMAIN:-bazarr}.${DOMAIN}`)"

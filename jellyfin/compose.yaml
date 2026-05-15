@@ -31,7 +31,7 @@ services:
       PGID: "${PGID:-1000}"
       UMASK: "000"
       # Image
-      JELLYFIN_PublishedServerUrl: "http://${JELLYFIN_SUBDOMAIN:-jellyfin}.${DOMAIN}"
+      JELLYFIN_PublishedServerUrl: "https://${JELLYFIN_SUBDOMAIN:-jellyfin}.${DOMAIN}"
     volumes:
       - "./config:/config"
       - "./logs:/config/logs"
@@ -47,7 +47,7 @@ services:
       homepage.href: "https://${JELLYFIN_SUBDOMAIN:-jellyfin}.${DOMAIN}/"
       homepage.description: "Media Library"
       homepage.widget.type: "jellyfin"
-      homepage.widget.url: "http://jellyfin:8096"
+      homepage.widget.url: "http://jellyfin.internal:8096"
       homepage.widget.key: "{{HOMEPAGE_FILE_JELLYFIN_API}}"
       homepage.widget.enableBlocks: "true"
       homepage.widget.showEpisodeNumber: "true"

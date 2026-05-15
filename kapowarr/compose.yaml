@@ -1,12 +1,12 @@
 services:
   kapowarr:
     container_name: kapowarr
-    image: ${KAPOWARR_IMAGE:-mrcas/kapowarr}:${KAPOWARR_IMAGE_TAG:-latest}
+    image: ${KAPOWARR_IMAGE:-docker.io/mrcas/kapowarr}:${KAPOWARR_IMAGE_TAG:-latest}
     profiles: [ "${KAPOWARR_PROFILE:-library}" ]
     restart: unless-stopped
     networks:
-      - internal
       - external
+      - internal
     depends_on:
       traefik:
         condition: service_started

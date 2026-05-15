@@ -1,7 +1,7 @@
 services:
   glances:
     container_name: glances
-    image: ${GLANCES_IMAGE:-nicolargo/glances}:${GLANCES_IMAGE_TAG:-ubuntu-latest-full}
+    image: ${GLANCES_IMAGE:-docker.io/nicolargo/glances}:${GLANCES_IMAGE_TAG:-ubuntu-latest-full}
     profiles: [ "${GLANCES_PROFILE:-information}" ]
     extends:
       file: ../compose.extend.yaml
@@ -29,7 +29,7 @@ services:
       PGID: "${PGID:-1000}"
       UMASK: "000"
       # Image
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       GLANCES_OPT: "-C /glances/conf/glances.conf -w --enable-plugin raid"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
@@ -44,7 +44,7 @@ services:
       homepage.href: "https://${GLANCES_SUBDOMAIN:-glances}.${DOMAIN}/"
       homepage.description: "System Status"
       homepage.widget.type: "glances"
-      homepage.widget.url: "http://glances:61208"
+      homepage.widget.url: "http://glances.internal:61208"
       homepage.widget.version: "4"
       homepage.widget.metric: "containers"
       traefik.enable: "true"

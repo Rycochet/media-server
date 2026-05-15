@@ -1,7 +1,7 @@
 services:
   vpn:
     container_name: vpn
-    image: ${VPN_IMAGE:-qmcgaw/gluetun}:${VPN_IMAGE_TAG:-v3}
+    image: ${VPN_IMAGE:-docker.io/qmcgaw/gluetun}:${VPN_IMAGE_TAG:-v3}
     profiles: ["${VPN_PROFILE:-core}"]
     restart: unless-stopped
     networks:
@@ -49,13 +49,13 @@ services:
       homepage.icon: "gluetun.png"
       homepage.description: "Gluetun | HTTP - vpn:8888 | Socks5 - vpn:1080"
       homepage.widget.type: "gluetun"
-      homepage.widget.url: "http://vpn:8000"
+      homepage.widget.url: "http://vpn.internal:8000"
       homepage.widget.version: "2"
       traefik.enable: "false"
 
   proxy:
     container_name: proxy
-    image: ${PROXY_IMAGE:-serjs/go-socks5-proxy}:${PROXY_IMAGE_TAG:-latest}
+    image: ${PROXY_IMAGE:-docker.io/serjs/go-socks5-proxy}:${PROXY_IMAGE_TAG:-latest}
     profiles: ["${PROXY_PROFILE:-network}"]
     restart: unless-stopped
     network_mode: service:vpn

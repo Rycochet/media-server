@@ -27,7 +27,7 @@ services:
       PGID: "${PGID:-1000}"
       UMASK: "000"
       # Image
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       HOMEPAGE_ALLOWED_HOSTS: "${DOMAIN}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"

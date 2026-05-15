@@ -1,7 +1,7 @@
 services:
   openspeedtest:
     container_name: openspeedtest
-    image: ${OPENSPEEDTEST_IMAGE:-openspeedtest/latest}:${OPENSPEEDTEST_IMAGE_TAG:-latest}
+    image: ${OPENSPEEDTEST_IMAGE:-docker.io/openspeedtest/latest}:${OPENSPEEDTEST_IMAGE_TAG:-latest}
     profiles: [ "${OPENSPEEDTEST_PROFILE:-network}" ]
     restart: unless-stopped
     networks:

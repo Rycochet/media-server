@@ -39,7 +39,7 @@ services:
       homepage.href: "https://${WHISPARR_SUBDOMAIN:-whisparr}.${DOMAIN}/"
       # homepage.description: "Porn"
       # homepage.widget.type: "radarr" # v2 = sonarr, v3 = radarr
-      # homepage.widget.url: "http://whisparr:6969"
+      # homepage.widget.url: "http://whisparr.internal:6969"
       # homepage.widget.key: "{{HOMEPAGE_FILE_WHISPARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.whisparr.rule: "Host(`${WHISPARR_SUBDOMAIN:-whisparr}.${DOMAIN}`)"

@@ -5,8 +5,8 @@ services:
     profiles: [ "${POCKETID_PROFILE:-tools}" ]
     restart: unless-stopped
     networks:
-      - internal
       - external # needed for maxmind geo-ip
+      - internal
     depends_on:
       socket-proxy:
         condition: service_healthy
@@ -33,7 +33,7 @@ services:
       ANALYTICS_DISABLED: "true"
       APP_NAME: "${DOMAIN}"
       APP_URL: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}"
-      INTERNAL_APP_URL: "http://pocket-id:1411"
+      INTERNAL_APP_URL: "http://pocket-id.internal:1411"
       SESSION_DURATION: "${POCKETID_SESSION_EXPIRY:-86400}" # Default is 24 hours
       TRUST_PROXY: "true"
       # UI_CONFIG_DISABLED: "true"

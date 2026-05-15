@@ -97,6 +97,9 @@ networks:
   external:
     name: "external"
     driver: bridge
+    driver_opts:
+      # Prevent services using this from talking to each other
+      com.docker.network.bridge.enable_icc: "false"
     enable_ipv4: true
     enable_ipv6: true
   internal:

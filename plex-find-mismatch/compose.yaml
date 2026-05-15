@@ -1,7 +1,7 @@
 services:
   plex-find-mismatch:
     container_name: plex-find-mismatch
-    image: ${PLEX_FIND_MISMATCH_IMAGE:-rycochet/plex-find-mismatch}:${PLEX_FIND_MISMATCH_IMAGE_TAG:-latest}
+    image: ${PLEX_FIND_MISMATCH_IMAGE:-ghcr.io/rycochet/plex-find-mismatch}:${PLEX_FIND_MISMATCH_IMAGE_TAG:-latest}
     profiles: [ "${PLEX_FIND_MISMATCH_PROFILE:-quality}" ]
     restart: unless-stopped
     networks:

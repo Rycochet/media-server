@@ -1,7 +1,7 @@
 services:
   tdarr:
     container_name: tdarr
-    image: ${TDARR_IMAGE:-haveagitgat/tdarr}:${TDARR_IMAGE_TAG:-latest}
+    image: ${TDARR_IMAGE:-docker.io/haveagitgat/tdarr}:${TDARR_IMAGE_TAG:-latest}
     profiles: [ "${TDARR_PROFILE:-quality}" ]
     extends:
       file: ../compose.extend.yaml
@@ -55,7 +55,7 @@ services:
       homepage.href: "https://${TDARR_SUBDOMAIN:-tdarr}.${DOMAIN}/"
       homepage.description: "Video transcoding"
       homepage.widget.type: "tdarr"
-      homepage.widget.url: "http://tdarr:8265"
+      homepage.widget.url: "http://tdarr.internal:8265"
       traefik.enable: "true"
       traefik.http.routers.tdarr.rule: "Host(`${TDARR_SUBDOMAIN:-tdarr}.${DOMAIN}`)"
       traefik.http.routers.tdarr.middlewares: "tdarr,tinyauth,error-pages"

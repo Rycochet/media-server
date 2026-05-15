@@ -1,7 +1,7 @@
 services:
   imagemaid:
     container_name: imagemaid
-    image: ${IMAGEMAID_IMAGE:-kometateam/imagemaid}:${IMAGEMAID_IMAGE_TAG:-latest}
+    image: ${IMAGEMAID_IMAGE:-docker.io/kometateam/imagemaid}:${IMAGEMAID_IMAGE_TAG:-latest}
     profiles: [ "${IMAGEMAID_PROFILE:-quality}" ]
     restart: unless-stopped
     networks:

@@ -10,8 +10,8 @@ services:
     restart: unless-stopped
     privileged: true
     networks:
-      - internal
       - external
+      - internal
     depends_on:
       traefik:
         condition: service_started
@@ -24,26 +24,26 @@ services:
     user: "${PUID:-1000}:${PGID:-1000}"
     environment:
       DN_LIDARR_0_NAME: "lidarr"
-      DN_LIDARR_0_URL: "http://lidarr:8686"
+      DN_LIDARR_0_URL: "http://lidarr.internal:8686"
       DN_LIDARR_0_API_KEY: "${LIDARR_API:-}"
       DN_PROWLARR_0_NAME: "prowlarr"
-      DN_PROWLARR_0_URL: "http://prowlarr:9696"
+      DN_PROWLARR_0_URL: "http://prowlarr.internal:9696"
       DN_PROWLARR_0_API_KEY: "${PROWLARR_API:-}"
       DN_RADARR_0_NAME: "radarr"
-      DN_RADARR_0_URL: "http://radarr:7878"
+      DN_RADARR_0_URL: "http://radarr.internal:7878"
       DN_RADARR_0_API_KEY: "${RADARR_API:-}"
       DN_SONARR_0_NAME: "sonarr"
-      DN_SONARR_0_URL: "http://sonarr:8989"
+      DN_SONARR_0_URL: "http://sonarr.internal:8989"
       DN_SONARR_0_API_KEY: "${SONARR_API:-}"
       DN_QBIT_0_NAME: "qbittorrent"
-      DN_QBIT_0_URL: "http://qbittorrent:8080"
+      DN_QBIT_0_URL: "http://qbittorrent.internal:8080"
       DN_SABNZBD_0_NAME: "sabnzbd"
-      DN_SABNZBD_0_URL: "http://sabnzbd:8085"
+      DN_SABNZBD_0_URL: "http://sabnzbd.internal:8085"
       DN_SABNZBD_0_API_KEY: "${SABNZBD_API:-}"
-      DN_PLEX_URL: "https://plex:32400"
+      DN_PLEX_URL: "https://${PLEX_SUBDOMAIN:-plex}.${DOMAIN}"
       DN_PLEX_TOKEN: "${PLEX_TOKEN:-}"
       DN_TAUTULLI_NAME: "tautulli"
-      DN_TAUTULLI_URL: "http://tautulli:8181"
+      DN_TAUTULLI_URL: "http://tautulli.internal:8181"
       DN_TAUTULLI_API_KEY: "${TAUTULLI_API:-}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"

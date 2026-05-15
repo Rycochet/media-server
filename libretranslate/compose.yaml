@@ -1,7 +1,7 @@
 services:
   libretranslate:
     container_name: libretranslate
-    image: ${LIBRETRANSLATE_IMAGE:-libretranslate/libretranslate}:${LIBRETRANSLATE_IMAGE_TAG:-latest}
+    image: ${LIBRETRANSLATE_IMAGE:-docker.io/libretranslate/libretranslate}:${LIBRETRANSLATE_IMAGE_TAG:-latest}
     profiles: [ "${LIBRETRANSLATE_PROFILE:-tools}" ]
     extends:
       file: ../compose.extend.yaml

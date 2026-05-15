@@ -1,7 +1,7 @@
 services:
   chaptarr:
     container_name: chaptarr
-    image: ${CHAPTARR_IMAGE:-robertlordhood/chaptarr}:${CHAPTARR_IMAGE_TAG:-latest}
+    image: ${CHAPTARR_IMAGE:-docker.io/robertlordhood/chaptarr}:${CHAPTARR_IMAGE_TAG:-latest}
     profiles: [ "${CHAPTARR_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml
@@ -40,7 +40,7 @@ services:
       homepage.href: "https://${CHAPTARR_SUBDOMAIN:-chaptarr}.${DOMAIN}/"
       homepage.description: "Audiobooks and Ebooks"
       homepage.widget.type: "readarr"
-      homepage.widget.url: "http://chaptarr:8789"
+      homepage.widget.url: "http://chaptarr.internal:8789"
       homepage.widget.key: "{{HOMEPAGE_FILE_CHAPTARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.chaptarr.rule: "Host(`${CHAPTARR_SUBDOMAIN:-chaptarr}.${DOMAIN}`)"

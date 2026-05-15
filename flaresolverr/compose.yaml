@@ -5,8 +5,8 @@ services:
     profiles: ["${FLARESOLVERR_PROFILE:-network}"]
     restart: unless-stopped
     networks:
-      - internal
       - external
+      - internal
     depends_on:
       traefik:
         condition: service_started

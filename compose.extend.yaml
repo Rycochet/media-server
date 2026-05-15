@@ -95,6 +95,8 @@ services:
       <<: *pg-true
 
   pg-true_vpn-false:
+    networks:
+      - external
     depends_on:
       <<: *pg-true
 
@@ -105,12 +107,16 @@ services:
   pg-false:
 
   pg-false_vpn-false:
+    networks:
+      - external
 
   pg-false_vpn-true:
     depends_on:
       <<: *vpn-true
 
   vpn-false:
+    networks:
+      - external
 
   vpn-true:
     depends_on:

@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     read_only: true
     networks:
-      - internal
       - external
+      - internal
     logging:
       driver: "json-file"
       options:
@@ -31,7 +31,7 @@ services:
       homepage.description: "Pool status"
       homepage.widget.type: "customapi"
       homepage.widget.method: "GET"
-      homepage.widget.url: "http://zfs-discord-alerts:8080/"
+      homepage.widget.url: "http://zfs-discord-alerts.internal:8080/"
       homepage.widget.mappings[0].label: "Online"
       homepage.widget.mappings[0].field: "online"
       homepage.widget.mappings[0].format: "number"

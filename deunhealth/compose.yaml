@@ -1,7 +1,7 @@
 services:
   deunhealth:
     container_name: deunhealth
-    image: ${DEUNHEALTH_IMAGE:-qmcgaw/deunhealth}:${DEUNHEALTH_IMAGE_TAG:-latest}
+    image: ${DEUNHEALTH_IMAGE:-docker.io/qmcgaw/deunhealth}:${DEUNHEALTH_IMAGE_TAG:-latest}
     profiles: ["${DEUNHEALTH_PROFILE:-core}"]
     restart: unless-stopped
     networks:
@@ -19,7 +19,7 @@ services:
       # Default
       TZ: "${TZ:-Europe/London}"
       # Docker
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       # Image
       LOG_LEVEL: "info"
     labels:

@@ -1,7 +1,7 @@
 services:
   sonarr_youtubedl:
     container_name: sonarr_youtubedl
-    image: ${SONARR_YOUTUBEDL_IMAGE:-whatdaybob/sonarr_youtubedl}:${SONARR_YOUTUBEDL_IMAGE_TAG:-latest}
+    image: ${SONARR_YOUTUBEDL_IMAGE:-docker.io/whatdaybob/sonarr_youtubedl}:${SONARR_YOUTUBEDL_IMAGE_TAG:-latest}
     profiles: ["${SONARR_YOUTUBEDL_PROFILE:-disabled}"]
     # restart: unless-stopped
     networks:

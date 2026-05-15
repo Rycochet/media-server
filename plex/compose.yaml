@@ -1,7 +1,7 @@
 services:
   plex:
     container_name: plex
-    image: ${PLEX_IMAGE:-plexinc/pms-docker}:${PLEX_IMAGE_TAG:-latest}
+    image: ${PLEX_IMAGE:-docker.io/plexinc/pms-docker}:${PLEX_IMAGE_TAG:-latest}
     profiles: [ "${PLEX_PROFILE:-library}" ]
     extends:
       file: ../compose.extend.yaml
@@ -49,7 +49,7 @@ services:
       homepage.weight: "-1"
       homepage.description: "Media Library"
       homepage.widgets[0].type: "plex"
-      homepage.widgets[0].url: "https://plex:32400"
+      homepage.widgets[0].url: "https://plex.internal:32400"
       homepage.widgets[0].key: "{{HOMEPAGE_FILE_PLEX_TOKEN}}"
       # Leaving space for Tautulli to extend this if it's running
       traefik.enable: "true"

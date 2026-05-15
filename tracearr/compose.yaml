@@ -5,8 +5,8 @@ services:
     profiles: [ "${TRACEARR_PROFILE:-library}" ]
     restart: unless-stopped
     networks:
-      - internal
       - external
+      - internal
     depends_on:
       traefik:
         condition: service_started
@@ -33,7 +33,7 @@ services:
       homepage.href: "https://${TRACEARR_SUBDOMAIN:-tracearr}.${DOMAIN}/"
       homepage.description: "Plex and Emby Monitoring"
       homepage.widget.type: "tracearr"
-      homepage.widget.url: "http://tracearr:3000"
+      homepage.widget.url: "http://tracearr.internal:3000"
       homepage.widget.key: "{{HOMEPAGE_FILE_TRACEARR_API}}"
       homepage.widget.showEpisodeNumber: "true"
       homepage.widget.expandOneStreamToTwoRows: "false"

@@ -1,12 +1,12 @@
 services:
   stash:
     container_name: stash
-    image: ${STASH_IMAGE:-stashapp/stash}:${STASH_IMAGE_TAG:-latest}
+    image: ${STASH_IMAGE:-docker.io/stashapp/stash}:${STASH_IMAGE_TAG:-latest}
     profiles: [ "${STASH_PROFILE:-tools}" ]
     restart: unless-stopped
     networks:
-      - internal
       - external
+      - internal
     depends_on:
       traefik:
         condition: service_started

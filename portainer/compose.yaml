@@ -1,7 +1,7 @@
 services:
   portainer:
     container_name: portainer
-    image: ${PORTAINER_IMAGE:-portainer/portainer-ce}:${PORTAINER_IMAGE_TAG:-alpine}
+    image: ${PORTAINER_IMAGE:-docker.io/portainer/portainer-ce}:${PORTAINER_IMAGE_TAG:-alpine}
     profiles: [ "${PORTAINER_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
@@ -15,7 +15,7 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    command: -H tcp://socket-proxy:2375
+    command: -H tcp://socket-proxy.internal:2375
     security_opt:
       - "no-new-privileges=true"
     volumes:
@@ -29,7 +29,7 @@ services:
       homepage.href: "https://${PORTAINER_SUBDOMAIN:-portainer}.${DOMAIN}/#!/1/docker/dashboard"
       homepage.description: "Container management"
       homepage.widget.type: "portainer"
-      homepage.widget.url: "http://portainer:9000"
+      homepage.widget.url: "http://portainer.internal:9000"
       homepage.widget.key: "{{HOMEPAGE_FILE_PORTAINER_API}}"
       homepage.widget.env: "${PORTAINER_ENV:-1}"
       traefik.enable: "true"

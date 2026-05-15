@@ -30,7 +30,7 @@ services:
       homepage.href: "https://${SCRUTINY_SUBDOMAIN:-scrutiny}.${DOMAIN}/"
       homepage.description: "S.M.A.R.T. information"
       homepage.widget.type: "scrutiny"
-      homepage.widget.url: "http://scrutiny:8080"
+      homepage.widget.url: "http://scrutiny.internal:8080"
       traefik.enable: "true"
       traefik.http.routers.scrutiny.rule: "Host(`${SCRUTINY_SUBDOMAIN:-scrutiny}.${DOMAIN}`)"
       traefik.http.routers.scrutiny.middlewares: "scrutiny,tinyauth,error-pages"

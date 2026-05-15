@@ -1,0 +1,40 @@
+# Add extra domains for routing and SSL certs
+#############################################
+# entryPoints:
+#   websecure:
+#     http:
+#       tls:
+#         domains:
+#           - main: "<<domain>"
+#             sans: "*.<<domain>>"
+
+# Routes that want to do something that doesn't involve docker
+##############################################################
+# http:
+#   routers:
+#     <<outside-docker>>: # A web server running on your local network that wants to be protected - this will not expose the url
+#       rule: "Host(`<<subdomain>>.<<domain>>`)"
+#       middlewares: allow-auth,tinyauth@docker,error-pages@docker
+#       service: <<outside-docker>>
+
+#     <<redirect>>: # Redirect the browser so it will navigate to the new url
+#       rule: "Host(`<<subdomain>>.<<domain>>`)"
+#       middlewares: <<redirect>>
+#       service: noop@internal
+
+#   middlewares:
+#     allow-auth: # Allows the auth header to be forwarded (optional - needed for Cockpit)
+#       headers:
+#         customResponseHeaders:
+#           Access-Control-Allow-Headers: authorization
+
+#     <<redirect>>:
+#       redirectRegex:
+#         regex: "(.*)"
+#         replacement: "<<url>>"
+
+#   services:
+#     <<outside-docker>>:
+#       loadBalancer:
+#         servers:
+#           - url: "<<url>>"

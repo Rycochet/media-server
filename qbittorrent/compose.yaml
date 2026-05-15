@@ -40,7 +40,7 @@ services:
       homepage.href: "https://${QBITTORRENT_SUBDOMAIN:-qbittorrent}.${DOMAIN}/"
       homepage.description: "Torrents"
       homepage.widget.type: "qbittorrent"
-      homepage.widget.url: "http://qbittorrent:8080"
+      homepage.widget.url: "http://qbittorrent.internal:8080"
       traefik.enable: "true"
       traefik.http.routers.qbittorrent.rule: "Host(`${QBITTORRENT_SUBDOMAIN:-qbittorrent}.${DOMAIN}`)"
       traefik.http.routers.qbittorrent.middlewares: "qbittorrent,tinyauth,error-pages"

@@ -1,5 +1,9 @@
 # Media Server with Docker Compose
 
+> [!CAUTION]
+> Due to a recent update you **must** use the `.internal` suffix for internal serviec name routing, such as `http://vpn.internal:8888` - if you do not do this then they will not be able to connect!
+> This needs to happen on all web-apps for all connections, and can safely be done before updating!
+
 - [Media Server with Docker Compose](#media-server-with-docker-compose)
   - [Concept](#concept)
   - [Network](#network)
@@ -40,7 +44,9 @@ There are some included scripts for use within various services directly - you d
 This has two networks defined in `compose.yaml`.
 
 * The `internal` network does not have internet access, and is used for inter-service communication. All routing into the stack should come through `traefik` which acts as a bridge between the two.
-* The `external` network allows for a service to contact the internet directly. (Ideally services should be using the `http://vpn:8888` service as an http(s) proxy instead.)
+  > [!IMPORTANT]
+  > You must use the `.internal` suffix to service names to route the connections over the internal network, without that they will not connect!
+* The `external` network allows for a service to contact the internet directly. (Ideally services should be using the `http://vpn.internal:8888` service as an http(s) proxy instead.)
 
 ## Installation
 
@@ -77,7 +83,7 @@ Create an empty `compose.override.yaml` file, and copy the commented block of `i
     1. Create a Tunnel, name it for your domain
     1. Copy the "Run the following command" suggestion, paste it as `CLOUDFLARED_TOKEN` in `.env` then remove the `cloudflared.exe service install` prefix (including space).
     1. Create 2 public hostnames, one to your domain, and one to `*` at your domain
-        * Both have a service of `https://traefik`
+        * Both have a service of `https://traefik.internal`
         * Both have Advanced -> TLS -> Origin Server Name as your domain
         * Both have Advanced -> TLS -> HTTP2 connection turned on
 

@@ -1,7 +1,7 @@
 services:
   traefik:
     container_name: traefik
-    image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_IMAGE_TAG:-v3}
+    image: ${TRAEFIK_IMAGE:-docker.io/traefik}:${TRAEFIK_IMAGE_TAG:-v3}
     profiles: [ "${TRAEFIK_PROFILE:-core}" ]
     extends:
       file: ../compose.extend.yaml
@@ -57,7 +57,7 @@ services:
       # - "--metrics.addinternals"
       # - "--metrics.prometheus=true"
       - "--ping"
-      - "--providers.docker.endpoint=tcp://socket-proxy:2375"
+      - "--providers.docker.endpoint=tcp://socket-proxy.internal:2375"
       - "--providers.docker.exposedByDefault=false"
       - "--providers.docker.network=internal"
       - "--providers.docker=true"
@@ -89,7 +89,7 @@ services:
       homepage.href: "https://${TRAEFIK_SUBDOMAIN:-traefik}.${DOMAIN}/"
       homepage.description: "Web Ingress"
       homepage.widget.type: "traefik"
-      homepage.widget.url: "http://traefik:8080"
+      homepage.widget.url: "http://traefik.internal:8080"
       traefik.enable: "true"
       traefik.http.routers.traefik.service: "api@internal"
       traefik.http.routers.traefik.rule: "Host(`${TRAEFIK_SUBDOMAIN:-traefik}.${DOMAIN}`)"

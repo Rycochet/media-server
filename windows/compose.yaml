@@ -1,7 +1,7 @@
 services:
   windows:
     container_name: windows
-    image: ${WINDOWS_IMAGE:-dockurr/windows}:${WINDOWS_IMAGE_TAG:-latest}
+    image: ${WINDOWS_IMAGE:-docker.io/dockurr/windows}:${WINDOWS_IMAGE_TAG:-latest}
     profiles: [ "${WINDOWS_PROFILE:-desktop}" ]
     extends:
       file: ../compose.extend.yaml

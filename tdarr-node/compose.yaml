@@ -1,7 +1,7 @@
 services:
   tdarr-node:
     container_name: tdarr-node
-    image: ${TDARR_NODE_IMAGE:-haveagitgat/tdarr_node}:${TDARR_NODE_IMAGE_TAG:-latest}
+    image: ${TDARR_NODE_IMAGE:-docker.io/haveagitgat/tdarr_node}:${TDARR_NODE_IMAGE_TAG:-latest}
     profiles: [ "${TDARR_NODE_PROFILE:-quality}" ]
     extends:
       file: ../compose.extend.yaml
@@ -24,7 +24,7 @@ services:
       nodeName: "Server-Node"
       # nodePort: "8267"
       nodeType: "mapped"
-      serverURL: "http://tdarr:8266"
+      serverURL: "http://tdarr.internal:8266"
       transcodegpuWorkers: "2"
       transcodecpuWorkers: "0"
       healthcheckgpuWorkers: "0"
@@ -42,4 +42,4 @@ services:
       deunhealth.restart.on.unhealthy: "false"
     healthcheck:
       start_period: "150s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://tdarr:8266/api/v2/get-nodes | grep -q \"$$nodeName\""
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://tdarr.internal:8266/api/v2/get-nodes | grep -q \"$$nodeName\""

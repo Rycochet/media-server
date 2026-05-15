@@ -1,7 +1,7 @@
 services:
   beszel:
     container_name: beszel
-    image: ${BESZEL_IMAGE:-henrygd/beszel}:${BESZEL_IMAGE_TAG:-0}
+    image: ${BESZEL_IMAGE:-docker.io/henrygd/beszel}:${BESZEL_IMAGE_TAG:-0}
     profiles: [ "${BESZEL_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
@@ -38,7 +38,7 @@ services:
       homepage.href: "https://${BESZEL_SUBDOMAIN:-beszel}.${DOMAIN}/system/${DOMAIN}"
       homepage.description: "System resource usage"
       homepage.widget.type: "beszel"
-      homepage.widget.url: "http://beszel:8090"
+      homepage.widget.url: "http://beszel.internal:8090"
       homepage.widget.version: "2"
       homepage.widget.systemId: "${DOMAIN}"
       homepage.widget.username: "${BESZEL_USERNAME:-}"
@@ -55,7 +55,7 @@ services:
 
   beszel-agent:
     container_name: beszel-agent
-    image: ${BESZEL_AGENT_IMAGE:-henrygd/beszel-agent-nvidia}:${BESZEL_AGENT_IMAGE_TAG:-0}
+    image: ${BESZEL_AGENT_IMAGE:-docker.io/henrygd/beszel-agent-nvidia}:${BESZEL_AGENT_IMAGE_TAG:-0}
     profiles: [ "${BESZEL_AGENT_PROFILE:-information}" ]
     extends:
       file: ../compose.extend.yaml
@@ -76,8 +76,8 @@ services:
       # Default
       TZ: "${TZ:-Europe/London}"
       # Image
-      DOCKER_HOST: "tcp://socket-proxy:2375"
-      HUB_URL: "http://beszel:8090"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
+      HUB_URL: "http://beszel.internal:8090"
       LISTEN: "45876"
       TOKEN: "${BESZEL_AGENT_TOKEN:-}"
       KEY: "${BESZEL_AGENT_KEY:-}"

@@ -1,7 +1,7 @@
 services:
   duc:
     container_name: duc
-    image: ${DUC_IMAGE:-tigerdockermediocore/duc-docker}:${DUC_IMAGE_TAG:-1}
+    image: ${DUC_IMAGE:-docker.io/tigerdockermediocore/duc-docker}:${DUC_IMAGE_TAG:-1}
     profiles: [ "${DUC_PROFILE:-tools}" ]
     # restart: unless-stopped
     networks:

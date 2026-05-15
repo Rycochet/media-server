@@ -1,7 +1,7 @@
 services:
   zfdash:
     container_name: zfdash
-    image: ${ZFDASH_IMAGE:-ad4mts/zfdash}:${ZFDASH_IMAGE_TAG:-latest}
+    image: ${ZFDASH_IMAGE:-docker.io/ad4mts/zfdash}:${ZFDASH_IMAGE_TAG:-latest}
     profiles: [ "${ZFDASH_PROFILE:-information}" ]
     restart: unless-stopped
     networks:

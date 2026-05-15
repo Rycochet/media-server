@@ -44,7 +44,7 @@ services:
       homepage.weight: "-1"
       homepage.description: "Media Library"
       homepage.widget.type: "emby"
-      homepage.widget.url: "http://emby:8096"
+      homepage.widget.url: "http://emby.internal:8096"
       homepage.widget.key: "${EMBY_TOKEN:-}"
       homepage.widget.enableBlocks: "true"
       homepage.widget.showEpisodeNumber: "true"

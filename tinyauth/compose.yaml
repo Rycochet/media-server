@@ -16,7 +16,7 @@ services:
       - google_client_secret
     environment:
       # Image
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       TINYAUTH_ANALYTICS_ENABLED: "false"
       TINYAUTH_APPURL: "https://${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}"
       TINYAUTH_AUTH_SECURECOOKIE: "true"
@@ -38,7 +38,7 @@ services:
       traefik.enable: "true"
       traefik.http.routers.tinyauth.rule: "Host(`${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}`)"
       traefik.http.services.tinyauth.loadbalancer.server.port: "3000"
-      traefik.http.middlewares.tinyauth.forwardauth.address: "http://tinyauth:3000/api/auth/traefik"
+      traefik.http.middlewares.tinyauth.forwardauth.address: "http://tinyauth.internal:3000/api/auth/traefik"
       traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: "remote-user,remote-groups"
       traefik.http.middlewares.tinyauth.forwardauth.maxResponseBodySize: "32768"
       traefik.http.middlewares.tinyauth.forwardauth.trustForwardHeader: "true"

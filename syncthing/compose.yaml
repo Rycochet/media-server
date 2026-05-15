@@ -1,7 +1,7 @@
 services:
   syncthing:
     container_name: syncthing
-    image: ${SYNCTHING_IMAGE:-syncthing/syncthing}:${SYNCTHING_IMAGE_TAG:-2}
+    image: ${SYNCTHING_IMAGE:-docker.io/syncthing/syncthing}:${SYNCTHING_IMAGE_TAG:-2}
     profiles: [ "${SYNCTHING_PROFILE:-download}" ]
     extends:
       file: ../compose.extend.yaml
@@ -45,7 +45,7 @@ services:
       homepage.description: "Remote data synchronisation"
       homepage.widget.type: "customapi"
       homepage.widget.method: "GET"
-      homepage.widget.url: "http://syncthing:8384/rest/system/connections" # ?folder: "<<<FOLDER_ID>>>"
+      homepage.widget.url: "http://syncthing.internal:8384/rest/system/connections" # ?folder: "<<<FOLDER_ID>>>"
       homepage.widget.headers.X-API-Key: "{{HOMEPAGE_FILE_SYNCTHING_API}}"
       homepage.widget.mappings[0].label: "Downloaded"
       homepage.widget.mappings[0].field: "total.inBytesTotal"

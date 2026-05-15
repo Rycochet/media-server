@@ -34,7 +34,7 @@ services:
       homepage.href: "https://${SEERR_SUBDOMAIN:-ask}.${DOMAIN}/"
       homepage.description: "Media requests"
       homepage.widget.type: "seerr"
-      homepage.widget.url: "http://seerr:5055"
+      homepage.widget.url: "http://seerr.internal:5055"
       homepage.widget.key: "{{HOMEPAGE_FILE_SEERR_API}}"
       homepage.widget.fields: "[\"pending\", \"approved\", \"completed\", \"issues\"]"
       traefik.enable: "true"

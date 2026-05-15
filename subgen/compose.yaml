@@ -1,7 +1,7 @@
 services:
   subgen:
     container_name: subgen
-    image: ${SUBGEN_IMAGE:-mccloud/subgen}:${SUBGEN_IMAGE_TAG:-latest}
+    image: ${SUBGEN_IMAGE:-docker.io/mccloud/subgen}:${SUBGEN_IMAGE_TAG:-latest}
     profiles: [ "${SUBGEN_PROFILE:-quality}" ]
     extends:
       file: ../compose.extend.yaml
@@ -54,7 +54,7 @@ services:
       # WEBHOOK_URL_COMPLETED: ""
 
       # For auto-transcribe - https://github.com/McCloudS/subgen#-jellyfin
-      # JELLYFINSERVER: "http://${JELLYFIN_SUBDOMAIN:-jellyfin}:8096"
+      # JELLYFINSERVER: "http://jellyfin.internal:8096"
       # JELLYFINTOKEN: "${JELLYFIN_API}"
       # PLEXSERVER: "https://${PLEX_SUBDOMAIN:-plex}.${DOMAIN}:443"
       # PLEXTOKEN: "${PLEX_TOKEN}"

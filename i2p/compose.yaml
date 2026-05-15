@@ -1,7 +1,7 @@
 services:
   i2p:
     container_name: i2p
-    image: ${I2P_IMAGE:-geti2p/i2p}:${I2P_IMAGE_TAG:-latest}
+    image: ${I2P_IMAGE:-docker.io/geti2p/i2p}:${I2P_IMAGE_TAG:-latest}
     profiles: [ "${I2P_PROFILE:-network}" ]
     restart: unless-stopped
     networks:

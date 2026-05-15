@@ -33,3 +33,5 @@ services:
       traefik.http.routers.tdarr-inform.rule: "Host(`${TDARR_INFORM_SUBDOMAIN:-tdarr-inform}.${DOMAIN}`)"
       traefik.http.routers.tdarr-inform.middlewares: "tinyauth,error-pages"
       traefik.http.services.tdarr-inform.loadbalancer.server.port: "5004"
+    healthcheck:
+      start_period: "30s"

@@ -1,7 +1,7 @@
 services:
   komga:
     container_name: komga
-    image: ${KOMGA_IMAGE:-gotson/komga}:${KOMGA_IMAGE_TAG:-1.x}
+    image: ${KOMGA_IMAGE:-docker.io/gotson/komga}:${KOMGA_IMAGE_TAG:-1.x}
     profiles: [ "${KOMGA_PROFILE:-library}" ]
     restart: unless-stopped
     networks:
@@ -38,7 +38,7 @@ services:
       homepage.href: "readarr://${KOMGA_SUBDOMAIN:-komga}.${DOMAIN}/"
       homepage.description: "Comics"
       homepage.widget.type: "readarr"
-      homepage.widget.url: "http://komga:25600"
+      homepage.widget.url: "http://komga.internal:25600"
       homepage.widget.key: "{{HOMEPAGE_FILE_KOMGA_API}}"
       traefik.enable: "true"
       traefik.http.routers.komga.rule: "Host(`${KOMGA_SUBDOMAIN:-komga}.${DOMAIN}`)"

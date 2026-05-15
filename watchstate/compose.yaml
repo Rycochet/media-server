@@ -5,8 +5,8 @@ services:
     profiles: [ "${WATCHSTATE_PROFILE:-tools}" ]
     restart: unless-stopped
     networks:
-      - internal
       - external
+      - internal
     depends_on:
       traefik:
         condition: service_started
@@ -35,3 +35,5 @@ services:
       traefik.http.services.watchstate.loadbalancer.server.port: "8080"
       traefik.http.middlewares.watchstate.headers.accessControlAllowCredentials: "true"
       traefik.http.middlewares.watchstate.headers.accessControlAllowOriginList: "https://${DOMAIN}"
+    healthcheck:
+      start_period: "90s"

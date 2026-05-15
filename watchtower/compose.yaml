@@ -1,7 +1,7 @@
 services:
   watchtower:
     container_name: watchtower
-    image: ${WATCHTOWER_IMAGE:-nickfedor/watchtower}:${WATCHTOWER_IMAGE_TAG:-1}
+    image: ${WATCHTOWER_IMAGE:-docker.io/nickfedor/watchtower}:${WATCHTOWER_IMAGE_TAG:-1}
     profiles: ["${WATCHTOWER_PROFILE:-core}"]
     restart: unless-stopped
     networks:
@@ -20,7 +20,7 @@ services:
       # Default
       TZ: "${TZ:-Europe/London}"
       # Docker
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       # Image
       WATCHTOWER_CLEANUP: "true"
       WATCHTOWER_HTTP_API_METRICS: "true"
@@ -40,6 +40,6 @@ services:
       homepage.icon: "watchtower.png"
       homepage.description: "Docker image updates"
       homepage.widget.type: "watchtower"
-      homepage.widget.url: "http://watchtower:8080"
+      homepage.widget.url: "http://watchtower.internal:8080"
       homepage.widget.key: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
       traefik.enable: "false"

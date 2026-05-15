@@ -1,7 +1,7 @@
 services:
   neutarr:
     container_name: neutarr
-    image: ${NEUTARR_IMAGE:-iampuid0/neutarr}:${NEUTARR_IMAGE_TAG:-latest}
+    image: ${NEUTARR_IMAGE:-docker.io/iampuid0/neutarr}:${NEUTARR_IMAGE_TAG:-latest}
     profiles: [ "${NEUTARR_PROFILE:-download}" ]
     extends:
       file: ../compose.extend.yaml
@@ -34,7 +34,7 @@ services:
       homepage.description: "Missing media search"
       homepage.widget.type: "customapi"
       homepage.widget.method: "GET"
-      homepage.widget.url: "http://neutarr:9705/api/stats?apikey={{HOMEPAGE_FILE_NEUTARR_API}}"
+      homepage.widget.url: "http://neutarr.internal:9705/api/stats?apikey={{HOMEPAGE_FILE_NEUTARR_API}}"
       homepage.widget.mappings[0].label: "Lidarr"
       homepage.widget.mappings[0].field: "stats.lidarr.hunted"
       homepage.widget.mappings[0].format: "number"

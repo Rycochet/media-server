@@ -1,7 +1,7 @@
 services:
   uptime-kuma:
     container_name: uptime-kuma
-    image: ${UPTIME_KUMA_IMAGE:-louislam/uptime-kuma}:${UPTIME_KUMA_IMAGE_TAG:-2-slim-rootless}
+    image: ${UPTIME_KUMA_IMAGE:-docker.io/louislam/uptime-kuma}:${UPTIME_KUMA_IMAGE_TAG:-2-slim-rootless}
     profiles: [ "${UPTIME_KUMA_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
@@ -20,7 +20,7 @@ services:
       # Default
       TZ: "${TZ:-Europe/London}"
       # Image
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/app/data"
@@ -32,7 +32,7 @@ services:
       homepage.href: "https://${UPTIME_KUMA_SUBDOMAIN:-status}.${DOMAIN}/dashboard"
       homepage.description: "Status and uptime monitoring"
       homepage.widget.type: "uptimekuma"
-      homepage.widget.url: "http://uptime-kuma:3001"
+      homepage.widget.url: "http://uptime-kuma.internal:3001"
       homepage.widget.slug: "default"
       homepage.widget.fields: "[\"up\", \"down\", \"uptime\", \"incident\"]"
       traefik.enable: "true"

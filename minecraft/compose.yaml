@@ -1,12 +1,12 @@
 services:
   minecraft:
     container_name: minecraft
-    image: ${MINECRAFT_IMAGE:-marctv/minecraft-papermc-server}:${MINECRAFT_IMAGE_TAG:-latest}
+    image: ${MINECRAFT_IMAGE:-docker.io/marctv/minecraft-papermc-server}:${MINECRAFT_IMAGE_TAG:-latest}
     profiles: [ "${MINECRAFT_PROFILE:-games}" ]
     restart: unless-stopped
     networks:
-      - internal
       - external
+      - internal
     ports:
       - "25565:25565/tcp"
       - "25565:25565/udp"
@@ -43,7 +43,7 @@ services:
       homepage.href: "https://${MINECRAFT_SUBDOMAIN:-minecraft}.${DOMAIN}/"
       homepage.description: "Minecraft"
       homepage.widget.type: "minecraft"
-      homepage.widget.url: "udp://minecraft:25565"
+      homepage.widget.url: "udp://minecraft.internal:25565"
       traefik.enable: "true"
       traefik.http.routers.minecraft.rule: "Host(`${MINECRAFT_SUBDOMAIN:-minecraft}.${DOMAIN}`)"
       traefik.http.routers.minecraft.middlewares: "minecraft,error-pages"

@@ -1,7 +1,7 @@
 services:
   dozzle:
     container_name: dozzle
-    image: ${DOZZLE_IMAGE:-amir20/dozzle}:${DOZZLE_IMAGE_TAG:-v10}
+    image: ${DOZZLE_IMAGE:-docker.io/amir20/dozzle}:${DOZZLE_IMAGE_TAG:-v10}
     profiles: [ "${DOZZLE_PROFILE:-information}" ]
     restart: unless-stopped
     networks:
@@ -19,7 +19,7 @@ services:
         max-size: "1m"
         max-file: "3"
     environment:
-      DOCKER_HOST: "tcp://socket-proxy:2375"
+      DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       DOZZLE_HOSTNAME: "${DOMAIN}"
     labels:
       deunhealth.restart.on.unhealthy: "true"

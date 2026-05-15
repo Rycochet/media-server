@@ -40,7 +40,7 @@ services:
       homepage.href: "https://${SONARR_SUBDOMAIN:-sonarr}.${DOMAIN}/"
       homepage.description: "TV Shows"
       homepage.widget.type: "sonarr"
-      homepage.widget.url: "http://sonarr:8989"
+      homepage.widget.url: "http://sonarr.internal:8989"
       homepage.widget.key: "{{HOMEPAGE_FILE_SONARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.sonarr.rule: "Host(`${SONARR_SUBDOMAIN:-sonarr}.${DOMAIN}`)"

@@ -40,7 +40,7 @@ services:
       homepage.href: "https://${RADARR_SUBDOMAIN:-radarr}.${DOMAIN}/"
       homepage.description: "Movies"
       homepage.widget.type: "radarr"
-      homepage.widget.url: "http://radarr:7878"
+      homepage.widget.url: "http://radarr.internal:7878"
       homepage.widget.key: "{{HOMEPAGE_FILE_RADARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.radarr.rule: "Host(`${RADARR_SUBDOMAIN:-radarr}.${DOMAIN}`)"

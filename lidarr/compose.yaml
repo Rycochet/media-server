@@ -40,7 +40,7 @@ services:
       homepage.href: "https://${LIDARR_SUBDOMAIN:-lidarr}.${DOMAIN}/"
       homepage.description: "Music"
       homepage.widget.type: "lidarr"
-      homepage.widget.url: "http://lidarr:8686"
+      homepage.widget.url: "http://lidarr.internal:8686"
       homepage.widget.key: "{{HOMEPAGE_FILE_LIDARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.lidarr.rule: "Host(`${LIDARR_SUBDOMAIN:-lidarr}.${DOMAIN}`)"

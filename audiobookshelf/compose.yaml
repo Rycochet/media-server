@@ -39,7 +39,7 @@ services:
       homepage.href: "https://${AUDIOBOOKSHELF_SUBDOMAIN:-audiobookshelf}.${DOMAIN}/"
       homepage.description: "Audiobooks and Podcasts"
       homepage.widget.type: "audiobookshelf"
-      homepage.widget.url: "http://audiobookshelf:80"
+      homepage.widget.url: "http://audiobookshelf.internal:80"
       homepage.widget.key: "{{HOMEPAGE_FILE_AUDIOBOOKSHELF_API}}"
       traefik.enable: "true"
       traefik.http.routers.audiobookshelf.rule: "Host(`${AUDIOBOOKSHELF_SUBDOMAIN:-audiobookshelf}.${DOMAIN}`)"

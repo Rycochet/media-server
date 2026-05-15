@@ -8,7 +8,6 @@ services:
       service: "gpu-${USE_GPU:-none}"
     restart: unless-stopped
     networks:
-      - external # https://github.com/lingarr-translate/lingarr/issues/414
       - internal
     depends_on:
       libretranslate:

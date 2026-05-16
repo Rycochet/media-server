@@ -3,9 +3,6 @@ services:
     container_name: kometa
     image: ${KOMETA_IMAGE:-lscr.io/linuxserver/kometa}:${KOMETA_IMAGE_TAG:-latest}
     profiles: ["${KOMETA_PROFILE:-quality}"]
-    extends:
-      file: ../compose.extend.yaml
-      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - external

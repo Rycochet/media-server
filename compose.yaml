@@ -52,6 +52,7 @@ include:
   # - libretranslate/compose.yaml #         | tools       | Translation |
   # - lidarr/compose.yaml #                 | media       | Music |
   # - lingarr/compose.yaml #                | quality     | Subtitle translation |
+  # - lldap/compose.yaml #                  | network     | LDAP server |
   # - manyfold/compose.yaml #               | library     | 3d models library |
   # - minecraft/compose.yaml #              | games       | Minecraft |
   # - mylar/compose.yaml #                  | media       | Comics |

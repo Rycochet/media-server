@@ -1,0 +1,70 @@
+services:
+  lldap:
+    container_name: lldap
+    image: ${LLDAP_IMAGE:-docker.io/lldap/lldap}:${LLDAP_IMAGE_TAG:-stable}
+    profiles: ["${LLDAP_PROFILE:-network}"]
+    restart: unless-stopped
+    networks:
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    secrets:
+      - lldap_ldap_user_pass
+    environment:
+      # Default
+      UID: "${PUID:-1000}"
+      GID: "${PGID:-1000}"
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      LLDAP_JWT_SECRET: "${LLDAP_JWT_SECRET:-mySuper$$ecureJWT${DOMAIN}!}"
+      LLDAP_KEY_SEED: "${LLDAP_KEY_SECRET:-mySuper$$ecureKeySeed${DOMAIN}!}"
+      LLDAP_KEY_FILE: ""
+      LLDAP_LDAP_BASE_DN: "dc=${DOMAIN}"
+      LLDAP_LDAP_USER_PASS_FILE: "/run/secrets/lldap_ldap_user_pass"
+      LLDAP_LDAP_USER_EMAIL: "${EMAIL}"
+      LLDAP_LDAP_USER_DN: "${LLDAP_LDAP_ADMIN_USER:-admin}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/data"
+    labels:
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "LLDAP"
+      homepage.icon: "lldap.png"
+      homepage.href: "https://${LLDAP_SUBDOMAIN:-lldap}.${DOMAIN}/"
+      homepage.description: "LDAP server"
+      traefik.enable: "true"
+      traefik.http.routers.lldap.rule: "Host(`${LLDAP_SUBDOMAIN:-lldap}.${DOMAIN}`)"
+      traefik.http.routers.lldap.middlewares: "lldap,tinyauth,error-pages"
+      traefik.http.services.lldap.loadbalancer.server.port: "17170"
+      traefik.http.middlewares.lldap.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.lldap.headers.accessControlAllowOriginList: "https://${DOMAIN}"
+    healthcheck:
+      start_period: "5s"
+      start_interval: "1s"
+      test: ["CMD", "/app/lldap", "healthcheck"]
+
+  tinyauth:
+    depends_on:
+      lldap:
+        condition: service_healthy
+        restart: true
+    secrets:
+      - lldap_ldap_user_pass
+    environment:
+      TINYAUTH_LDAP_ADDRESS: "ldap://lldap.internal:3890"
+      TINYAUTH_LDAP_BASEDN: "dc=${DOMAIN}"
+      TINYAUTH_LDAP_BINDDN: "uid=${LLDAP_LDAP_ADMIN_USER:-admin},ou=people,dc=${DOMAIN}"
+      TINYAUTH_LDAP_BINDPASSWORD: "${LLDAP_LDAP_ADMIN_PASS:-password}"
+      # TINYAUTH_LDAP_BINDPASSWORDFILE: "/run/secrets/lldap_ldap_user_pass" # https://github.com/tinyauthapp/tinyauth/issues/927
+      TINYAUTH_LDAP_INSECURE: "true"
+      TINYAUTH_LDAP_SEARCHFILTER: "(uid=%s)"
+    labels:
+      com.centurylinklabs.watchtower.depends-on: "lldap"
+
+secrets:
+  lldap_ldap_user_pass:
+    environment: "LLDAP_LDAP_ADMIN_PASS"

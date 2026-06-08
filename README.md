@@ -157,6 +157,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `libretranslate`         | `tools`       | Translation | `5000` | `translate` |
 | `lidarr`                 | `media`       | Music | `8686` | ✔️ |
 | `lingarr`                | `quality`     | Subtitle translation | `8080` | ✔️ |
+| `lldap`                  | `network`     | LDAP server | `17170` / `3890` | ✔️ |
 | `manyfold`               | `library`     | 3d models library | `3214` | ✔️ |
 | `minecraft`              | `games`       | Minecraft | `8080` | ✔️ |
 | `mylar`                  | `media`       | Comics | `8090` | ✔️ |

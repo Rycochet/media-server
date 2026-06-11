@@ -171,6 +171,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `pocket-id`              | `tools`       | Passkey authentication server | `1411` | `auth` |
 | `portainer`              | `information` | Container management | `9000` | ✔️ |
 | `postgres`               | `tools`       | Database | *n/a* | ❌ |
+| `posterizarr`            | `tools`       | Automated poster maker | `8000` | ✔️ |
 | `prowlarr`               | `download`    | Torrent / NNTP search proxy | `9696` | ✔️ |
 | `qbittorrent`            | `download`    | Torrent downloader | `8080` | ✔️ |
 | `radarr`                 | `media`       | Movies | `7878` | ✔️ |

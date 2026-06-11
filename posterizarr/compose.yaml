@@ -1,0 +1,45 @@
+services:
+  posterizarr:
+    container_name: posterizarr
+    image: ${POSTERIZARR_IMAGE:-ghcr.io/fscorrupt/posterizarr}:${POSTERIZARR_IMAGE_TAG:-latest}
+    profiles: [ "${POSTERIZARR_PROFILE:-media}" ]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    user: "${PGID:-1000}:${PUID:-1000}"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      APP_HOST: "0.0.0.0"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./config/assets:/assets"
+      - "./config/manualassets:/manualassets"
+      - "./backup:/assetsbackup"
+      - "./logs:/config/logs"
+    labels:
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "Posterizarr"
+      homepage.icon: "posterizarr.png"
+      homepage.href: "https://${POSTERIZARR_SUBDOMAIN:-posterizarr}.${DOMAIN}/"
+      homepage.description: "Automated poster maker"
+      traefik.enable: "true"
+      traefik.http.routers.posterizarr.rule: "Host(`${POSTERIZARR_SUBDOMAIN:-posterizarr}.${DOMAIN}`)"
+      traefik.http.routers.posterizarr.middlewares: "tinyauth,error-pages"
+      traefik.http.services.posterizarr.loadbalancer.server.port: "8000"
+    healthcheck:
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8000/"

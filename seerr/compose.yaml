@@ -3,6 +3,9 @@ services:
     container_name: seerr
     image: ${SEERR_IMAGE:-ghcr.io/seerr-team/seerr}:${SEERR_IMAGE_TAG:-v3}
     profiles: [ "${SEERR_PROFILE:-information}" ]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
       - external

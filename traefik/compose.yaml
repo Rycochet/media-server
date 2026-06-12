@@ -65,7 +65,7 @@ services:
       - "--providers.file.watch=true"
       - "--providers.file=true"
       - "--serverstransport.insecureskipverify=true"
-      # Copy the whole "command:" section to compose.override.yaml and add extra domains as needed
+      # Copy the supplied config_rules.yaml to config/rules.yaml and add other domains there
       - "--entryPoints.websecure.http.tls.domains[0].main=${DOMAIN}"
       - "--entryPoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
       # - "--entryPoints.websecure.http.tls.domains[1].main=other.com"
@@ -78,8 +78,6 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "./.ssl/key.pem:/run/secrets/key.pem:ro"
-      - "./.ssl/cert.pem:/run/secrets/cert.pem:ro"
       - "./config:/etc/traefik"
     labels:
       deunhealth.restart.on.unhealthy: "true"

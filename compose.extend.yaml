@@ -90,6 +90,44 @@ services:
   gpu-nvidia:
     <<: *gpu-nvidia
 
+  gpu-amd_vpn-true:
+    <<: *gpu-amd
+    depends_on:
+      <<: *vpn-true
+
+  gpu-intel_vpn-true:
+    <<: *gpu-intel
+    depends_on:
+      <<: *vpn-true
+
+  gpu-none_vpn-true:
+    depends_on:
+      <<: *vpn-true
+
+  gpu-nvidia_vpn-true:
+    <<: *gpu-nvidia
+    depends_on:
+      <<: *vpn-true
+
+  gpu-amd_vpn-false:
+    <<: *gpu-amd
+    networks:
+      - external
+
+  gpu-intel_vpn-false:
+    <<: *gpu-intel
+    networks:
+      - external
+
+  gpu-none_vpn-false:
+    networks:
+      - external
+
+  gpu-nvidia_vpn-false:
+    <<: *gpu-nvidia
+    networks:
+      - external
+
   pg-true:
     depends_on:
       <<: *pg-true

@@ -1,0 +1,49 @@
+services:
+  crunchy-downloader:
+    container_name: crunchy-downloader
+    image: ${CRUNCHY_DOWNLOADER_IMAGE:-ghcr.io/crunchy-dl/crunchy-downloader-webtop}:${CRUNCHY_DOWNLOADER_IMAGE_TAG:-stable}
+    profiles: [ "${CRUNCHY_DOWNLOADER_PROFILE:-download}" ]
+    extends:
+      file: ../compose.extend.yaml
+      service: "gpu-${USE_GPU:-none}_vpn-${USE_VPN:-false}"
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    shm_size: "1gb"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
+      UMASK: "000"
+      # Image
+      TITLE: "Crunchy Downloader Webtop"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./data:/crd-data"
+      - "$PATH_DOWNLOADS:/data/Downloads"
+    labels:
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Download"
+      homepage.name: "Crunchy-downloader"
+      homepage.icon: "crunchyroll.png"
+      homepage.href: "https://${CRUNCHY_DOWNLOADER_SUBDOMAIN:-crunchy-downloader}.${DOMAIN}/"
+      homepage.description: "Crunchyroll (anime) downloader"
+      traefik.enable: "true"
+      traefik.http.routers.crunchy-downloader.rule: "Host(`${CRUNCHY_DOWNLOADER_SUBDOMAIN:-crunchy-downloader}.${DOMAIN}`)"
+      traefik.http.routers.crunchy-downloader.middlewares: "tinyauth,error-pages"
+      traefik.http.services.crunchy-downloader.loadbalancer.server.port: "3000"
+    healthcheck:
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:3000/"

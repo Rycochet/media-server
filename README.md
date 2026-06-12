@@ -140,6 +140,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `beszel`                 | `information` | System information | `8090` | ✔️ |
 | `chaptarr`               | `media`       | Books / Audiobooks | `8789` | ✔️ |
 | `cleanuparr`             | `download`    | Bad download handling | `11011` | ✔️ |
+| `crunchy-downloader`     | `download`    | Crunchyroll (anime) downloader | `3000` | ✔️ |
 | `docker-discord-alerts`  | `tools`       | Notify Discord when docker containers change | *n/a* | ❌ |
 | `dozzle`                 | `information` | Docker status | `8080` | ✔️ |
 | `duc`                    | `tools`       | Disk usage | `80` | ✔️ |

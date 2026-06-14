@@ -1,0 +1,28 @@
+services:
+  pocket-id:
+    depends_on:
+      lldap:
+        condition: service_healthy
+        restart: true
+    secrets:
+      - lldap_ldap_user_pass
+    environment:
+      UI_CONFIG_DISABLED: "true"
+      LDAP_ENABLED: "true"
+      LDAP_ADMIN_GROUP_NAME: "lldap_admin"
+      LDAP_ATTRIBUTE_GROUP_MEMBER: "member"
+      LDAP_ATTRIBUTE_GROUP_NAME: "displayname"
+      LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: "uuid"
+      LDAP_ATTRIBUTE_USER_EMAIL: "mail"
+      LDAP_ATTRIBUTE_USER_FIRST_NAME: "firstname"
+      LDAP_ATTRIBUTE_USER_LAST_NAME: "lastname"
+      LDAP_ATTRIBUTE_USER_PROFILE_PICTURE: "avatar"
+      LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: "uuid"
+      LDAP_ATTRIBUTE_USER_USERNAME: "displayname"
+      LDAP_BASE: "dc=${DOMAIN}"
+      LDAP_BIND_DN: "uid=${LLDAP_LDAP_ADMIN_USER:-admin},ou=people,dc=${DOMAIN}"
+      LDAP_BIND_PASSWORD_FILE: "/run/secrets/lldap_ldap_user_pass"
+      LDAP_URL: "ldap://lldap.internal:3890"
+      LDAP_USER_SEARCH_FILTER: "(uid=%s)"
+    labels:
+      com.centurylinklabs.watchtower.depends-on: "lldap"

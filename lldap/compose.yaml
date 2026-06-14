@@ -47,24 +47,6 @@ services:
       start_interval: "1s"
       test: ["CMD", "/app/lldap", "healthcheck"]
 
-  tinyauth:
-    depends_on:
-      lldap:
-        condition: service_healthy
-        restart: true
-    secrets:
-      - lldap_ldap_user_pass
-    environment:
-      TINYAUTH_LDAP_ADDRESS: "ldap://lldap.internal:3890"
-      TINYAUTH_LDAP_BASEDN: "dc=${DOMAIN}"
-      TINYAUTH_LDAP_BINDDN: "uid=${LLDAP_LDAP_ADMIN_USER:-admin},ou=people,dc=${DOMAIN}"
-      TINYAUTH_LDAP_BINDPASSWORD: "${LLDAP_LDAP_ADMIN_PASS:-password}"
-      # TINYAUTH_LDAP_BINDPASSWORDFILE: "/run/secrets/lldap_ldap_user_pass" # https://github.com/tinyauthapp/tinyauth/issues/927
-      TINYAUTH_LDAP_INSECURE: "true"
-      TINYAUTH_LDAP_SEARCHFILTER: "(uid=%s)"
-    labels:
-      com.centurylinklabs.watchtower.depends-on: "lldap"
-
 secrets:
   lldap_ldap_user_pass:
     environment: "LLDAP_LDAP_ADMIN_PASS"

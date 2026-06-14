@@ -54,6 +54,8 @@ include:
   # - lidarr/compose.yaml #                 | media       | Music |
   # - lingarr/compose.yaml #                | quality     | Subtitle translation |
   # - lldap/compose.yaml #                  | network     | LDAP server |
+  # - lldap/compose.pocket-id.yaml
+  # - lldap/compose.tinyauth.yaml
   # - manyfold/compose.yaml #               | library     | 3d models library |
   # - minecraft/compose.yaml #              | games       | Minecraft |
   # - mylar/compose.yaml #                  | media       | Comics |

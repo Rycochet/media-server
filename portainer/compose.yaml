@@ -40,7 +40,7 @@ services:
       traefik.http.middlewares.portainer.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://localhost:9000/ || exit 1"
+      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1:9000/ || exit 1"
 
   homepage:
     secrets:

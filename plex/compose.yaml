@@ -61,7 +61,7 @@ services:
       traefik.http.middlewares.plex.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:32400/identity"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:32400/identity"
 
   homepage:
     secrets:

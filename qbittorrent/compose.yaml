@@ -49,4 +49,4 @@ services:
       traefik.http.middlewares.qbittorrent.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8080/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8080/"

@@ -53,4 +53,4 @@ services:
     healthcheck:
       timeout: "1s"
       start_period: "5m"
-      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/25565'"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/25565'"

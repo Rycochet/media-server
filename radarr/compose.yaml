@@ -50,7 +50,7 @@ services:
       traefik.http.middlewares.radarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:7878/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:7878/"
 
   homepage:
     secrets:

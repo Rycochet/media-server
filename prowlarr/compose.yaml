@@ -48,7 +48,7 @@ services:
       traefik.http.middlewares.prowlarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:9696/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:9696/"
 
   homepage:
     secrets:

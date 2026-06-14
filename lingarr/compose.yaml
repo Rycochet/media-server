@@ -51,4 +51,4 @@ services:
     healthcheck:
       interval: "300s" # Note that it locks up during transcribe, so this must be longer than a movie
       start_period: "30s"
-      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/8080'"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8080'"

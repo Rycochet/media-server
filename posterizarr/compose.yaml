@@ -42,4 +42,4 @@ services:
       traefik.http.services.posterizarr.loadbalancer.server.port: "8000"
     healthcheck:
       start_period: "30s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8000/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8000/"

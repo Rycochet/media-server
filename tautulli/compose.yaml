@@ -43,7 +43,7 @@ services:
       traefik.http.middlewares.tautulli.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8181/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8181/"
 
   plex:
     labels:

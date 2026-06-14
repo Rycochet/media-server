@@ -41,4 +41,4 @@ services:
       traefik.http.middlewares.zfdash.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5001'"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/5001'"

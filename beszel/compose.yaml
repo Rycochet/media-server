@@ -51,7 +51,7 @@ services:
       traefik.http.middlewares.beszel.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: [ "CMD", "/beszel", "health", "--url", "http://localhost:8090" ]
+      test: [ "CMD", "/beszel", "health", "--url", "http://127.0.0.1:8090" ]
 
   beszel-agent:
     container_name: beszel-agent
@@ -88,7 +88,6 @@ services:
     labels:
       deunhealth.restart.on.unhealthy: "true"
       traefik.enable: "false"
-
     healthcheck:
       start_period: "30s"
       test: [ "CMD", "/agent", "health" ]

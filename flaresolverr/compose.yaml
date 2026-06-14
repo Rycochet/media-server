@@ -28,4 +28,4 @@ services:
       traefik.enable: "false"
     healthcheck:
       start_period: "2s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8191/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8191/"

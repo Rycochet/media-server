@@ -47,4 +47,4 @@ services:
 
     healthcheck:
       start_period: "30s"
-      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/5656'"
+      test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/5656'"

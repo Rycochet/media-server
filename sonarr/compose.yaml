@@ -50,7 +50,7 @@ services:
       traefik.http.middlewares.sonarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8989/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8989/"
 
   homepage:
     secrets:

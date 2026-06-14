@@ -2,7 +2,7 @@ services:
   tdarr:
     container_name: tdarr
     image: ${TDARR_IMAGE:-docker.io/haveagitgat/tdarr}:${TDARR_IMAGE_TAG:-latest}
-    profiles: [ "${TDARR_PROFILE:-quality}" ]
+    profiles: ["${TDARR_PROFILE:-quality}"]
     extends:
       file: ../compose.extend.yaml
       service: "gpu-${USE_GPU:-none}"
@@ -65,4 +65,4 @@ services:
       traefik.http.middlewares.tdarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "150s"
-      test: "curl --connect-timeout 5 --silent --show-error --fail http://localhost:8265/"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8265/"

@@ -2,11 +2,11 @@ services:
   foundryvtt:
     environment:
       AUTO_PROVISION: "true"
-      CONTAINER_PATCH_URLS: "https://github.com/MaienM/foundry-vtt-header-auth/releases/download/${POCKETID_FOUNDRYVTT_HEADER_VERSION:-v14.360.1}/patches.sh"
+      CONTAINER_PATCH_URLS: "https://github.com/MaienM/foundry-vtt-header-auth/releases/download/${FOUNDRYVTT_HEADER_AUTH_VERSION:-v14.360.1}/patches.sh"
       HEADER_USERNAME: "remote-user"
       HEADER_ROLES: "remote-groups"
-      ROLE_ADMIN: "${POCKETID_FOUNDRYVTT_ROLE_ADMIN:-dm}"
-      ROLE_PLAYER: "${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
+      ROLE_ADMIN: "${FOUNDRYVTT_ROLE_ADMIN:-foundry_dm}"
+      ROLE_PLAYER: "${FOUNDRYVTT_ROLE_PLAYER:-foundry_player}"
     labels:
-      tinyauth.apps.foundryvtt.oauth.groups: "${POCKETID_FOUNDRYVTT_ROLE_ADMIN:-dm},${POCKETID_FOUNDRYVTT_ROLE_PLAYER:-player}"
+      tinyauth.apps.foundryvtt.oauth.groups: "${FOUNDRYVTT_ROLE_ADMIN:-dm},${FOUNDRYVTT_ROLE_PLAYER:-player}"
       traefik.http.routers.foundryvtt.middlewares: "tinyauth,error-pages"

@@ -1,5 +1,9 @@
 services:
   foundryvtt:
+    depends_on:
+      tinyauth:
+        condition: service_started
+        restart: false
     environment:
       AUTO_PROVISION: "true"
       CONTAINER_PATCH_URLS: "https://github.com/MaienM/foundry-vtt-header-auth/releases/download/${FOUNDRYVTT_HEADER_AUTH_VERSION:-v14.360.1}/patches.sh"

@@ -1,0 +1,11 @@
+services:
+  tinyauth:
+    secrets:
+      - tinyauth_google_client_secret
+    environment:
+      TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTID: "${TINYAUTH_GOOGLE_CLIENT_ID:?You must set TINYAUTH_GOOGLE_CLIENT_ID}"
+      TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTSECRETFILE: "/run/secrets/tinyauth_google_client_secret"
+
+secrets:
+  tinyauth_google_client_secret:
+    environment: "TINYAUTH_GOOGLE_CLIENT_SECRET"

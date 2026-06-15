@@ -8,16 +8,16 @@
   - [Concept](#concept)
   - [Network](#network)
   - [Installation](#installation)
-    - [Google](#google)
     - [Cloudflare](#cloudflare)
       - [Domain name](#domain-name)
       - [Tunnel (incoming security)](#tunnel-incoming-security)
       - [Make subdomains accessible](#make-subdomains-accessible)
       - [Allow ssl certificates to be created](#allow-ssl-certificates-to-be-created)
-    - [NordVPN](#nordvpn)
+    - [VPN](#vpn)
     - [Media Paths](#media-paths)
     - [Plex](#plex)
     - [Services](#services)
+    - [Authentication](#authentication)
   - [Bootstrap](#bootstrap)
 
 > [!IMPORTANT]
@@ -59,14 +59,6 @@ Duplicate the `.env.example` file as `.env`, all configuration needs to go in he
 
 Create an empty `compose.override.yaml` file, and copy the commented block of `include:` services into it, then to enable a service you can simply uncomment that line. For some services have a look for included template files that want copying into theit `config/` folders and renaming.
 
-### Google
-
-1. Add your email address as the `EMAIL` and `WHITELIST` in `.env`
-1. Follow these instructions: <https://developers.google.com/identity/protocols/oauth2>
-1. Add the `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env`
-1. Place a long random hexadecimal value in `OAUTH_SECRET` in .env`
-    * The best way is to use the output of `openssl rand -hex 16`
-
 ### Cloudflare
 
 #### Domain name
@@ -101,9 +93,9 @@ Create an empty `compose.override.yaml` file, and copy the commented block of `i
 1. Allow it access to your domain under Zone Resources
 1. Copy the token to `CLOUDFLARE_API` in `.env`
 
-### NordVPN
+### VPN
 
-1. Make an account, click on NordVPN on the left, scroll down to API Key, create one and copy to `VPN_PRIVATE_KEY` in `.env`
+This uses [gluetun](https://github.com/passteque/gluetun) as the VPN layer. Whichever VPN provider you use must supply Wireguard access, then you only need to set `VPN_SERVICE_PROVIDER` and `VPN_WIREGUARD_PRIVATE_KEY` to enable it. Accessing it from within the service stack is via `vpn.internal:8888` as an http(s) proxy.
 
 ### Media Paths
 
@@ -202,12 +194,30 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `zfs-discord-alerts`     | `tools`       | Notify Discord when there are zfs problems | `8080` | ❌ |
 
 > [!NOTE]
-> The `core` PROFILE services are enabled in the `compose.yaml` file, you must add any others you wish to a `compose.override.yaml` file instead:
+> The `core` PROFILE services are enabled in the `compose.yaml` file, you must add any others you wish to a `compose.override.yaml` file instead (you may copy the commented-out section from the compose.yaml file and uncomment individual lines):
 >
 > ```yaml
 > include:
 >   - whoami/compose.yaml # Use the name of the service above followed by "/compose.yaml"
 > ```
+
+### Authentication
+
+This includes [tinyauth](https://tinyauth.app/) as the authentication layer, you may use it with any oauth layer.
+
+Include your email address in the `TINYAUTH_WHITELIST` in `.env` (this is a global setting that allows a comma separated list).
+
+- If you include the supplied `tinyauth/compose.github.yaml` you can login via github: <https://tinyauth.app/docs/guides/github-oauth/> - but set the `TINYAUTH_GITHUB_CLIENT_ID` and `TINYAUTH_GITHUB_CLIENT_SECRET` in the `.env` file.
+- If you include the supplied `tinyauth/compose.google.yaml` you can login via google: <https://tinyauth.app/docs/guides/google-oauth/> - but set the `TINYAUTH_GOOGLE_CLIENT_ID` and `TINYAUTH_GOOGLE_CLIENT_SECRET` in the `.env` file.
+- If you include the supplied `tinyauth/compose.oauth.yaml` you can login via a custom oauth provider - set the `TINYAUTH_OAUTH_*` variables in the `.env` file.
+
+Additionally you may use local authentication with `lldap` (user + password), `pocket-id` (passkey), or both (configure users in lldap). The user is `admin` by default, but edit your `.env` first to set these things.
+
+- If you include the supplied `lldap/compose.tinyauth.yaml` then this allows tinyauth to login with a user + password supplied by lldap.
+- If you include the supplied `pocket-id/compose.tinyauth.yaml` then this allows tinyauth to login with a passkey supplied by pocket-id.
+
+> [!NOTE]
+> If you are using both together then you will need to generate a one-time token for an admin user with `docker compose exec pocket-id /app/pocket-id one-time-access-token <user name or email>`.
 
 ## Bootstrap
 

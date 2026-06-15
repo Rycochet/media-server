@@ -67,7 +67,6 @@ include:
   # - plex/compose.yaml #                   | library     | Media library |
   # - plex-find-mismatch/compose.yaml #     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |
   # - pocket-id/compose.yaml #              | tools       | Passkey authentication server |
-  # - pocket-id/compose.foundryvtt.yaml
   # - pocket-id/compose.tinyauth.yaml
   # - portainer/compose.yaml #              | information | Container management |
   # - postgres/compose.yaml #               | tools       | Database |
@@ -88,6 +87,10 @@ include:
   # - tdarr/compose.yaml #                  | quality     | Transcoding / format shifting / audio normalisation |
   # - tdarr_inform/compose.yaml #           | quality     | Notifications from sonarr / radarr / etc to tdarr |
   # - tdarr-node/compose.yaml #             | quality     | Transcoding node for tdarr |
+  # - tinyauth/compose.foundryvtt.yaml
+  # - tinyauth/compose.github.yaml
+  # - tinyauth/compose.google.yaml
+  # - tinyauth/compose.oauth.yaml
   # - titlecardmaker/compose.yaml #         | quality     | Episode thumbnails for Plex |
   # - tracearr/compose.yaml #               | library     | Plex & Emby monitoring |
   # - ubooquity/compose.yaml #              | media       | Comics |

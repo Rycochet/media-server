@@ -25,6 +25,8 @@ services:
       error-pages:
         condition: service_started
         restart: false
+    secrets:
+      - cloudflare_dns_api
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
@@ -32,7 +34,7 @@ services:
       PGID: "${PGID:-1000}"
       UMASK: "000"
       # Cloudflare
-      CF_DNS_API_TOKEN: "${CLOUDFLARE_DNS_API}"
+      CF_DNS_API_TOKEN_FILE: "/run/secrets/cloudflare_dns_api"
       # Image
       # GODEBUG: "http2xconnect=0"
     command:
@@ -43,7 +45,7 @@ services:
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.propagation.delayBeforeChecks=10"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=8.8.8.8:53"
-      - "--certificatesResolvers.letsencrypt.acme.email=$EMAIL"
+      - "--certificatesResolvers.letsencrypt.acme.email=${EMAIL}"
       - "--certificatesResolvers.letsencrypt.acme.storage=/etc/traefik/acme.json"
       - "--entryPoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
@@ -68,8 +70,6 @@ services:
       # Copy the supplied config_rules.yaml to config/rules.yaml and add other domains there
       - "--entryPoints.websecure.http.tls.domains[0].main=${DOMAIN}"
       - "--entryPoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
-      # - "--entryPoints.websecure.http.tls.domains[1].main=other.com"
-      # - "--entryPoints.websecure.http.tls.domains[1].sans=*.other.com"
       # Support for cloudflared IP forwarding
       # - "--accesslog.fields.defaultmode=keep"
       - "--experimental.plugins.cloudflarewarp.modulename=github.com/BilikoX/cloudflarewarp"
@@ -95,7 +95,10 @@ services:
       traefik.http.services.traefik.loadbalancer.server.port: "8080"
       traefik.http.middlewares.traefik.headers.accessControlAllowCredentials: "true"
       traefik.http.middlewares.traefik.headers.accessControlAllowOriginList: "https://${DOMAIN}"
-
     healthcheck:
       start_period: "30s"
       test: [ "CMD", "traefik", "healthcheck", "--ping" ]
+
+secrets:
+  cloudflare_dns_api:
+    environment: "CLOUDFLARE_DNS_API"

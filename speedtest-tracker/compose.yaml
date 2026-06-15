@@ -26,7 +26,7 @@ services:
       APP_KEY: "base64:NIFEjC5wGMV1jJWTdN31PXqUWL2AT8PZXBOeVaCqcP4=" # really don't care about encryption
       DB_CONNECTION: "sqlite"
       ADMIN_NAME: "admin"
-      ADMIN_EMAIL: "$EMAIL"
+      ADMIN_EMAIL: "${EMAIL}"
       APP_URL: "https://${SPEEDTEST_TRACKER_SUBDOMAIN:-speedtest-tracker}.${DOMAIN}/"
       PUBLIC_DASHBOARD: "true"
       SPEEDTEST_SCHEDULE: "*/15 * * * *"

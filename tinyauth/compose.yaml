@@ -12,19 +12,15 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    secrets:
-      - google_client_secret
     environment:
       # Image
       DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       TINYAUTH_ANALYTICS_ENABLED: "false"
       TINYAUTH_APPURL: "https://${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}"
       TINYAUTH_AUTH_SECURECOOKIE: "true"
-      TINYAUTH_AUTH_SESSIONEXPIRY: "${SESSION_EXPIRY:-86400}" # Default is 24 hours
+      TINYAUTH_AUTH_SESSIONEXPIRY: "${TINYAUTH_SESSION_EXPIRY:-86400}" # Default is 24 hours
       TINYAUTH_LOG_LEVEL: "warn"
-      TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTID: "$GOOGLE_CLIENT_ID"
-      TINYAUTH_OAUTH_PROVIDERS_GOOGLE_CLIENTSECRETFILE: "/run/secrets/google_client_secret"
-      TINYAUTH_OAUTH_WHITELIST: "${WHITELIST:?Set the WHITELIST to your google email address!}"
+      TINYAUTH_OAUTH_WHITELIST: "${TINYAUTH_WHITELIST:?Set TINYAUTH_WHITELIST to your email address!}"
       TINYAUTH_UI_TITLE: "${DOMAIN}"
     volumes:
       - "./config:/data"
@@ -42,7 +38,3 @@ services:
       traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: "remote-user,remote-groups"
       traefik.http.middlewares.tinyauth.forwardauth.maxResponseBodySize: "32768"
       traefik.http.middlewares.tinyauth.forwardauth.trustForwardHeader: "true"
-
-secrets:
-  google_client_secret:
-    environment: "GOOGLE_CLIENT_SECRET"

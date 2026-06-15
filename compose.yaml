@@ -68,6 +68,7 @@ include:
   # - plex-find-mismatch/compose.yaml #     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |
   # - pocket-id/compose.yaml #              | tools       | Passkey authentication server |
   # - pocket-id/compose.foundryvtt.yaml
+  # - pocket-id/compose.tinyauth.yaml
   # - portainer/compose.yaml #              | information | Container management |
   # - postgres/compose.yaml #               | tools       | Database |
   # - posterizarr/compose.yaml #            | tools       | Automated poster maker |

@@ -1,0 +1,13 @@
+services:
+  tinyauth:
+    secrets:
+      - pocketid_tinyauth_clientsecret
+    environment:
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID: "${POCKETID_TINYAUTH_CLIENTID:-}"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRETFILE: "/run/secrets/pocketid_tinyauth_clientsecret"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}/authorize"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}/api/oidc/token"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}/api/oidc/userinfo"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL: "https://${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}/api/oauth/callback/pocketid"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: "openid email profile groups"
+      TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME: "Pocket ID"

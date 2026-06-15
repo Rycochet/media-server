@@ -7,6 +7,10 @@ services:
     networks:
       - external
       - internal
+    depends_on:
+      socket-proxy:
+        condition: service_healthy
+        restart: false
     logging:
       driver: "json-file"
       options:

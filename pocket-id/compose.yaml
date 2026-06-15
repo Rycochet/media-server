@@ -8,9 +8,6 @@ services:
       - external # needed for maxmind geo-ip
       - internal
     depends_on:
-      socket-proxy:
-        condition: service_healthy
-        restart: false
       traefik:
         condition: service_started
         restart: false

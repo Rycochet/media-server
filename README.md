@@ -163,6 +163,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `plex-find-mismatch`     | `quality`     | Finds mismatches between tvdb/tmdb/imdb and Plex | *n/a* | ❌ |
 | `pocket-id`              | `tools`       | Passkey authentication server | `1411` | `auth` |
 | `portainer`              | `information` | Container management | `9000` | ✔️ |
+| `postfix`                | `tools`       | Internal SMTP email relay | `587` | ❌ |
 | `postgres`               | `tools`       | Database | *n/a* | ❌ |
 | `posterizarr`            | `tools`       | Automated poster maker | `8000` | ✔️ |
 | `prowlarr`               | `download`    | Torrent / NNTP search proxy | `9696` | ✔️ |

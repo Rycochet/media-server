@@ -69,6 +69,8 @@ include:
   # - pocket-id/compose.yaml #              | tools       | Passkey authentication server |
   # - pocket-id/compose.tinyauth.yaml
   # - portainer/compose.yaml #              | information | Container management |
+  # - postfix/compose.yaml #                | tools       | Internal SMTP email relay |
+  # - postfix/compose.pocket-id.yaml
   # - postgres/compose.yaml #               | tools       | Database |
   # - posterizarr/compose.yaml #            | tools       | Automated poster maker |
   # - prowlarr/compose.yaml #               | download    | Torrent / NNTP search proxy |

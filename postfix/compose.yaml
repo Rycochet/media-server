@@ -1,0 +1,36 @@
+services:
+  postfix:
+    container_name: postfix
+    image: ${POSTFIX_IMAGE:-docker.io/boky/postfix}:${POSTFIX_IMAGE_TAG:-latest-alpine}
+    profiles: [ "${POSTFIX_PROFILE:-tools}" ]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    volumes:
+      - "./config:/etc/opendkim/keys"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      HOSTNAME: "${DOMAIN}"
+      RELAYHOST: "${POSTFIX_RELAY_HOST:-}"
+      RELAYHOST_USERNAME: "${POSTFIX_RELAY_USER:-}"
+      RELAYHOST_PASSWORD: "${POSTFIX_RELAY_PASS:-}"
+      ALLOWED_SENDER_DOMAINS: "${DOMAIN}"
+      MASQUERADED_DOMAINS: "${DOMAIN}"
+      DKIM_AUTOGENERATE: "${POSTFIX_GENERATE_DKIM:-false}"
+    labels:
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "Postfix"
+      homepage.icon: "poste.png"
+      homepage.description: "Internal SMTP email relay"
+      traefik.enable: "false"
+    healthcheck:
+      start_period: "30s"

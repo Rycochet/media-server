@@ -1,0 +1,11 @@
+services:
+  lldap:
+    depends_on:
+      postfix:
+        condition: service_started
+        restart: false
+    environment:
+      LLDAP_SMTP_OPTIONS__SERVER: "postfix.internal"
+      LLDAP_SMTP_OPTIONS__PORT: "587"
+      LLDAP_SMTP_OPTIONS__FROM: "noreply@${DOMAIN}"
+      LLDAP_SMTP_OPTIONS__ENABLE_PASSWORD_RESET: "true"

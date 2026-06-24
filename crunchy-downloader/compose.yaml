@@ -1,7 +1,7 @@
 services:
   crunchy-downloader:
     container_name: crunchy-downloader
-    image: ${CRUNCHY_DOWNLOADER_IMAGE:-ghcr.io/crunchy-dl/crunchy-downloader-webtop}:${CRUNCHY_DOWNLOADER_IMAGE_TAG:-stable}
+    image: ${CRUNCHY_DOWNLOADER_IMAGE:-docker.io/mikarumi/crd-webtop}:${CRUNCHY_DOWNLOADER_IMAGE_TAG:-stable}
     profiles: [ "${CRUNCHY_DOWNLOADER_PROFILE:-download}" ]
     extends:
       file: ../compose.extend.yaml

@@ -29,7 +29,7 @@ services:
       - "./config:/config"
       - "./backup:/config/Backups"
       - "./logs:/config/logs"
-      - "$PATH_AUDIOBOOKS:/data/Audiobooks"
+      - "$PATH_AUDIOBOOKS:/data/audiobooks"
       - "$PATH_BOOKS:/data/Books"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:

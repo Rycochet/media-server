@@ -2,7 +2,7 @@ services:
   tdarr-inform:
     container_name: tdarr-inform
     image: ${TDARR_INFORM_IMAGE:-ghcr.io/deathbybandaid/tdarr_inform}:${TDARR_INFORM_IMAGE_TAG:-latest}
-    profiles: [ "${TDARR_INFORM_PROFILE:-quality}" ]
+    profiles: ["${TDARR_INFORM_PROFILE:-quality}"]
     restart: unless-stopped
     networks:
       - external

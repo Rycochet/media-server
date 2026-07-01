@@ -12,7 +12,7 @@ services:
     depends_on:
       tdarr:
         condition: service_started
-        restart: true
+        restart: false
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"

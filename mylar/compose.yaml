@@ -26,7 +26,8 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"
       - "./logs:/config/mylar/logs"
-      - "$PATH_COMICS:/data/Comics"
+      - "$PATH_COMICS:/data/comics"
+      - "/media/comics_old:/data/comics_old"
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       deunhealth.restart.on.unhealthy: "true"
@@ -35,9 +36,25 @@ services:
       homepage.icon: "mylar.png"
       homepage.href: "https://${MYLAR_SUBDOMAIN:-mylar}.${DOMAIN}/"
       homepage.description: "Comic books"
+      homepage.widget.type: "mylar"
+      homepage.widget.url: "http://mylar.internal:8090"
+      homepage.widget.key: "{{HOMEPAGE_FILE_MYLAR_API}}"
       traefik.enable: "true"
       traefik.http.routers.mylar.rule: "Host(`${MYLAR_SUBDOMAIN:-mylar}.${DOMAIN}`)"
       traefik.http.routers.mylar.middlewares: "mylar,tinyauth,error-pages"
       traefik.http.services.mylar.loadbalancer.server.port: "8090"
       traefik.http.middlewares.mylar.headers.accessControlAllowCredentials: "true"
       traefik.http.middlewares.mylar.headers.accessControlAllowOriginList: "https://${DOMAIN}"
+    healthcheck:
+      start_period: "30s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8090/"
+
+  homepage:
+    secrets:
+      - mylar_api
+    environment:
+      HOMEPAGE_FILE_MYLAR_API: "/run/secrets/mylar_api"
+
+secrets:
+  mylar_api:
+    environment: "MYLAR_API"

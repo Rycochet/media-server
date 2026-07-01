@@ -1,6 +1,7 @@
-# These two you need to make yourself
-.env
-compose.override.yaml
+# These three you need to make yourself
+/.env
+/.env.keep-alive
+/compose.override.yaml
 
 # In case someone installs on a dedicaed partition
 /aquota.user

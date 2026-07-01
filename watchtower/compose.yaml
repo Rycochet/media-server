@@ -3,9 +3,11 @@ services:
     container_name: watchtower
     image: ${WATCHTOWER_IMAGE:-docker.io/nickfedor/watchtower}:${WATCHTOWER_IMAGE_TAG:-1}
     profiles: ["${WATCHTOWER_PROFILE:-core}"]
+    extends:
+      file: ../compose.extend.yaml
+      service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
-      - external
       - internal
     depends_on:
       socket-proxy:
@@ -22,6 +24,7 @@ services:
       # Docker
       DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       # Image
+      HTTP_PROXY: "${USE_VPN:+http://vpn.internal:8888}"
       WATCHTOWER_CLEANUP: "true"
       WATCHTOWER_HTTP_API_METRICS: "true"
       WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"

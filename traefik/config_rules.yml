@@ -8,6 +8,29 @@
 #           - main: "<<domain>"
 #             sans: "*.<<domain>>"
 
+# If using cloudflare make sure we trust the source-ip
+######################################################
+# entryPoints:
+#   websecure:
+#     http:
+#       middlewares:
+#         - cloudflarewarp
+
+# experimental:
+#   plugins:
+#     cloudflarewarp:
+#       modulename: github.com/BilikoX/cloudflarewarp
+#       version: v1.3.4
+
+# http:
+#   middlewares:
+#     cloudflarewarp:
+#       plugin:
+#         cloudflarewarp:
+#           disableDefault: false
+#           trustip: # Trust IPS not required if disableDefault is false - we will allocate Cloud Flare IPs automatically
+#             - "2400:cb00::/32"
+
 # Routes that want to do something that doesn't involve docker
 ##############################################################
 # http:

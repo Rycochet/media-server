@@ -63,6 +63,7 @@ include:
   # - notifiarr/compose.yaml #              | tools       | System notifications |
   # - onlyfans/compose.yaml #               | download    | Download all subscriptions |
   # - openspeedtest/compose.yaml #          | network     | Bandwidth test to server |
+  # - peanut/compose.yaml #                 | information | Network UPS Tools |
   # - pgadmin/compose.yaml #                | tools       | Database admin |
   # - plex/compose.yaml #                   | library     | Media library |
   # - plex-find-mismatch/compose.yaml #     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |

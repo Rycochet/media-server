@@ -158,6 +158,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `notifiarr`              | `tools`       | System notifications | `5454` | ✔️ |
 | `onlyfans`               | `download`    | Download all subscriptions | *n/a* | ❌ |
 | `openspeedtest`          | `network`     | Bandwidth test to server | `3000` | ✔️ |
+| `peanut`                 | `information` | Network UPS Tools | `8080` | ✔️ |
 | `pgadmin`                | `tools`       | Database admin | `80` | ✔️ |
 | `plex`                   | `library`     | Media library | `32400` | ✔️ |
 | `plex-find-mismatch`     | `quality`     | Finds mismatches between tvdb/tmdb/imdb and Plex | *n/a* | ❌ |

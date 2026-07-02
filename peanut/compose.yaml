@@ -1,0 +1,43 @@
+services:
+  peanut:
+    container_name: peanut
+    image: ${PEANUT_IMAGE:-docker.io/brandawg93/peanut}:${PEANUT_IMAGE_TAG:-latest}
+    profiles: [ "${PEANUT_PROFILE:-information}" ]
+    restart: unless-stopped
+    networks:
+      - internal
+      - default # needed to access UPS addresses
+    # network_mode: host
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      AUTH_DISABLED: "true"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+    labels:
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Information"
+      homepage.name: "Peanut"
+      homepage.icon: "peanut.png"
+      homepage.href: "https://${PEANUT_SUBDOMAIN:-peanut}.${DOMAIN}/"
+      homepage.description: "Network UPS Tools"
+      homepage.widget.type: "peanut"
+      homepage.widget.url: "http://peanut.internal:8080"
+      homepage.widget.key: "${PEANUT_UPS:-}"
+      traefik.enable: "true"
+      traefik.http.routers.peanut.rule: "Host(`${PEANUT_SUBDOMAIN:-peanut}.${DOMAIN}`)"
+      traefik.http.routers.peanut.middlewares: "peanut,tinyauth,error-pages"
+      traefik.http.services.peanut.loadbalancer.server.port: "8080"
+      traefik.http.middlewares.peanut.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.peanut.headers.accessControlAllowOriginList: "https://${DOMAIN}"

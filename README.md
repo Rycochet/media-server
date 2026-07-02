@@ -156,6 +156,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `mylar`                  | `media`       | Comics | `8090` | ✔️ |
 | `neutarr`                | `download`    | Missing media search | `9705` | ✔️ |
 | `notifiarr`              | `tools`       | System notifications | `5454` | ✔️ |
+| `nutcase`                | `information` | Network UPS Tools | `9995` | ✔️ |
 | `onlyfans`               | `download`    | Download all subscriptions | *n/a* | ❌ |
 | `openspeedtest`          | `network`     | Bandwidth test to server | `3000` | ✔️ |
 | `peanut`                 | `information` | Network UPS Tools | `8080` | ✔️ |

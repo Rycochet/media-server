@@ -1,0 +1,7 @@
+servers:
+  - server: "IP Address"
+    port: 3493
+    default: true
+    devices:
+      - device: 'ups'
+        power: 240

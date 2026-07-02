@@ -61,6 +61,7 @@ include:
   # - mylar/compose.yaml #                  | media       | Comics |
   # - neutarr/compose.yaml #                | download    | Missing media search |
   # - notifiarr/compose.yaml #              | tools       | System notifications |
+  # - nutcase/compose.yaml #                | information | Network UPS Tools |
   # - onlyfans/compose.yaml #               | download    | Download all subscriptions |
   # - openspeedtest/compose.yaml #          | network     | Bandwidth test to server |
   # - peanut/compose.yaml #                 | information | Network UPS Tools |

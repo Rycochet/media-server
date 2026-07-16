@@ -55,7 +55,7 @@ services:
 
   beszel-agent:
     container_name: beszel-agent
-    image: ${BESZEL_AGENT_IMAGE:-docker.io/henrygd/beszel-agent-nvidia}:${BESZEL_AGENT_IMAGE_TAG:-0}
+    image: ${BESZEL_AGENT_IMAGE:-docker.io/henrygd/beszel-agent}:${BESZEL_AGENT_IMAGE_TAG:-0}
     profiles: [ "${BESZEL_AGENT_PROFILE:-information}" ]
     extends:
       file: ../compose.extend.yaml
@@ -72,6 +72,9 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
+    cap_add:
+      - SYS_RAWIO # required for S.M.A.R.T. data
+      - SYS_ADMIN # required for NVMe S.M.A.R.T. data
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
@@ -85,6 +88,7 @@ services:
       - "/etc/os-release:/etc/os-release:ro"
       - "./config:/beszel_data"
       - "./config:/beszel_socket:ro"
+      # Remember to share all S.M.A.R.T. devices you want to use - https://beszel.dev/guide/smart-data#docker-agent
     labels:
       deunhealth.restart.on.unhealthy: "true"
       traefik.enable: "false"

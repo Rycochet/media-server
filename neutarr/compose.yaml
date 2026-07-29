@@ -21,6 +21,10 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
+      # Image
+      NEUTARR_PROXY_AUTH_HEADER: "Remote-User"
+      NEUTARR_SECURE_COOKIES: "true"
+      TRUSTED_PROXIES: "172.0.0.0/8"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"
@@ -34,7 +38,8 @@ services:
       homepage.description: "Missing media search"
       homepage.widget.type: "customapi"
       homepage.widget.method: "GET"
-      homepage.widget.url: "http://neutarr.internal:9705/api/stats?apikey={{HOMEPAGE_FILE_NEUTARR_API}}"
+      homepage.widget.url: "http://neutarr.internal:9705/api/stats"
+      homepage.widget.headers.X-Api-Key: "{{HOMEPAGE_FILE_NEUTARR_API}}"
       homepage.widget.mappings[0].label: "Lidarr"
       homepage.widget.mappings[0].field: "stats.lidarr.hunted"
       homepage.widget.mappings[0].format: "number"

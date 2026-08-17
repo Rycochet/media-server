@@ -30,7 +30,7 @@ services:
       - "./config:/root/.stash"
       - "./backup:/root/.stash/Backups"
       - "./logs:/root/.stash/logs"
-      - "$PATH_ADULT:/data/adult:ro"
+      - "$PATH_ADULT/scenes:/data/adult/scenes:ro" # Stash doesn't handle movies
     labels:
       deunhealth.restart.on.unhealthy: "true"
       homepage.group: "Tools"

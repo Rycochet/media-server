@@ -1,7 +1,7 @@
 services:
   chaptarr:
     container_name: chaptarr
-    image: ${CHAPTARR_IMAGE:-docker.io/robertlordhood/chaptarr}:${CHAPTARR_IMAGE_TAG:-latest}
+    image: ${CHAPTARR_IMAGE:-docker.io/chaptarr/chaptarr}:${CHAPTARR_IMAGE_TAG:-latest}
     profiles: [ "${CHAPTARR_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml

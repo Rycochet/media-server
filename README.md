@@ -140,6 +140,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `flaresolverr`           | `network`     | Cloudflare captcha bypasss | `8191` | ❌ |
 | `foundryvtt`             | `games`       | Foundry Virtual Tabletop for RPGs | `30000` | `rpg` |
 | `glances`                | `information` | Operating system status | `61208` | ✔️ |
+| `handbrake`              | `media`       | Video Transcoder | `5800` | ✔️ |
 | `homepage`               | `information` | Dashboard | `3000` | (*root*) |
 | `i2p`                    | `network`     | I2P Client | `7657` | ✔️ |
 | `imagemaid`              | `quality`     | Cleanup Plex image cache | *n/a* | ❌ |

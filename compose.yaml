@@ -43,6 +43,7 @@ include:
   # - flaresolverr/compose.yaml #           | network     | Cloudflare captcha bypasss |
   # - foundryvtt/compose.yaml #             | games       | Foundry Virtual Tabletop for RPGs |
   # - glances/compose.yaml #                | information | Operating system status |
+  # - handbrake/compose.yaml #              | media       | Video Transcoder |
   # - homepage/compose.yaml #               | information | Dashboard |
   # - i2p/compose.yaml #                    | network     | I2P Client |
   # - imagemaid/compose.yaml #              | quality     | Cleanup Plex image cache |

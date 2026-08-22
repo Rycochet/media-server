@@ -10,8 +10,7 @@ services:
       TINYAUTH_LDAP_ADDRESS: "ldap://lldap.internal:3890"
       TINYAUTH_LDAP_BASEDN: "dc=${DOMAIN}"
       TINYAUTH_LDAP_BINDDN: "uid=${LLDAP_LDAP_ADMIN_USER:-admin},ou=people,dc=${DOMAIN}"
-      TINYAUTH_LDAP_BINDPASSWORD: "${LLDAP_LDAP_ADMIN_PASS:-password}"
-      # TINYAUTH_LDAP_BINDPASSWORDFILE: "/run/secrets/lldap_ldap_user_pass" # https://github.com/tinyauthapp/tinyauth/issues/927
+      TINYAUTH_LDAP_BINDPASSWORDFILE: "/run/secrets/lldap_ldap_user_pass"
       TINYAUTH_LDAP_INSECURE: "true"
       TINYAUTH_LDAP_SEARCHFILTER: "(uid=%s)"
     labels:

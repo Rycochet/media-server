@@ -1,0 +1,6 @@
+services:
+  gatus:
+    environment:
+      SEERR_SUBDOMAIN: "${SEERR_SUBDOMAIN:-ask}"
+    volumes:
+      - "./gatus.seerr.yaml:/config/gatus.seerr.yaml"

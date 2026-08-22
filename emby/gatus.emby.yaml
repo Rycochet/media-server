@@ -1,0 +1,24 @@
+# Emby config for Gatus
+
+ui:
+  buttons:
+    - name: Emby
+      link: "https://${EMBY_SUBDOMAIN}.${DOMAIN}/web/index.html"
+
+endpoints:
+  - name: emby.connection
+    group: Emby
+    url: "https://${EMBY_SUBDOMAIN}.${DOMAIN}/web/index.html"
+    client:
+      proxy-url: http://vpn.internal:8888
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: emby.server-health
+    group: Emby
+    url: "${DOCKER_HOST}/containers/emby/json"
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true

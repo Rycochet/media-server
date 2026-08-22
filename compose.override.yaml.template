@@ -19,8 +19,10 @@ include:
   # - dozzle/compose.yaml #                 | information | Docker status |
   # - duc/compose.yaml #                    | tools       | Disk usage |
   # - emby/compose.yaml #                   | library     | Media library |
+  # - emby/compose.gatus.yaml
   # - flaresolverr/compose.yaml #           | network     | Cloudflare captcha bypasss |
   # - foundryvtt/compose.yaml #             | games       | Foundry Virtual Tabletop for RPGs |
+  # - gatus/compose.yaml #                  | information | Status and uptime monitoring |
   # - glances/compose.yaml #                | information | Operating system status |
   # - handbrake/compose.yaml #              | media       | Video Transcoder |
   # - homepage/compose.yaml #               | information | Dashboard |
@@ -48,6 +50,7 @@ include:
   # - peanut/compose.yaml #                 | information | Network UPS Tools |
   # - pgadmin/compose.yaml #                | tools       | Database admin |
   # - plex/compose.yaml #                   | library     | Media library |
+  # - plex/compose.gatus.yaml
   # - plex-find-mismatch/compose.yaml #     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |
   # - pocket-id/compose.yaml #              | tools       | Passkey authentication server |
   # - pocket-id/compose.tinyauth.yaml
@@ -63,6 +66,7 @@ include:
   # - sabnzbd/compose.yaml #                | download    | NNTP downloader |
   # - scrutiny/compose.yaml #               | information | S.M.A.R.T. information |
   # - seerr/compose.yaml #                  | information | Media requests and issue tracking |
+  # - seerr/compose.gatus.yaml
   # - sonarr/compose.yaml #                 | media       | TV Shows |
   # - sonarr_youtubedl/compose.yaml #       | disabled    | Download from Youtube |
   # - speedtest-tracker/compose.yaml #      | information | Speedtest with history |

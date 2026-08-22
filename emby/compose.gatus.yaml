@@ -1,0 +1,6 @@
+services:
+  gatus:
+    environment:
+      EMBY_SUBDOMAIN: "${EMBY_SUBDOMAIN:-emby}"
+    volumes:
+      - "./gatus.emby.yaml:/config/gatus.emby.yaml"

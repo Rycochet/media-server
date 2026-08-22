@@ -1,0 +1,24 @@
+# Plex config for Gatus
+
+ui:
+  buttons:
+    - name: Plex
+      link: "https://${PLEX_SUBDOMAIN}.${DOMAIN}/web/index.html#!/"
+
+endpoints:
+  - name: plex.connection
+    group: Plex
+    url: "https://${PLEX_SUBDOMAIN}.${DOMAIN}/identity"
+    client:
+      proxy-url: http://vpn.internal:8888
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: plex.server-health
+    group: Plex
+    url: "${DOCKER_HOST}/containers/plex/json"
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true

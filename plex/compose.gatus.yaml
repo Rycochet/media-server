@@ -1,0 +1,6 @@
+services:
+  gatus:
+    environment:
+      PLEX_SUBDOMAIN: "${PLEX_SUBDOMAIN:-plex}"
+    volumes:
+      - "./gatus.plex.yaml:/config/gatus.plex.yaml"

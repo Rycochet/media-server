@@ -139,6 +139,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `emby`                   | `library`     | Media library | `8096` | ✔️ |
 | `flaresolverr`           | `network`     | Cloudflare captcha bypasss | `8191` | ❌ |
 | `foundryvtt`             | `games`       | Foundry Virtual Tabletop for RPGs | `30000` | `rpg` |
+| `gatus`                  | `information` | Status and uptime monitoring | `8080` | `status` |
 | `glances`                | `information` | Operating system status | `61208` | ✔️ |
 | `handbrake`              | `media`       | Video Transcoder | `5800` | ✔️ |
 | `homepage`               | `information` | Dashboard | `3000` | (*root*) |

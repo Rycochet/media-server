@@ -1,7 +1,7 @@
 services:
   postgres:
     container_name: postgres
-    image: ${POSTGRES_IMAGE:-docker.io/postgres}:${POSTGRES_IMAGE_TAG:-17-alpine}
+    image: ${POSTGRES_IMAGE:-docker.io/postgres}:${POSTGRES_IMAGE_TAG:-18-alpine}
     profiles: [ "${POSTGRES_PROFILE:-tools}" ]
     restart: unless-stopped
     networks:
@@ -13,11 +13,14 @@ services:
         max-file: "3"
     shm_size: 128mb
     user: "${PUID:-1000}:${PGID:-1000}"
+    secrets:
+      - postgres_password
     environment:
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?You must set a POSTGRES_PASSWORD .env variable}"
+      POSTGRES_PASSWORD_FILE: "/run/secrets/postgres_password"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
-      - "./config:/var/lib/postgresql/data"
+      - "/etc/passwd:/etc/passwd:ro"
+      - "./data:/var/lib/postgresql"
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "true"
@@ -29,3 +32,7 @@ services:
     healthcheck:
       start_period: "30s"
       test: ["CMD", "pg_isready", "-d", "postgres", "-U", "postgres"]
+
+secrets:
+  postgres_password:
+    environment: "POSTGRES_PASSWORD"

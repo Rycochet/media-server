@@ -53,7 +53,5 @@ services:
       homepage.widgets[0].mappings[0].format: "text"
       traefik.enable: "true"
       traefik.http.routers.homepage.rule: "Host(`${DOMAIN}`)"
-      traefik.http.routers.homepage.middlewares: "homepage,tinyauth,error-pages"
+      traefik.http.routers.homepage.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.homepage.loadbalancer.server.port: "3000"
-      traefik.http.middlewares.homepage.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.homepage.headers.accessControlAllowOriginList: "https://${DOMAIN}"

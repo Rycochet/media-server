@@ -35,7 +35,5 @@ services:
       homepage.description: "Translation"
       traefik.enable: "true"
       traefik.http.routers.libretranslate.rule: "Host(`${LIBRETRANSLATE_SUBDOMAIN:-translate}.${DOMAIN}`)"
-      traefik.http.routers.libretranslate.middlewares: "libretranslate,tinyauth,error-pages"
+      traefik.http.routers.libretranslate.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.libretranslate.loadbalancer.server.port: "5000"
-      traefik.http.middlewares.libretranslate.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.libretranslate.headers.accessControlAllowOriginList: "https://${DOMAIN}"

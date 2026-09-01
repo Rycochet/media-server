@@ -31,9 +31,7 @@ services:
       homepage.description: "Sync media library watch state"
       traefik.enable: "true"
       traefik.http.routers.watchstate.rule: "Host(`${WATCHSTATE_SUBDOMAIN:-watchstate}.${DOMAIN}`)"
-      traefik.http.routers.watchstate.middlewares: "watchstate,tinyauth,error-pages"
+      traefik.http.routers.watchstate.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.watchstate.loadbalancer.server.port: "8080"
-      traefik.http.middlewares.watchstate.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.watchstate.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "90s"

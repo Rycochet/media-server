@@ -36,7 +36,5 @@ services:
       homepage.widget.key: "${PEANUT_UPS:-}"
       traefik.enable: "true"
       traefik.http.routers.peanut.rule: "Host(`${PEANUT_SUBDOMAIN:-peanut}.${DOMAIN}`)"
-      traefik.http.routers.peanut.middlewares: "peanut,tinyauth,error-pages"
+      traefik.http.routers.peanut.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.peanut.loadbalancer.server.port: "8080"
-      traefik.http.middlewares.peanut.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.peanut.headers.accessControlAllowOriginList: "https://${DOMAIN}"

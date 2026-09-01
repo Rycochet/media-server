@@ -37,10 +37,8 @@ services:
       homepage.description: "Plex monitoring"
       traefik.enable: "true"
       traefik.http.routers.tautulli.rule: "Host(`${TAUTULLI_SUBDOMAIN:-tautulli}.${DOMAIN}`)"
-      traefik.http.routers.tautulli.middlewares: "tautulli,tinyauth,error-pages"
+      traefik.http.routers.tautulli.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.tautulli.loadbalancer.server.port: "8181"
-      traefik.http.middlewares.tautulli.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.tautulli.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8181/"

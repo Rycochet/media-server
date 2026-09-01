@@ -46,9 +46,7 @@ services:
       homepage.widget.fields: "[\"up\", \"down\", \"uptime\"]"
       traefik.enable: "true"
       traefik.http.routers.gatus.rule: "Host(`${GATUS_SUBDOMAIN:-status}.${DOMAIN}`)"
-      traefik.http.routers.gatus.middlewares: "gatus,tinyauth,error-pages"
+      traefik.http.routers.gatus.middlewares: "${USE_CLOUDFLAREWARP:+cloudflarewarp,}${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.gatus.loadbalancer.server.port: "8080"
-      traefik.http.middlewares.gatus.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.gatus.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"

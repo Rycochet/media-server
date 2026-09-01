@@ -35,10 +35,8 @@ services:
       homepage.description: "Postgres administration"
       traefik.enable: "true"
       traefik.http.routers.pgadmin.rule: "Host(`${PGADMIN_SUBDOMAIN:-pgadmin}.${DOMAIN}`)"
-      traefik.http.routers.pgadmin.middlewares: "pgadmin,tinyauth,error-pages"
+      traefik.http.routers.pgadmin.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.pgadmin.loadbalancer.server.port: "80"
-      traefik.http.middlewares.pgadmin.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.pgadmin.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1/ || exit 1"

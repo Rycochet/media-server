@@ -38,10 +38,8 @@ services:
       homepage.description: "LDAP server"
       traefik.enable: "true"
       traefik.http.routers.lldap.rule: "Host(`${LLDAP_SUBDOMAIN:-lldap}.${DOMAIN}`)"
-      traefik.http.routers.lldap.middlewares: "lldap,tinyauth,error-pages"
+      traefik.http.routers.lldap.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.lldap.loadbalancer.server.port: "17170"
-      traefik.http.middlewares.lldap.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.lldap.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "5s"
       start_interval: "1s"

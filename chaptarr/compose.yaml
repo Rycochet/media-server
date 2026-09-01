@@ -44,10 +44,8 @@ services:
       homepage.widget.key: "{{HOMEPAGE_FILE_CHAPTARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.chaptarr.rule: "Host(`${CHAPTARR_SUBDOMAIN:-chaptarr}.${DOMAIN}`)"
-      traefik.http.routers.chaptarr.middlewares: "chaptarr,tinyauth,error-pages"
+      traefik.http.routers.chaptarr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.chaptarr.loadbalancer.server.port: "8789"
-      traefik.http.middlewares.chaptarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.chaptarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1:8789/ping || exit 1"

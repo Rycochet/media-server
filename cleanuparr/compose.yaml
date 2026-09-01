@@ -37,10 +37,8 @@ services:
       homepage.description: "Bad download handling"
       traefik.enable: "true"
       traefik.http.routers.cleanuparr.rule: "Host(`${CLEANUPARR_SUBDOMAIN:-cleanuperr}.${DOMAIN}`)"
-      traefik.http.routers.cleanuparr.middlewares: "cleanuparr,tinyauth,error-pages"
+      traefik.http.routers.cleanuparr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.cleanuparr.loadbalancer.server.port: "11011"
-      traefik.http.middlewares.cleanuparr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.cleanuparr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:11011/"

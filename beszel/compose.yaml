@@ -45,10 +45,8 @@ services:
       homepage.widget.password: "${BESZEL_PASSWORD:-}"
       traefik.enable: "true"
       traefik.http.routers.beszel.rule: "Host(`${BESZEL_SUBDOMAIN:-beszel}.${DOMAIN}`)"
-      traefik.http.routers.beszel.middlewares: "beszel,tinyauth,error-pages"
+      traefik.http.routers.beszel.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.beszel.loadbalancer.server.port: "8090"
-      traefik.http.middlewares.beszel.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.beszel.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: [ "CMD", "/beszel", "health", "--url", "http://127.0.0.1:8090" ]

@@ -46,10 +46,8 @@ services:
       homepage.widget.url: "udp://minecraft.internal:25565"
       traefik.enable: "true"
       traefik.http.routers.minecraft.rule: "Host(`${MINECRAFT_SUBDOMAIN:-minecraft}.${DOMAIN}`)"
-      traefik.http.routers.minecraft.middlewares: "minecraft,error-pages"
+      traefik.http.routers.minecraft.middlewares: "${USE_CORS:+cors,}error-pages"
       traefik.http.services.minecraft.loadbalancer.server.port: "8080"
-      traefik.http.middlewares.minecraft.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.minecraft.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       timeout: "1s"
       start_period: "5m"

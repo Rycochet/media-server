@@ -42,10 +42,8 @@ services:
       homepage.widget.key: "{{HOMEPAGE_FILE_KOMGA_API}}"
       traefik.enable: "true"
       traefik.http.routers.komga.rule: "Host(`${KOMGA_SUBDOMAIN:-komga}.${DOMAIN}`)"
-      traefik.http.routers.komga.middlewares: "komga,tinyauth,error-pages"
+      traefik.http.routers.komga.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.komga.loadbalancer.server.port: "25600"
-      traefik.http.middlewares.komga.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.komga.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:25600/"

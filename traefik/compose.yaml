@@ -40,6 +40,7 @@ services:
     command:
       # - "--accesslog=true"
       # - "--accesslog.addinternals"
+      # - "--accesslog.fields.defaultmode=keep"
       - "--api.dashboard=true"
       - "--api.insecure=true"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.propagation.delayBeforeChecks=10"
@@ -47,11 +48,14 @@ services:
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=8.8.8.8:53"
       - "--certificatesResolvers.letsencrypt.acme.email=${EMAIL}"
       - "--certificatesResolvers.letsencrypt.acme.storage=/etc/traefik/acme.json"
+      # - "--entryPoints.traefik.http.aliasHeadersStrategy=allow" # Used for api.dashboard
       - "--entryPoints.web.address=:80"
+      - "--entryPoints.web.http.aliasHeadersStrategy=delete"
       - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
       - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.websecure.http.aliasHeadersStrategy=delete"
       - "--entryPoints.websecure.http.tls.certresolver=letsencrypt"
       - "--entryPoints.websecure.http2.maxConcurrentStreams=250"
       - "--entryPoints.websecure.http3=true"
@@ -71,9 +75,8 @@ services:
       - "--entryPoints.websecure.http.tls.domains[0].main=${DOMAIN}"
       - "--entryPoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
       # Support for cloudflared IP forwarding
-      # - "--accesslog.fields.defaultmode=keep"
-      # - "--experimental.plugins.cloudflarewarp.modulename=github.com/BilikoX/cloudflarewarp"
-      # - "--experimental.plugins.cloudflarewarp.version=v1.3.4"
+      - "${USE_CLOUDFLAREWARP:+--experimental.plugins.traefik-real-ip.modulename=github.com/zekihan/traefik-real-ip}"
+      - "${USE_CLOUDFLAREWARP:+--experimental.plugins.traefik-real-ip.version=v0.1.23}"
     ports:
       - "80:80"
       - "443:443"
@@ -91,10 +94,11 @@ services:
       traefik.enable: "true"
       traefik.http.routers.traefik.service: "api@internal"
       traefik.http.routers.traefik.rule: "Host(`${TRAEFIK_SUBDOMAIN:-traefik}.${DOMAIN}`)"
-      traefik.http.routers.traefik.middlewares: "traefik,tinyauth,error-pages"
+      traefik.http.routers.traefik.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.traefik.loadbalancer.server.port: "8080"
-      traefik.http.middlewares.traefik.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.traefik.headers.accessControlAllowOriginList: "https://${DOMAIN}"
+      traefik.http.middlewares.cors.headers.accessControlAllowCredentials: "true"
+      traefik.http.middlewares.cors.headers.accessControlAllowOriginList: "https://${DOMAIN}"
+      traefik.http.middlewares.cloudflarewarp.plugin.traefik-real-ip.logLevel: "warn"
     healthcheck:
       start_period: "30s"
       test: [ "CMD", "traefik", "healthcheck", "--ping" ]

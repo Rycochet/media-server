@@ -39,10 +39,8 @@ services:
       homepage.widget.expandOneStreamToTwoRows: "false"
       traefik.enable: "true"
       traefik.http.routers.tracearr.rule: "Host(`${TRACEARR_SUBDOMAIN:-tracearr}.${DOMAIN}`)"
-      traefik.http.routers.tracearr.middlewares: "tracearr,tinyauth,error-pages"
+      traefik.http.routers.tracearr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.tracearr.loadbalancer.server.port: "3000"
-      traefik.http.middlewares.tracearr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.tracearr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
 
   homepage:
     secrets:

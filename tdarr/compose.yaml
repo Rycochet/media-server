@@ -58,11 +58,9 @@ services:
       homepage.widget.url: "http://tdarr.internal:8265"
       traefik.enable: "true"
       traefik.http.routers.tdarr.rule: "Host(`${TDARR_SUBDOMAIN:-tdarr}.${DOMAIN}`)"
-      traefik.http.routers.tdarr.middlewares: "tdarr,tinyauth,error-pages"
+      traefik.http.routers.tdarr.middlewares: "${USE_CORS:+cors,}${USE_CORS:+tdarr-cors},tinyauth,error-pages"
       traefik.http.services.tdarr.loadbalancer.server.port: "8265"
-      traefik.http.middlewares.tdarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.tdarr.headers.accessControlAllowHeaders: "content-type"
-      traefik.http.middlewares.tdarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
+      traefik.http.middlewares.tdarr-cors.headers.accessControlAllowHeaders: "content-type"
     healthcheck:
       start_period: "150s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8265/"

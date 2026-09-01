@@ -37,10 +37,8 @@ services:
       homepage.widget.env: "${PORTAINER_ENV:-1}"
       traefik.enable: "true"
       traefik.http.routers.portainer.rule: "Host(`${PORTAINER_SUBDOMAIN:-portainer}.${DOMAIN}`)"
-      traefik.http.routers.portainer.middlewares: "portainer,error-pages"
+      traefik.http.routers.portainer.middlewares: "${USE_CORS:+cors,}error-pages"
       traefik.http.services.portainer.loadbalancer.server.port: "9000"
-      traefik.http.middlewares.portainer.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.portainer.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1:9000/ || exit 1"

@@ -25,5 +25,5 @@ services:
       homepage.description: "Who... Am... I...?"
       traefik.enable: "true"
       traefik.http.routers.whoami.rule: "Host(`${WHOAMI_SUBDOMAIN:-whoami}.${DOMAIN}`)"
-      traefik.http.routers.whoami.middlewares: "tinyauth,error-pages"
+      traefik.http.routers.whoami.middlewares: "${USE_CLOUDFLAREWARP:+cloudflarewarp,}tinyauth,error-pages"
       traefik.http.services.whoami.loadbalancer.server.port: "80"

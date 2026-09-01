@@ -35,10 +35,8 @@ services:
       homepage.description: "ZFS administration"
       traefik.enable: "true"
       traefik.http.routers.zfdash.rule: "Host(`${ZFDASH_SUBDOMAIN:-zfdash}.${DOMAIN}`)"
-      traefik.http.routers.zfdash.middlewares: "zfdash,tinyauth,error-pages"
+      traefik.http.routers.zfdash.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.zfdash.loadbalancer.server.port: "5001"
-      traefik.http.middlewares.zfdash.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.zfdash.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "timeout 1 bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/5001'"

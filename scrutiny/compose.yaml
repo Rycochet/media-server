@@ -33,10 +33,8 @@ services:
       homepage.widget.url: "http://scrutiny.internal:8080"
       traefik.enable: "true"
       traefik.http.routers.scrutiny.rule: "Host(`${SCRUTINY_SUBDOMAIN:-scrutiny}.${DOMAIN}`)"
-      traefik.http.routers.scrutiny.middlewares: "scrutiny,tinyauth,error-pages"
+      traefik.http.routers.scrutiny.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.scrutiny.loadbalancer.server.port: "8080"
-      traefik.http.middlewares.scrutiny.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.scrutiny.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8080/"

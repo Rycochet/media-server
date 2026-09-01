@@ -57,10 +57,8 @@ services:
       homepage.widgets[0].mappings[3].remap.1.to: "🔋Battery"
       traefik.enable: "true"
       traefik.http.routers.nutcase.rule: "Host(`${NUTCASE_SUBDOMAIN:-nutcase}.${DOMAIN}`)"
-      traefik.http.routers.nutcase.middlewares: "nutcase,tinyauth,error-pages"
+      traefik.http.routers.nutcase.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.nutcase.loadbalancer.server.port: "9995"
-      traefik.http.middlewares.nutcase.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.nutcase.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1:9995/help || exit 1"

@@ -40,10 +40,8 @@ services:
       homepage.description: "Porn database"
       traefik.enable: "true"
       traefik.http.routers.stash.rule: "Host(`${STASH_SUBDOMAIN:-stash}.${DOMAIN}`)"
-      traefik.http.routers.stash.middlewares: "stash,tinyauth,error-pages"
+      traefik.http.routers.stash.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.stash.loadbalancer.server.port: "9999"
-      traefik.http.middlewares.stash.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.stash.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1:9999/ || exit 1"

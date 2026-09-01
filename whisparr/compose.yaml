@@ -43,10 +43,8 @@ services:
       # homepage.widget.key: "{{HOMEPAGE_FILE_WHISPARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.whisparr.rule: "Host(`${WHISPARR_SUBDOMAIN:-whisparr}.${DOMAIN}`)"
-      traefik.http.routers.whisparr.middlewares: "whisparr,tinyauth,error-pages"
+      traefik.http.routers.whisparr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.whisparr.loadbalancer.server.port: "6969"
-      traefik.http.middlewares.whisparr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.whisparr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:6969/"

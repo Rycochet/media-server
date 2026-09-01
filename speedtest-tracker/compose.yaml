@@ -46,10 +46,8 @@ services:
       homepage.widget.key: "{{HOMEPAGE_FILE_SPEEDTEST_TRACKER_API}}"
       traefik.enable: "true"
       traefik.http.routers.speedtest-tracker.rule: "Host(`${SPEEDTEST_TRACKER_SUBDOMAIN:-speedtest-tracker}.${DOMAIN}`)"
-      traefik.http.routers.speedtest-tracker.middlewares: "speedtest-tracker,tinyauth,error-pages"
+      traefik.http.routers.speedtest-tracker.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.speedtest-tracker.loadbalancer.server.port: "80"
-      traefik.http.middlewares.speedtest-tracker.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.speedtest-tracker.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:80/"

@@ -44,10 +44,8 @@ services:
       homepage.widget.key: "{{HOMEPAGE_FILE_SONARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.sonarr.rule: "Host(`${SONARR_SUBDOMAIN:-sonarr}.${DOMAIN}`)"
-      traefik.http.routers.sonarr.middlewares: "sonarr,tinyauth,error-pages"
+      traefik.http.routers.sonarr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.sonarr.loadbalancer.server.port: "8989"
-      traefik.http.middlewares.sonarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.sonarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8989/"

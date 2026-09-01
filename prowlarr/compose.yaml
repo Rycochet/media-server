@@ -42,10 +42,8 @@ services:
       homepage.widget.key: "{{HOMEPAGE_FILE_PROWLARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.prowlarr.rule: "Host(`${PROWLARR_SUBDOMAIN:-prowlarr}.${DOMAIN}`)"
-      traefik.http.routers.prowlarr.middlewares: "prowlarr,tinyauth,error-pages"
+      traefik.http.routers.prowlarr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.prowlarr.loadbalancer.server.port: "9696"
-      traefik.http.middlewares.prowlarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.prowlarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:9696/"

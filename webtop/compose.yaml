@@ -51,10 +51,8 @@ services:
       homepage.description: "Linux Desktop"
       traefik.enable: "true"
       traefik.http.routers.webtop.rule: "Host(`${WEBTOP_SUBDOMAIN:-webtop}.${DOMAIN}`)"
-      traefik.http.routers.webtop.middlewares: "webtop,tinyauth,error-pages"
+      traefik.http.routers.webtop.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.webtop.loadbalancer.server.port: "3000"
-      traefik.http.middlewares.webtop.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.webtop.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:3000/"

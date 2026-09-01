@@ -44,10 +44,8 @@ services:
       homepage.widget.key: "{{HOMEPAGE_FILE_BAZARR_API}}"
       traefik.enable: "true"
       traefik.http.routers.bazarr.rule: "Host(`${BAZARR_SUBDOMAIN:-bazarr}.${DOMAIN}`)"
-      traefik.http.routers.bazarr.middlewares: "bazarr,tinyauth,error-pages"
+      traefik.http.routers.bazarr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.bazarr.loadbalancer.server.port: "6767"
-      traefik.http.middlewares.bazarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.bazarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:6767/"

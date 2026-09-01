@@ -28,10 +28,8 @@ services:
       homepage.description: "Bandwidth test to server"
       traefik.enable: "true"
       traefik.http.routers.openspeedtest.rule: "Host(`${OPENSPEEDTEST_SUBDOMAIN:-openspeedtest}.${DOMAIN}`)"
-      traefik.http.routers.openspeedtest.middlewares: "openspeedtest,tinyauth,error-pages"
+      traefik.http.routers.openspeedtest.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.openspeedtest.loadbalancer.server.port: "3000"
-      traefik.http.middlewares.openspeedtest.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.openspeedtest.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:3000/"

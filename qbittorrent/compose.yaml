@@ -43,10 +43,8 @@ services:
       homepage.widget.url: "http://qbittorrent.internal:8080"
       traefik.enable: "true"
       traefik.http.routers.qbittorrent.rule: "Host(`${QBITTORRENT_SUBDOMAIN:-qbittorrent}.${DOMAIN}`)"
-      traefik.http.routers.qbittorrent.middlewares: "qbittorrent,tinyauth,error-pages"
+      traefik.http.routers.qbittorrent.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.qbittorrent.loadbalancer.server.port: "8080"
-      traefik.http.middlewares.qbittorrent.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.qbittorrent.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8080/"

@@ -42,10 +42,8 @@ services:
       homepage.widget.fields: "[\"pending\", \"approved\", \"completed\", \"issues\"]"
       traefik.enable: "true"
       traefik.http.routers.seerr.rule: "Host(`${SEERR_SUBDOMAIN:-ask}.${DOMAIN}`)"
-      traefik.http.routers.seerr.middlewares: "seerr,error-pages"
+      traefik.http.routers.seerr.middlewares: "${USE_CLOUDFLAREWARP:+cloudflarewarp,}${USE_CORS:+cors,}error-pages"
       traefik.http.services.seerr.loadbalancer.server.port: "5055"
-      traefik.http.middlewares.seerr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.seerr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
     healthcheck:
       start_period: "30s"
       test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1:5055/api/v1/status || exit 1"

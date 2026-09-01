@@ -51,10 +51,8 @@ services:
       homepage.widget.mappings[2].format: "number"
       traefik.enable: "true"
       traefik.http.routers.neutarr.rule: "Host(`${NEUTARR_SUBDOMAIN:-neutarr}.${DOMAIN}`)"
-      traefik.http.routers.neutarr.middlewares: "neutarr,tinyauth,error-pages"
+      traefik.http.routers.neutarr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.neutarr.loadbalancer.server.port: "9705"
-      traefik.http.middlewares.neutarr.headers.accessControlAllowCredentials: "true"
-      traefik.http.middlewares.neutarr.headers.accessControlAllowOriginList: "https://${DOMAIN}"
 
   homepage:
     secrets:

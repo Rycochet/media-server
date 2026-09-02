@@ -1,0 +1,6 @@
+a.service-title-text > .service-name:before {
+    content: "\2BBA";
+    position: absolute;
+    right: calc(var(--spacing) * 3);
+    opacity: 0.5;
+}

@@ -45,7 +45,7 @@ services:
       homepage.description: "Media Library"
       homepage.widget.type: "emby"
       homepage.widget.url: "http://emby.internal:8096"
-      homepage.widget.key: "${EMBY_TOKEN:-}"
+      homepage.widget.key: "{{HOMEPAGE_FILE_EMBY_TOKEN}}"
       homepage.widget.enableBlocks: "true"
       homepage.widget.showEpisodeNumber: "true"
       homepage.widget.expandOneStreamToTwoRows: "false"
@@ -58,8 +58,18 @@ services:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8096/"
 
+  homepage:
+    secrets:
+      - emby_token
+    environment:
+      HOMEPAGE_FILE_EMBY_TOKEN: "/run/secrets/emby_token"
+
   traefik:
     networks:
       internal:
         aliases:
           - "${EMBY_SUBDOMAIN:-emby}.${DOMAIN}"
+
+secrets:
+  emby_token:
+    environment: "EMBY_TOKEN"

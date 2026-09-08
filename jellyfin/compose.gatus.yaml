@@ -1,0 +1,6 @@
+services:
+  gatus:
+    environment:
+      JELLYFIN_SUBDOMAIN: "${JELLYFIN_SUBDOMAIN:-jellyfin}"
+    volumes:
+      - "./gatus.jellyfin.yaml:/config/gatus.jellyfin.yaml"

@@ -1,0 +1,24 @@
+# Jellyfin config for Gatus
+
+ui:
+  buttons:
+    - name: Jellyfin
+      link: "https://${JELLYFIN_SUBDOMAIN}.${DOMAIN}/web/"
+
+endpoints:
+  - name: jellyfin.connection
+    group: Jellyfin
+    url: "https://${JELLYFIN_SUBDOMAIN}.${DOMAIN}/health"
+    client:
+      proxy-url: http://vpn.internal:8888
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: jellyfin.server-health
+    group: Jellyfin
+    url: "${DOCKER_HOST}/containers/jellyfin/json"
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true

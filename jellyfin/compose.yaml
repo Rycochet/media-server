@@ -1,7 +1,7 @@
 services:
   jellyfin:
     container_name: jellyfin
-    image: ${JELLYFIN_IMAGE:-lscr.io/linuxserver/jellyfin}:${JELLYFIN_IMAGE_TAG:-latest}
+    image: ${JELLYFIN_IMAGE:-docker.io/jellyfin/jellyfin}:${JELLYFIN_IMAGE_TAG:-12}
     profiles: [ "${JELLYFIN_PROFILE:-library}" ]
     extends:
       file: ../compose.extend.yaml
@@ -24,18 +24,24 @@ services:
       - "8920:8920" #optional
       - "7359:7359/udp" #optional
       - "1900:1900/udp" #optional
+    user: "${PUID:-1000}:${PGID:-1000}"
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "${PUID:-1000}"
-      PGID: "${PGID:-1000}"
-      UMASK: "000"
       # Image
       JELLYFIN_PublishedServerUrl: "https://${JELLYFIN_SUBDOMAIN:-jellyfin}.${DOMAIN}"
+      JELLYFIN_CACHE_DIR: "/cache"
+      JELLYFIN_CONFIG_DIR: "/config"
+      JELLYFIN_DATA_DIR: "/jellydata"
+      JELLYFIN_LOG_DIR: "/logs"
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./cache:/cache"
       - "./config:/config"
-      - "./logs:/config/logs"
-      - "./tmp:/config/cache/transcodes"
+      - "./data:/jellydata"
+      - "./logs:/logs"
+      # This one can be worth remapping to a larger / slower drive -
+      # - "/large_space/.jellyfin:/jellydata/data"
       - "$PATH_MOVIES:/data/movies:ro"
       - "$PATH_MUSIC:/data/music:ro"
       - "$PATH_TV:/data/tv:ro"
@@ -44,9 +50,10 @@ services:
       homepage.group: "Libraries"
       homepage.name: "Jellyfin"
       homepage.icon: "jellyfin.png"
-      homepage.href: "https://${JELLYFIN_SUBDOMAIN:-jellyfin}.${DOMAIN}/"
+      homepage.href: "https://${JELLYFIN_SUBDOMAIN:-jellyfin}.${DOMAIN}/web/#/home"
       homepage.description: "Media Library"
       homepage.widget.type: "jellyfin"
+      homepage.widget.version: "2"
       homepage.widget.url: "http://jellyfin.internal:8096"
       homepage.widget.key: "{{HOMEPAGE_FILE_JELLYFIN_API}}"
       homepage.widget.enableBlocks: "true"
@@ -54,7 +61,7 @@ services:
       homepage.widget.expandOneStreamToTwoRows: "false"
       traefik.enable: "true"
       traefik.http.routers.jellyfin.rule: "Host(`${JELLYFIN_SUBDOMAIN:-jellyfin}.${DOMAIN}`)"
-      traefik.http.routers.jellyfin.middlewares: "tinyauth,error-pages"
+      traefik.http.routers.jellyfin.middlewares: "${USE_CLOUDFLAREWARP:+cloudflarewarp,}${USE_CORS:+cors,}error-pages"
       traefik.http.services.jellyfin.loadbalancer.server.port: "8096"
     healthcheck:
       start_period: "30s"

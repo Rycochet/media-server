@@ -29,6 +29,7 @@ include:
   # - i2p/compose.yaml #                    | network     | I2P Client |
   # - imagemaid/compose.yaml #              | quality     | Cleanup Plex image cache |
   # - jellyfin/compose.yaml #               | library     | Open source media library |
+  # - jellyfin/compose.gatus.yaml
   # - kapowarr/compose.yaml #               | library     | Comics |
   # - kometa/compose.yaml #                 | quality     | Poster overlays, collections, playlists for Plex |
   # - komga/compose.yaml #                  | library     | Comic library |

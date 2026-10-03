@@ -14,28 +14,33 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "${PUID:-1000}"
-      PGID: "${PGID:-1000}"
+      UID: "${PUID:-1000}"
+      GID: "${PGID:-1000}"
       UMASK: "000"
+      # Image
+      APP_HOME: "/config"
+      DATA_DIR: "/data"
+      HOME_FOLDER: "/data"
+      KEEP_PERM: "true"
     stdin_open: true
     tty: true
     volumes:
-      - "./config:/home/ofscraper/.config"
-      - "./logs:/home/ofscraper/.config/ofscraper/logging"
-      - "/usr/bin/ffmpeg:/usr/bin/ffmpeg:ro" # standalone build
-      - "/usr/local/bin/mp4decrypt:/usr/local/bin/mp4decrypt:ro"
-      - "$PATH_ONLYFANS:/data/Adult"
+      - "./config:/config"
+      - "./data:/data"
+      - "./logs:/config/logging"
+      # - "/usr/bin/ffmpeg:/usr/bin/ffmpeg:ro" # standalone build
+      # - "/usr/local/bin/mp4decrypt:/usr/local/bin/mp4decrypt:ro"
+      - "$PATH_ONLYFANS:/data/OnlyFans"
     command:
       - ofscraper
-      - "--daemon"
-      - "10800" # 3600 = hour, 10800 = 3 hours
+      # - "--daemon"
+      # - "10800" # 3600 = hour, 10800 = 3 hours
       - "--posts"
       - "all"
       - "--action"
-      - "download" # ,like
+      - "download,like"
       - "--username"
       - "ALL"
-      - "--block-ads"
       # - "--force-model-unique"
     labels:
       deunhealth.restart.on.unhealthy: "false"

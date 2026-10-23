@@ -19,6 +19,7 @@ services:
       TUNNEL_TOKEN_FILE: "/run/secrets/cloudflared_token"
       TUNNEL_LOGLEVEL: "info"
     labels:
+      com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "true"
       homepage.group: "Information"
       homepage.name: "Cloudflared"

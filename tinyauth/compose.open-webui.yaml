@@ -1,0 +1,10 @@
+services:
+  open-webui:
+    depends_on:
+      tinyauth:
+        condition: service_started
+        restart: false
+    environment:
+      WEBUI_AUTH_TRUSTED_EMAIL_HEADER: "remote-email"
+      WEBUI_AUTH_TRUSTED_NAME_HEADER: "remote-name"
+      # WEBUI_AUTH_TRUSTED_GROUPS_HEADER: "remote-groups" # Optional, only sent for LDAP / OAuth groups

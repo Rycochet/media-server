@@ -1,0 +1,52 @@
+services:
+  open-webui:
+    container_name: open-webui
+    image: ${OPEN_WEBUI_IMAGE:-ghcr.io/open-webui/open-webui}:${OPEN_WEBUI_IMAGE_TAG:-ollama}
+    profiles: [ "${OPEN_WEBUI_PROFILE:-tools}" ]
+    extends:
+      file: ../compose.extend.yaml
+      service: "gpu-${USE_GPU:-none}" # Note that this really isn't worth running if not using an nvidia GPU
+    restart: unless-stopped
+    networks:
+      - external # needed to let it download models and access the internet
+      - internal
+    # ports:
+    #   - "11434:11434" # ollama api for local access
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      OLLAMA_HOST: "0.0.0.0:11434" # Bundled ollama only listens on localhost otherwise
+      OLLAMA_KEEP_ALIVE: "${OPEN_WEBUI_OLLAMA_KEEP_ALIVE:-5m}"
+      WEBUI_URL: "https://${OPEN_WEBUI_SUBDOMAIN:-open-webui}.${DOMAIN}"
+      ENABLE_SIGNUP: "${OPEN_WEBUI_ENABLE_SIGNUP:-false}" # First user is always allowed and becomes admin
+      ANONYMIZED_TELEMETRY: "false"
+      DO_NOT_TRACK: "true"
+      SCARF_NO_ANALYTICS: "true"
+    volumes:
+      - "./data:/app/backend/data"
+      - "./ollama:/root/.ollama"
+    labels:
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Tools"
+      homepage.name: "Open WebUI"
+      homepage.icon: "open-webui.png"
+      homepage.href: "https://${OPEN_WEBUI_SUBDOMAIN:-open-webui}.${DOMAIN}/"
+      homepage.description: "AI chat (Ollama)"
+      traefik.enable: "true"
+      traefik.http.routers.open-webui.rule: "Host(`${OPEN_WEBUI_SUBDOMAIN:-open-webui}.${DOMAIN}`)"
+      traefik.http.routers.open-webui.middlewares: "tinyauth,error-pages"
+      traefik.http.services.open-webui.loadbalancer.server.port: "8080"
+    healthcheck:
+      start_period: "300s"
+      test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8080/health && curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:11434/api/version"

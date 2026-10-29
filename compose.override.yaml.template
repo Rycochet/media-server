@@ -47,6 +47,7 @@ include:
   # - nutcase/compose.yaml #                | information | Network UPS Tools |
   # - onlyfans/compose.yaml #               | download    | Download all subscriptions |
   # - openspeedtest/compose.yaml #          | network     | Bandwidth test to server |
+  # - open-webui/compose.yaml #             | tools       | AI chat with bundled Ollama |
   # - owntone/compose.yaml #                | library     | iTunes media server |
   # - peanut/compose.yaml #                 | information | Network UPS Tools |
   # - pgadmin/compose.yaml #                | tools       | Database admin |
@@ -82,6 +83,7 @@ include:
   # - tinyauth/compose.github.yaml
   # - tinyauth/compose.google.yaml
   # - tinyauth/compose.oauth.yaml
+  # - tinyauth/compose.open-webui.yaml
   # - titlecardmaker/compose.yaml #         | quality     | Episode thumbnails for Plex |
   # - tracearr/compose.yaml #               | library     | Plex & Emby monitoring |
   # - ubooquity/compose.yaml #              | media       | Comics |

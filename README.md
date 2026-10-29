@@ -161,6 +161,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `nutcase`                | `information` | Network UPS Tools | `9995` | ✔️ |
 | `onlyfans`               | `download`    | Download all subscriptions | *n/a* | ❌ |
 | `openspeedtest`          | `network`     | Bandwidth test to server | `3000` | ✔️ |
+| `open-webui`             | `tools`       | AI chat with bundled Ollama | `8080` | ✔️ |
 | `owntone`                | `library`     | iTunes media server | `3689` | ✔️ |
 | `peanut`                 | `information` | Network UPS Tools | `8080` | ✔️ |
 | `pgadmin`                | `tools`       | Database admin | `80` | ✔️ |

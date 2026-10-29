@@ -39,6 +39,6 @@ services:
       traefik.http.routers.tinyauth.rule: "Host(`${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}`)"
       traefik.http.services.tinyauth.loadbalancer.server.port: "3000"
       traefik.http.middlewares.tinyauth.forwardauth.address: "http://tinyauth.internal:3000/api/auth/traefik"
-      traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: "remote-user,remote-groups"
+      traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders: "remote-user,remote-name,remote-email,remote-groups"
       traefik.http.middlewares.tinyauth.forwardauth.maxResponseBodySize: "32768"
       traefik.http.middlewares.tinyauth.forwardauth.trustForwardHeader: "true"

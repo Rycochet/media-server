@@ -71,7 +71,7 @@ services:
       - "--providers.file.watch=true"
       - "--providers.file=true"
       - "--serverstransport.insecureskipverify=true"
-      # Copy the supplied config_rules.yaml to config/rules.yaml and add other domains there
+      # Other domains get their certs from a router - see the supplied config_rules.yml
       - "--entryPoints.websecure.http.tls.domains[0].main=${DOMAIN}"
       - "--entryPoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
       # Support for cloudflared IP forwarding

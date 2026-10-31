@@ -1,17 +1,25 @@
-# Add extra domains for routing and SSL certs
-#############################################
-# entryPoints:
-#   websecure:
-#     http:
-#       tls:
-#         domains:
-#           - main: "<<domain>"
-#             sans: "*.<<domain>>"
-
 # Routes that want to do something that doesn't involve docker
 ##############################################################
+# Extra domains get their SSL certs from a router - this file can't set them on
+# the entrypoint. For a docker service use the same settings as labels instead:
+#   traefik.http.routers.<<service>>.tls.certresolver: "letsencrypt"
+#   traefik.http.routers.<<service>>.tls.domains[0].main: "<<domain>>"
+#   traefik.http.routers.<<service>>.tls.domains[0].sans: "*.<<domain>>"
+# The DNS API token needs access to the zone for each domain.
+
 # http:
 #   routers:
+#     <<extra-domain>>: # Get a wildcard cert for another domain - subdomains on that domain will use it
+#       rule: "Host(`<<domain>>`)"
+#       middlewares: <<redirect>>
+#       service: noop@internal
+#       tls:
+#         certResolver: letsencrypt
+#         domains:
+#           - main: "<<domain>>"
+#             sans:
+#               - "*.<<domain>>"
+
 #     <<outside-docker>>: # A web server running on your local network that wants to be protected - this will not expose the url
 #       rule: "Host(`<<subdomain>>.<<domain>>`)"
 #       middlewares: allow-auth,tinyauth@docker,error-pages@docker

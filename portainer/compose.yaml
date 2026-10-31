@@ -35,6 +35,11 @@ services:
       homepage.widget.url: "http://portainer.internal:9000"
       homepage.widget.key: "{{HOMEPAGE_FILE_PORTAINER_API}}"
       homepage.widget.env: "${PORTAINER_ENV:-1}"
+      socket-proxy.allow.delete: '(/v1\.[0-9]+)?/(containers|images|networks|volumes)/.+'
+      socket-proxy.allow.get: '.*'
+      socket-proxy.allow.head: '/_ping'
+      socket-proxy.allow.post: '(/v1\.[0-9]+)?/(containers/(create|prune|[^/]+/(start|stop|restart|kill|pause|unpause|rename|update|wait|resize))|images/.+|networks/.+|volumes/.+)'
+      socket-proxy.allow.put: '(/v1\.[0-9]+)?/containers/[^/]+/archive'
       traefik.enable: "true"
       traefik.http.routers.portainer.rule: "Host(`${PORTAINER_SUBDOMAIN:-portainer}.${DOMAIN}`)"
       traefik.http.routers.portainer.middlewares: "${USE_CORS:+cors,}error-pages"

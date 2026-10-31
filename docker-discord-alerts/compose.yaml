@@ -27,4 +27,5 @@ services:
       VERBOSE: "${DOCKER_DISCORD_ALERTS_VERBOSE:-False}"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/(_ping|version|events|containers/[^/]+/json|images/.+/json)'
       traefik.enable: "false"

@@ -47,6 +47,7 @@ services:
       homepage.widget.url: "http://glances.internal:61208"
       homepage.widget.version: "4"
       homepage.widget.metric: "containers"
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/(version|containers/(json|[^/]+/(json|stats))|images/.+/json)'
       traefik.enable: "true"
       traefik.http.routers.glances.rule: "Host(`${GLANCES_SUBDOMAIN:-glances}.${DOMAIN}`)"
       traefik.http.routers.glances.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"

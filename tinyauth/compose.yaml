@@ -35,6 +35,8 @@ services:
       homepage.icon: "tinyauth.png"
       homepage.href: "https://${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}"
       homepage.description: "OAuth handling"
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/(events|containers/([^/]+/)?json)'
+      socket-proxy.allow.head: '/_ping'
       traefik.enable: "true"
       traefik.http.routers.tinyauth.rule: "Host(`${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}`)"
       traefik.http.services.tinyauth.loadbalancer.server.port: "3000"

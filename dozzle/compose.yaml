@@ -28,6 +28,8 @@ services:
       homepage.icon: "dozzle.png"
       homepage.href: "https://${DOZZLE_SUBDOMAIN:-dozzle}.${DOMAIN}/"
       homepage.description: "Docker container logs"
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/(_ping|version|info|events|containers/(json|[^/]+/(json|logs|stats)))'
+      socket-proxy.allow.head: '/_ping'
       traefik.enable: "true"
       traefik.http.routers.dozzle.rule: "Host(`${DOZZLE_SUBDOMAIN:-dozzle}.${DOMAIN}`)"
       traefik.http.routers.dozzle.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"

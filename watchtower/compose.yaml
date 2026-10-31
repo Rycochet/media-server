@@ -25,6 +25,7 @@ services:
       DOCKER_HOST: "tcp://socket-proxy.internal:2375"
       # Image
       HTTP_PROXY: "${USE_VPN:+http://vpn.internal:8888}"
+      NO_PROXY: "socket-proxy.internal" # socket-proxy identifies clients by IP, so must be reached directly
       WATCHTOWER_CLEANUP: "true"
       WATCHTOWER_HTTP_API_METRICS: "true"
       WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
@@ -45,4 +46,9 @@ services:
       homepage.widget.type: "watchtower"
       homepage.widget.url: "http://watchtower.internal:8080"
       homepage.widget.key: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
+      socket-proxy.allow.delete: '(/v1\.[0-9]+)?/(containers|images)/.+'
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/(_ping|version|info|containers/.+|images/.+)'
+      socket-proxy.allow.head: '/_ping'
+      socket-proxy.allow.post: '(/v1\.[0-9]+)?/(containers/(create|[^/]+/(start|stop|rename|update))|images/create|networks/[^/]+/connect)'
+      socket-proxy.allow.put: '(/v1\.[0-9]+)?/containers/[^/]+/archive'
       traefik.enable: "false"

@@ -51,6 +51,7 @@ services:
       homepage.widgets[0].mappings[0].label: "IPv4"
       homepage.widgets[0].mappings[0].field: "ip"
       homepage.widgets[0].mappings[0].format: "text"
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/containers/(json|[^/]+/(json|stats))'
       traefik.enable: "true"
       traefik.http.routers.homepage.rule: "Host(`${DOMAIN}`)"
       traefik.http.routers.homepage.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"

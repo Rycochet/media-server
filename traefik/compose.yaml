@@ -91,6 +91,8 @@ services:
       homepage.description: "Web Ingress"
       homepage.widget.type: "traefik"
       homepage.widget.url: "http://traefik.internal:8080"
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/(version|events|containers/([^/]+/)?json)'
+      socket-proxy.allow.head: '/_ping'
       traefik.enable: "true"
       traefik.http.routers.traefik.service: "api@internal"
       traefik.http.routers.traefik.rule: "Host(`${TRAEFIK_SUBDOMAIN:-traefik}.${DOMAIN}`)"

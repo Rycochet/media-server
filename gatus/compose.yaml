@@ -44,6 +44,7 @@ services:
       homepage.widget.type: "gatus"
       homepage.widget.url: "http://gatus.internal:8080"
       homepage.widget.fields: "[\"up\", \"down\", \"uptime\"]"
+      socket-proxy.allow.get: '/v1\.[0-9]+/containers/[^/]+/json'
       traefik.enable: "true"
       traefik.http.routers.gatus.rule: "Host(`${GATUS_SUBDOMAIN:-status}.${DOMAIN}`)"
       traefik.http.routers.gatus.middlewares: "${USE_CLOUDFLAREWARP:+cloudflarewarp,}${USE_CORS:+cors,}error-pages"

@@ -89,6 +89,7 @@ services:
       # Remember to share all S.M.A.R.T. devices you want to use - https://beszel.dev/guide/smart-data#docker-agent
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/(version|info|containers/(json|[^/]+/(json|stats|logs))|images/.+/json)'
       traefik.enable: "false"
     healthcheck:
       start_period: "30s"

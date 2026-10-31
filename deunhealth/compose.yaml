@@ -24,4 +24,7 @@ services:
       LOG_LEVEL: "info"
     labels:
       deunhealth.restart.on.unhealthy: "false"
+      socket-proxy.allow.get: '(/v1\.[0-9]+)?/(events|containers/json)'
+      socket-proxy.allow.head: '/_ping'
+      socket-proxy.allow.post: '(/v1\.[0-9]+)?/containers/[^/]+/restart'
       traefik.enable: "false"

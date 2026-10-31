@@ -1,47 +1,28 @@
 services:
   socket-proxy:
     container_name: socket-proxy
-    image: ${SOCKET_PROXY_IMAGE:-lscr.io/linuxserver/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-latest}
+    image: ${SOCKET_PROXY_IMAGE:-docker.io/wollomatic/socket-proxy}:${SOCKET_PROXY_IMAGE_TAG:-1}
     profiles: [ "${SOCKET_PROXY_PROFILE:-core}" ]
     restart: unless-stopped
     networks:
       - internal
     read_only: true
-    environment:
-      TZ: "${TZ:-Europe/London}"
-      LOG_LEVEL: "notice" # debug, info, notice, warning, err, crit, alert, emerg
-      DISABLE_IPV6: "0"
-      ALLOW_LOGS: "1"
-      ALLOW_START: "1"
-      ALLOW_STOP: "1"
-      ALLOW_RESTARTS: "1"
-      AUTH: "0"
-      BUILD: "0"
-      COMMIT: "0"
-      CONFIGS: "0"
-      CONTAINERS: "1"
-      DISTRIBUTION: "0"
-      EVENTS: "1"
-      EXEC: "0"
-      IMAGES: "1"
-      INFO: "1"
-      NETWORKS: "1"
-      NODES: "0"
-      PING: "1"
-      PLUGINS: "0"
-      POST: "1"
-      SECRETS: "0"
-      SERVICES: "1"
-      SESSION: "0"
-      SWARM: "0"
-      SYSTEM: "0"
-      TASKS: "0"
-      VERSION: "1"
-      VOLUMES: "1"
+    user: "65534:${DOCKER_GID:?Set DOCKER_GID to the group id of the docker socket!}"
+    cap_drop:
+      - ALL
+    security_opt:
+      - "no-new-privileges=true"
+    # Access is granted per-container with `socket-proxy.allow.*` labels on each client
+    command:
+      - "-allowhealthcheck"
+      - "-listenip=0.0.0.0"
+      - "-loglevel=info" # DEBUG, INFO, WARN, ERROR - blocked requests are logged at WARN
+      - "-proxycontainername=socket-proxy"
+      - "-shutdowngracetime=5"
+      - "-stoponwatchdog"
+      - "-watchdoginterval=3600"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    tmpfs:
-      - "/run"
     labels:
       deunhealth.restart.on.unhealthy: "true"
       homepage.group: "Tools"
@@ -51,4 +32,4 @@ services:
       traefik.enable: "false"
     healthcheck:
       start_period: "30s"
-      test: "wget --no-verbose --tries=1 --timeout=5 --spider http://127.0.0.1:2375/_ping || exit 1"
+      test: [ "CMD", "./healthcheck" ]

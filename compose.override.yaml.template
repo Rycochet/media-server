@@ -43,6 +43,7 @@ include:
   # - minecraft/compose.yaml #              | games       | Minecraft |
   # - mylar/compose.yaml #                  | media       | Comics |
   # - neutarr/compose.yaml #                | download    | Missing media search |
+  # - nextcloud/compose.yaml #              | tools       | Personal cloud storage |
   # - notifiarr/compose.yaml #              | tools       | System notifications |
   # - nutcase/compose.yaml #                | information | Network UPS Tools |
   # - onlyfans/compose.yaml #               | download    | Download all subscriptions |
@@ -59,6 +60,7 @@ include:
   # - portainer/compose.yaml #              | information | Container management |
   # - postfix/compose.yaml #                | tools       | Internal SMTP email relay |
   # - postfix/compose.lldap.yaml
+  # - postfix/compose.nextcloud.yaml
   # - postfix/compose.pocket-id.yaml
   # - postgres/compose.yaml #               | tools       | Database |
   # - posterizarr/compose.yaml #            | tools       | Automated poster maker |

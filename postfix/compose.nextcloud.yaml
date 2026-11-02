@@ -1,0 +1,11 @@
+services:
+  nextcloud:
+    depends_on:
+      postfix:
+        condition: service_started
+        restart: false
+    environment:
+      SMTP_HOST: "postfix.internal"
+      SMTP_PORT: "587"
+      MAIL_FROM_ADDRESS: "noreply"
+      MAIL_DOMAIN: "${DOMAIN}"

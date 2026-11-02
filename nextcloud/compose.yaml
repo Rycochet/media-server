@@ -1,0 +1,161 @@
+services:
+  nextcloud:
+    container_name: nextcloud
+    image: ${NEXTCLOUD_IMAGE:-docker.io/nextcloud}:${NEXTCLOUD_IMAGE_TAG:-34-apache} # Major versions can't be skipped when upgrading
+    profiles: [ "${NEXTCLOUD_PROFILE:-tools}" ]
+    restart: unless-stopped
+    networks:
+      - external # needed for the app store and federation
+      - internal
+    depends_on:
+      traefik:
+        condition: service_started
+        restart: false
+      postgres:
+        condition: service_started
+        restart: false
+      nextcloud-redis:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    secrets:
+      - nextcloud_admin_password
+      - nextcloud_postgres_password
+      - nextcloud_redis_password
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Apache
+      APACHE_BODY_LIMIT: "0" # Limited by PHP_UPLOAD_LIMIT instead
+      # PHP
+      PHP_MEMORY_LIMIT: "${NEXTCLOUD_PHP_MEMORY_LIMIT:-1G}"
+      PHP_UPLOAD_LIMIT: "${NEXTCLOUD_PHP_UPLOAD_LIMIT:-16G}"
+      # Install - only used for the first run, afterwards it's in config/config.php
+      NEXTCLOUD_ADMIN_USER: "${NEXTCLOUD_ADMIN_USER:-admin}"
+      NEXTCLOUD_ADMIN_PASSWORD_FILE: "/run/secrets/nextcloud_admin_password"
+      NEXTCLOUD_TRUSTED_DOMAINS: "${NEXTCLOUD_SUBDOMAIN:-nextcloud}.${DOMAIN} nextcloud.internal" # The internal one is for the homepage widget
+      # Database - the first run creates its own user and database
+      POSTGRES_HOST: "postgres.internal"
+      POSTGRES_DB: "nextcloud"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD_FILE: "/run/secrets/nextcloud_postgres_password"
+      # Cache
+      REDIS_HOST: "nextcloud-redis.internal"
+      REDIS_HOST_PASSWORD_FILE: "/run/secrets/nextcloud_redis_password"
+      # Proxy
+      OVERWRITECLIURL: "https://${NEXTCLOUD_SUBDOMAIN:-nextcloud}.${DOMAIN}"
+      OVERWRITEHOST: "${NEXTCLOUD_SUBDOMAIN:-nextcloud}.${DOMAIN}"
+      OVERWRITEPROTOCOL: "https"
+      TRUSTED_PROXIES: "10.0.0.0/8 172.16.0.0/12 192.168.0.0/16"
+    volumes:
+      # IMPORTANT: Runs as www-data (33) and not PUID / PGID. Both folders must not exist or be empty on first run
+      # so that they get the correct owner, which is why there's no .gitkeep in them.
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/var/www/html"
+      - "${PATH_NEXTCLOUD:-./data}:/var/www/html/data"
+    labels:
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      # No deunhealth label, status.php is an error during upgrades and restarting would break them
+      homepage.group: "Tools"
+      homepage.name: "Nextcloud"
+      homepage.icon: "nextcloud.png"
+      homepage.href: "https://${NEXTCLOUD_SUBDOMAIN:-nextcloud}.${DOMAIN}/"
+      homepage.description: "Personal cloud storage"
+      homepage.widget.type: "nextcloud"
+      homepage.widget.url: "http://nextcloud.internal"
+      homepage.widget.key: "{{HOMEPAGE_FILE_NEXTCLOUD_API}}"
+      traefik.enable: "true"
+      traefik.http.routers.nextcloud.rule: "Host(`${NEXTCLOUD_SUBDOMAIN:-nextcloud}.${DOMAIN}`)"
+      # No tinyauth as the sync clients and WebDAV can't use it, and no error-pages as they need the real error responses
+      traefik.http.routers.nextcloud.middlewares: "${USE_CLOUDFLAREWARP:+cloudflarewarp,}${USE_CORS:+cors,}nextcloud-hsts"
+      traefik.http.services.nextcloud.loadbalancer.server.port: "80"
+      traefik.http.middlewares.nextcloud-hsts.headers.stsSeconds: "15552000"
+      traefik.http.middlewares.nextcloud-hsts.headers.stsIncludeSubdomains: "true"
+    healthcheck:
+      start_period: "300s"
+      test: "php -r \"exit(strpos((string)@file_get_contents('http://127.0.0.1/status.php'), '\\\"installed\\\":true') === false ? 1 : 0);\"" # There's no curl or wget in the image
+
+  nextcloud-cron:
+    container_name: nextcloud-cron
+    image: ${NEXTCLOUD_IMAGE:-docker.io/nextcloud}:${NEXTCLOUD_IMAGE_TAG:-34-apache}
+    profiles: [ "${NEXTCLOUD_PROFILE:-tools}" ]
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    depends_on:
+      nextcloud:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    entrypoint: "/cron.sh"
+    secrets:
+      - nextcloud_redis_password
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # PHP
+      PHP_MEMORY_LIMIT: "${NEXTCLOUD_PHP_MEMORY_LIMIT:-1G}"
+      # Cache
+      REDIS_HOST: "nextcloud-redis.internal"
+      REDIS_HOST_PASSWORD_FILE: "/run/secrets/nextcloud_redis_password"
+    volumes:
+      # IMPORTANT: These must match the nextcloud service
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/var/www/html"
+      - "${PATH_NEXTCLOUD:-./data}:/var/www/html/data"
+    labels:
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      traefik.enable: "false"
+
+  nextcloud-redis:
+    container_name: nextcloud-redis
+    image: ${NEXTCLOUD_REDIS_IMAGE:-docker.io/redis}:${NEXTCLOUD_REDIS_IMAGE_TAG:-8-alpine}
+    profiles: [ "${NEXTCLOUD_PROFILE:-tools}" ]
+    restart: unless-stopped
+    networks:
+      - internal
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    # Only used for caching and locking so doesn't need saving
+    command: [ "redis-server", "--save", "", "--appendonly", "no", "--requirepass", "${NEXTCLOUD_REDIS_PASSWORD:?You must set a NEXTCLOUD_REDIS_PASSWORD .env variable}" ]
+    tmpfs:
+      - "/data"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      REDISCLI_AUTH: "${NEXTCLOUD_REDIS_PASSWORD:?You must set a NEXTCLOUD_REDIS_PASSWORD .env variable}"
+    labels:
+      deunhealth.restart.on.unhealthy: "true"
+      traefik.enable: "false"
+    healthcheck:
+      start_period: "30s"
+      test: [ "CMD", "redis-cli", "ping" ]
+
+  homepage:
+    secrets:
+      - nextcloud_api
+    environment:
+      HOMEPAGE_FILE_NEXTCLOUD_API: "/run/secrets/nextcloud_api"
+
+secrets:
+  nextcloud_admin_password:
+    environment: "NEXTCLOUD_ADMIN_PASSWORD"
+  nextcloud_api:
+    environment: "NEXTCLOUD_API"
+  nextcloud_postgres_password:
+    environment: "POSTGRES_PASSWORD"
+  nextcloud_redis_password:
+    environment: "NEXTCLOUD_REDIS_PASSWORD"

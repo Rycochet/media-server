@@ -157,6 +157,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `minecraft`              | `games`       | Minecraft | `8080` | ✔️ |
 | `mylar`                  | `media`       | Comics | `8090` | ✔️ |
 | `neutarr`                | `download`    | Missing media search | `9705` | ✔️ |
+| `nextcloud`              | `tools`       | Personal cloud storage | `80` | ✔️ |
 | `notifiarr`              | `tools`       | System notifications | `5454` | ✔️ |
 | `nutcase`                | `information` | Network UPS Tools | `9995` | ✔️ |
 | `onlyfans`               | `download`    | Download all subscriptions | *n/a* | ❌ |

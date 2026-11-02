@@ -2,6 +2,7 @@
 /.env
 /.env.keep-alive
 /compose.override.yaml
+/*.bak
 
 # In case someone installs on a dedicaed partition
 /aquota.user

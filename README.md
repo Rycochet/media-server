@@ -59,6 +59,13 @@ Duplicate the `.env.example` file as `.env`, all configuration needs to go in he
 
 Create an empty `compose.override.yaml` file, and copy the commented block of `include:` services into it, then to enable a service you can simply uncomment that line. For some services have a look for included template files that want copying into theit `config/` folders and renaming.
 
+### Updating
+
+Run `bash update.sh` to pull the latest version. Anything new in the example files is added to your `.env`, `.env.keep-alive` and `compose.override.yaml` without changing what is already there, and new services are always added commented out. A `.bak` copy is kept of any file that gets changed.
+
+- `-y` - Don't ask: stash local changes, comment out removed services
+- `-f` - Run `docker compose up -d` before finishing
+
 ### Cloudflare
 
 #### Domain name

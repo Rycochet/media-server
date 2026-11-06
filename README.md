@@ -78,6 +78,12 @@ Choose which apps to move, or name them like `./manage.sh run postgres migrate s
 
 It's safe to run again, apps already on Postgres are skipped. Once one has moved it offers to set `USE_POSTGRES=true`, so the *arr apps wait for Postgres when starting.
 
+When `nextcloud` is turned on it asks for the API key (NC-Token) that the homepage widget uses, or makes a random one, and saves it as `NEXTCLOUD_API`. Nextcloud has to be running to be given the key, so once it has finished its first start run this to set it there too (also to change the key later):
+
+```bash
+./manage.sh run nextcloud api-key
+```
+
 ### Updating
 
 Run `bash update.sh` to pull the latest version. Anything new in the example files is added to your `.env`, `.env.keep-alive` and `compose.override.yaml` without changing what is already there, and new services are always added commented out. A `.bak` copy is kept of any file that gets changed.

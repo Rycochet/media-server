@@ -71,7 +71,7 @@ services:
       - "--providers.file.watch=true"
       - "--providers.file=true"
       - "--serverstransport.insecureskipverify=true"
-      # Other domains get their certs from a router - see the supplied config_rules.yml
+      # Other domains get their certs from a router - see the supplied config__rules.yml.template
       - "--entryPoints.websecure.http.tls.domains[0].main=${DOMAIN}"
       - "--entryPoints.websecure.http.tls.domains[0].sans=*.${DOMAIN}"
       # Support for cloudflared IP forwarding

@@ -50,14 +50,33 @@ This has two networks defined in `compose.yaml`.
 
 ## Installation
 
-> [!IMPORTANT]
-> The `install.sh` script is not usable yet, these other steps are always going to be manual!
+Run `./manage.sh` for a menu that does most of this for you. It will install Docker if needed, make your `.env` and `compose.override.yaml` files, ask for the basic settings, and let you choose services from a grid (use the arrow keys and space to turn them on or off, and `?` to see what a service does). Run `./manage.sh help` to see the commands it has.
 
 It is advised to use VSCode or similar that does syntax highlighting (ie, colors) for the files you edit!
+
+To do it by hand instead:
 
 Duplicate the `.env.example` file as `.env`, all configuration needs to go in here.
 
 Create an empty `compose.override.yaml` file, and copy the commented block of `include:` services into it, then to enable a service you can simply uncomment that line. For some services have a look for included template files that want copying into theit `config/` folders and renaming.
+
+### Service scripts
+
+When a service is turned on with `manage.sh`, any `*.template` files in its folder are copied into place if they don't exist, with `__` meaning a folder - so `config__folder__my_file.ext.template` becomes `config/folder/my_file.ext`. Values in `.env.example` of `"<random>"` are filled with a random value, and `"<insert ...>"` are asked for.
+
+Service folders can also have their own scripts, named `manage.enable.sh` and `manage.disable.sh` to run when it's turned on or off, or `manage.<name>.sh` for a tool that can be run with `./manage.sh run <service> <name>`. A tool is only offered while its service is turned on, or add a `# Show when on: sonarr radarr` comment near the top of it to show it when any of those are on instead.
+
+### Moving the *arr apps to Postgres
+
+Sonarr, Radarr, Lidarr, Chaptarr and Whisparr use SQLite to start with. To move them to Postgres, turn on `postgres` and run:
+
+```bash
+./manage.sh run postgres migrate
+```
+
+Choose which apps to move, or name them like `./manage.sh run postgres migrate sonarr radarr`. Each app is stopped and backed up to its `config/pre-postgres-<date>` folder, then it creates its own tables in Postgres and your data is copied in with [pgloader](https://github.com/dimitri/pgloader), following the [Servarr guide](https://wiki.servarr.com/radarr/postgres-setup). It checks every table has the same number of rows, and that the app can see them, before asking you to look in your browser. If anything fails, or you say no, the app is put back on SQLite as it was. Old logs aren't copied, and the old SQLite files are kept with `.sqlite-old` on the end.
+
+It's safe to run again, apps already on Postgres are skipped. Once one has moved it offers to set `USE_POSTGRES=true`, so the *arr apps wait for Postgres when starting.
 
 ### Updating
 

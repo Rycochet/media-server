@@ -1,0 +1,26 @@
+# Only used by manage.migrate.sh to move the *arr apps from SQLite to Postgres.
+# Don't add this to compose.override.yaml, it isn't part of the stack.
+
+name: arr-migration
+
+services:
+  pgloader:
+    image: ghcr.io/dimitri/pgloader:3.6.9
+    networks:
+      - internal
+    user: "${PUID:-1000}:${PGID:-1000}"
+    volumes:
+      - "${MIGRATE_DIR:?}:/migrate"
+
+  sqlite:
+    image: docker.io/keinos/sqlite3:3.53.4
+    entrypoint: [ "sqlite3", "-batch" ]
+    network_mode: none
+    user: "${PUID:-1000}:${PGID:-1000}"
+    volumes:
+      - "${MIGRATE_DIR:?}:/migrate"
+
+networks:
+  internal:
+    external: true
+    name: internal

@@ -66,6 +66,14 @@ When a service is turned on with `manage.sh`, any `*.template` files in its fold
 
 Service folders can also have their own scripts, named `manage.enable.sh` and `manage.disable.sh` to run when it's turned on or off, or `manage.<name>.sh` for a tool that can be run with `./manage.sh run <service> <name>`. A tool is only offered while its service is turned on, or add a `# Show when on: sonarr radarr` comment near the top of it to show it when any of those are on instead.
 
+### Setting up the *arr apps
+
+When Sonarr, Radarr, Lidarr, Chaptarr or Whisparr is turned on, it is started once so it makes its `config.xml`, then stopped while its authentication method is set to `External` (so the login in front of it is used instead) and its API key is copied to `<APP>_API` in `.env` for the homepage widget, then started again. If homepage is running it is restarted too so it picks up the key. If Docker wasn't running at the time, or to do it again later, run:
+
+```bash
+./manage.sh run sonarr setup
+```
+
 ### Moving the *arr apps to Postgres
 
 Sonarr, Radarr, Lidarr, Chaptarr and Whisparr use SQLite to start with. To move them to Postgres, turn on `postgres` and run:

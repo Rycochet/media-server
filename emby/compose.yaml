@@ -10,8 +10,8 @@ services:
     networks:
       - external
       - internal
-    ports:
-      - "8096:8096"
+    # ports:
+    #   - "8096:8096" # Note that this clashes with Jellyfin, so only add it for one!
     depends_on:
       traefik:
         condition: service_started

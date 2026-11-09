@@ -19,11 +19,8 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    ports:
-      - "8096:8096"
-      - "8920:8920" #optional
-      - "7359:7359/udp" #optional
-      - "1900:1900/udp" #optional
+    # ports:
+    #   - "8096:8096" # Note that this clashes with Emby, so only add it for one!
     user: "${PUID:-1000}:${PGID:-1000}"
     environment:
       # Default
@@ -64,6 +61,7 @@ services:
       traefik.http.routers.jellyfin.middlewares: "${USE_CLOUDFLAREWARP:+cloudflarewarp,}${USE_CORS:+cors,}error-pages"
       traefik.http.services.jellyfin.loadbalancer.server.port: "8096"
     healthcheck:
+      retries: 25
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8096/health"
 

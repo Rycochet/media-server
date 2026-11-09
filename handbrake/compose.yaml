@@ -1,7 +1,7 @@
 services:
   handbrake:
     container_name: handbrake
-    image: ${HANDBRAKE_IMAGE:-docker.io/jlesage/handbrake}:${HANDBRAKE_IMAGE_TAG:-latest}
+    image: ${HANDBRAKE_IMAGE:-docker.io/jlesage/handbrake}:${HANDBRAKE_IMAGE_TAG:-latest} # Note that Handbrake ony currently supports Intel for GPU
     profiles: [ "${HANDBRAKE_PROFILE:-media}" ]
     extends:
       file: ../compose.extend.yaml
@@ -38,6 +38,6 @@ services:
       homepage.description: "Video Transcoder"
       traefik.enable: "true"
       traefik.http.routers.handbrake.rule: "Host(`${HANDBRAKE_SUBDOMAIN:-handbrake}.${DOMAIN}`)"
-      traefik.http.routers.handbrake.middlewares: "error-pages"
+      traefik.http.routers.handbrake.middlewares: "tinyauth,error-pages"
       traefik.http.services.handbrake.loadbalancer.server.port: "5800"
       traefik.http.services.handbrake.loadbalancer.server.scheme: "http"

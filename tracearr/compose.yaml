@@ -19,7 +19,10 @@ services:
     environment:
       TZ: "${TZ:-Europe/London}"
       CORS_ORIGIN: "https://${TRACEARR_SUBDOMAIN:-tracearr}.${DOMAIN}"
-      FORCE_DB_REINIT: "true"
+      # Deletes the database if it looks broken instead of stopping so that a
+      # bad volume mount can be fixed. manage.enable.sh offers to set it for
+      # one start only, it must never be left on
+      FORCE_DB_REINIT: "${TRACEARR_FORCE_DB_REINIT:-false}"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config/postgres:/data/postgres"

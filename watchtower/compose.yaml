@@ -28,11 +28,10 @@ services:
       NO_PROXY: "socket-proxy.internal" # socket-proxy identifies clients by IP, so must be reached directly
       WATCHTOWER_CLEANUP: "true"
       WATCHTOWER_HTTP_API_METRICS: "true"
-      WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
+      WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_HTTP_API_TOKEN:?Set WATCHTOWER_HTTP_API_TOKEN to a long random string}"
       WATCHTOWER_INCLUDE_STOPPED: "true"
       WATCHTOWER_LABEL_TAKE_PRECEDENCE: "true"
       WATCHTOWER_POLL_INTERVAL: "3600"
-      WATCHTOWER_REMOVE_VOLUMES: "true"
       WATCHTOWER_TIMEOUT: "${WATCHTOWER_TIMEOUT:-30s}"
       WATCHTOWER_USE_COMPOSE_DEPENDS_ON: "false"
     # volumes:
@@ -45,7 +44,7 @@ services:
       homepage.description: "Docker image updates"
       homepage.widget.type: "watchtower"
       homepage.widget.url: "http://watchtower.internal:8080"
-      homepage.widget.key: "${WATCHTOWER_HTTP_API_TOKEN:-RaNdOm_StRiNg}"
+      homepage.widget.key: "${WATCHTOWER_HTTP_API_TOKEN:?Set WATCHTOWER_HTTP_API_TOKEN to a long random string}"
       socket-proxy.allow.delete: '(/v1\.[0-9]+)?/(containers|images)/.+'
       socket-proxy.allow.get: '(/v1\.[0-9]+)?/(_ping|version|info|containers/.+|images/.+)'
       socket-proxy.allow.head: '/_ping'

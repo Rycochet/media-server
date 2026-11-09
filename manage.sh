@@ -348,6 +348,69 @@ awk_set_include() {
     ' "$1"
 }
 
+# Print the services that a compose file creates, rather than adds settings to
+print_compose_services() {
+    awk '
+    { sub(/\r$/, "") }
+    /^[^ \t#]/ { svc = ($0 ~ /^services:/); name = ""; next }
+    svc && /^  [A-Za-z0-9._-]+:[ \t]*$/ { name = $0; sub(/^  /, "", name); sub(/:.*$/, "", name); next }
+    svc && name != "" && /^    (image|build|container_name):/ { print name; name = "" }
+    ' "$1" 2>/dev/null
+}
+
+# Show, turn on or turn off a service's own settings in the override file - the
+# lines under "  name:" (or "  # name:") in the top level services block
+awk_override_block() {
+    awk -v BINMODE=3 -v name="$2" -v mode="$3" '
+    function out(s) { if (mode != "show") print s eol }
+    { eol = sub(/\r$/, "") ? "\r" : "" }
+    /^[^ \t#]/ { svc = ($0 ~ /^services:/); state = "" }
+    # The lines in a block are indented further than its name, commented or not
+    state == "off" && /^  #  / {
+        if (mode == "show") print
+        else out(mode == "on" ? "  " substr($0, 5) : $0)
+        next
+    }
+    state == "on" && /^   / {
+        if (mode == "show") print
+        else out(mode == "off" ? "  # " substr($0, 3) : $0)
+        next
+    }
+    { state = "" }
+    svc && $0 ~ ("^  (# )?" name ":[ \t]*$") {
+        state = ($0 ~ /^  #/) ? "off" : "on"
+        if (mode == "show") { print; next }
+        if (mode == "on" && state == "off") { out("  " name ":"); next }
+        if (mode == "off" && state == "on") { out("  # " name ":"); next }
+    }
+    { out($0) }
+    ' "$1"
+}
+
+# Services can have their own settings in the override file, like extra
+# volumes, that go with turning them on and off. They are shown and asked about
+# first, as some are left commented out on purpose
+sync_override_blocks() {
+    local name block
+    while read -r name <&3; do
+        block=$(awk_override_block "$OVERRIDE" "$name" show)
+        [ -n "$block" ] || continue
+        if [ "$2" = on ] && [[ "$block" == "  #"* ]]; then
+            printf "%s has settings for %s that are commented out:\n%s\n" "$OVERRIDE" "$name" "$block"
+            if ask "Turn them on too?" n; then
+                rewrite "$OVERRIDE" awk_override_block "$OVERRIDE" "$name" on
+                echo "Turned on the $name settings in $OVERRIDE"
+            fi
+        elif [ "$2" = off ] && [[ "$block" != "  #"* ]]; then
+            printf "%s has settings for %s:\n%s\n" "$OVERRIDE" "$name" "$block"
+            if ask "Comment them out too? Left on, they stop docker compose working while $name is off."; then
+                rewrite "$OVERRIDE" awk_override_block "$OVERRIDE" "$name" off
+                echo "Commented out the $name settings in $OVERRIDE"
+            fi
+        fi
+    done 3< <(print_compose_services "$1")
+}
+
 # "emby/compose.yaml" is called "emby", and "emby/compose.gatus.yaml" is "emby+gatus"
 item_name() {
     local dir=${1%%/*} file=${1#*/}
@@ -845,6 +908,8 @@ save_items() {
         if [ -n "${PENDING[$path]:-}" ]; then
             rewrite "$OVERRIDE" awk_set_include "$OVERRIDE" "$path" on
             echo "Turned on ${ITEM_NAME[$path]}"
+            # Before the enable script, which may start the service
+            sync_override_blocks "$path" on
             copy_templates "$dir"
             if [ "$path" = "$dir/compose.yaml" ]; then
                 fill_placeholders "$dir"
@@ -853,6 +918,7 @@ save_items() {
         else
             rewrite "$OVERRIDE" awk_set_include "$OVERRIDE" "$path" off
             echo "Turned off ${ITEM_NAME[$path]}"
+            sync_override_blocks "$path" off
             if [ "$path" = "$dir/compose.yaml" ]; then
                 run_script "$dir" disable || warn "$dir/manage.disable.sh did not finish correctly."
             fi

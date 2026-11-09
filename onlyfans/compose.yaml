@@ -27,14 +27,14 @@ services:
     volumes:
       - "./config:/config"
       - "./data:/data"
-      - "./logs:/config/logging"
+      - "./logs:/config/.config/ofscraper/logging"
       # - "/usr/bin/ffmpeg:/usr/bin/ffmpeg:ro" # standalone build
       # - "/usr/local/bin/mp4decrypt:/usr/local/bin/mp4decrypt:ro"
       - "$PATH_ONLYFANS:/data/OnlyFans"
     command:
       - ofscraper
-      # - "--daemon"
-      # - "10800" # 3600 = hour, 10800 = 3 hours
+      - "--daemon"
+      - "10800" # 3600 = hour, 10800 = 3 hours
       - "--posts"
       - "all"
       - "--action"

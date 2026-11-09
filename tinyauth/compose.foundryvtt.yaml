@@ -12,5 +12,5 @@ services:
       ROLE_ADMIN: "${FOUNDRYVTT_ROLE_ADMIN:-foundry_dm}"
       ROLE_PLAYER: "${FOUNDRYVTT_ROLE_PLAYER:-foundry_player}"
     labels:
-      tinyauth.apps.foundryvtt.oauth.groups: "${FOUNDRYVTT_ROLE_ADMIN:-dm},${FOUNDRYVTT_ROLE_PLAYER:-player}"
+      tinyauth.apps.foundryvtt.oauth.groups: "${FOUNDRYVTT_ROLE_ADMIN:-foundry_dm},${FOUNDRYVTT_ROLE_PLAYER:-foundry_player}"
       traefik.http.routers.foundryvtt.middlewares: "tinyauth,error-pages"

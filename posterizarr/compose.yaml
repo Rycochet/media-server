@@ -16,7 +16,7 @@ services:
       options:
         max-size: "1m"
         max-file: "3"
-    user: "${PGID:-1000}:${PUID:-1000}"
+    user: "${PUID:-1000}:${PGID:-1000}"
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"

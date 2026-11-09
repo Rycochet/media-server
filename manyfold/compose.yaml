@@ -22,7 +22,7 @@ services:
       PGID: "${PGID:-1000}"
       UMASK: "000"
       # Manyfold
-      SECRET_KEY_BASE: "${DOMAIN}"
+      SECRET_KEY_BASE: "${MANYFOLD_SECRET_KEY_BASE:?Set MANYFOLD_SECRET_KEY_BASE to a long random string}"
       PUBLIC_HOSTNAME: "${MANYFOLD_SUBDOMAIN:-manyfold}.${DOMAIN}"
       PUBLIC_PORT: "443"
     volumes:

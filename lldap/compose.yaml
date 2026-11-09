@@ -19,9 +19,12 @@ services:
       GID: "${PGID:-1000}"
       TZ: "${TZ:-Europe/London}"
       # Image
-      LLDAP_JWT_SECRET: "${LLDAP_JWT_SECRET:-mySuper$$ecureJWT${DOMAIN}!}"
-      LLDAP_KEY_SEED: "${LLDAP_KEY_SECRET:-mySuper$$ecureKeySeed${DOMAIN}!}"
+      LLDAP_JWT_SECRET: "${LLDAP_JWT_SECRET:?Set LLDAP_JWT_SECRET to a long random string}"
+      LLDAP_KEY_SEED: "${LLDAP_KEY_SEED:?Set LLDAP_KEY_SEED to a long random string}"
       LLDAP_KEY_FILE: ""
+      # Break glass: resets the admin password to LLDAP_LDAP_ADMIN_PASS when it
+      # starts. Turn it on for one start only, then remove it again
+      # LLDAP_FORCE_LDAP_USER_PASS_RESET: "true"
       LLDAP_LDAP_BASE_DN: "dc=${DOMAIN}"
       LLDAP_LDAP_USER_PASS_FILE: "/run/secrets/lldap_ldap_user_pass"
       LLDAP_LDAP_USER_EMAIL: "${EMAIL}"

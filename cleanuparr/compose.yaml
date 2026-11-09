@@ -33,10 +33,10 @@ services:
       homepage.group: "Download"
       homepage.name: "Cleanuparr"
       homepage.icon: "cleanuperr.png"
-      homepage.href: "https://${CLEANUPARR_SUBDOMAIN:-cleanuperr}.${DOMAIN}/"
+      homepage.href: "https://${CLEANUPARR_SUBDOMAIN:-cleanuparr}.${DOMAIN}/"
       homepage.description: "Bad download handling"
       traefik.enable: "true"
-      traefik.http.routers.cleanuparr.rule: "Host(`${CLEANUPARR_SUBDOMAIN:-cleanuperr}.${DOMAIN}`)"
+      traefik.http.routers.cleanuparr.rule: "Host(`${CLEANUPARR_SUBDOMAIN:-cleanuparr}.${DOMAIN}`)"
       traefik.http.routers.cleanuparr.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.cleanuparr.loadbalancer.server.port: "11011"
     healthcheck:

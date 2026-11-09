@@ -28,7 +28,7 @@ services:
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"
-      - "./backup:/config/log/backup"
+      - "./backup:/config/backup"
       - "./logs:/config/log"
       - "$PATH_MOVIES:/data/movies"
       - "$PATH_TV:/data/tv"

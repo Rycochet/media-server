@@ -8,8 +8,13 @@ services:
       service: "vpn-${USE_VPN:-false}"
     restart: unless-stopped
     networks:
-      - external
       - internal
+    # With USE_VPN=true there's no direct internet, so set qBittorrent's proxy
+    # to SOCKS5 "vpn" port 1080 and use it for peer connections. Most VPN
+    # providers don't allow incoming connections, so this listening port only
+    # works if the "external" network is added back in compose.override.yaml -
+    # outgoing connections still use the VPN, but incoming peers see your IP.
+    # - external
     ports:
       - "51414:51414"
     depends_on:

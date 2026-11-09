@@ -10,6 +10,8 @@ services:
     ports:
       - "3688:3688"
       - "3689:3689"
+      # mDNS - nothing else on the host can use this port, which is usually
+      # avahi-daemon (manage.sh offers to stop it when OwnTone is turned on)
       - "5353:5353/udp"
       - "6600:6600"
     depends_on:
@@ -24,8 +26,8 @@ services:
     environment:
       # Default
       TZ: "${TZ:-Europe/London}"
-      PUID: "${PUID:-1000}"
-      PGID: "${PGID:-1000}"
+      UID: "${PUID:-1000}"
+      GID: "${PGID:-1000}"
       UMASK: "000"
     volumes:
       - "/etc/localtime:/etc/localtime:ro"

@@ -49,7 +49,7 @@ services:
       com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "true"
       homepage.group: "Tools"
-      homepage.name: "Windoes"
+      homepage.name: "Windows"
       homepage.icon: "windows.png"
       homepage.href: "https://${WINDOWS_SUBDOMAIN:-windows}.${DOMAIN}/"
       homepage.description: "Windows 11 Desktop"

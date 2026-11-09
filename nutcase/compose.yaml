@@ -7,6 +7,9 @@ services:
     networks:
       - internal
       - external # needed to access UPS addresses
+    extra_hosts:
+      # For the default NUTCASE_UPS, a NUT server on the docker host
+      - "host.docker.internal:host-gateway"
     depends_on:
       traefik:
         condition: service_started

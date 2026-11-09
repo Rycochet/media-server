@@ -23,7 +23,7 @@ services:
       PGID: "${PGID:-1000}"
       UMASK: "000"
       # Image
-      APP_KEY: "base64:NIFEjC5wGMV1jJWTdN31PXqUWL2AT8PZXBOeVaCqcP4=" # really don't care about encryption
+      APP_KEY: "${SPEEDTEST_TRACKER_APP_KEY:?Set SPEEDTEST_TRACKER_APP_KEY, manage.sh makes one when speedtest-tracker is turned on}"
       DB_CONNECTION: "sqlite"
       ADMIN_NAME: "admin"
       ADMIN_EMAIL: "${EMAIL}"

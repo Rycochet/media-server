@@ -12,6 +12,8 @@
 /overlay-tools-*.sh
 # Developing containers locally
 /*/src
+# Local services that aren't part of the repository
+/x-*
 
 # Docker data folders that want to exist with the correct permissions
 /*/*/**

@@ -60,4 +60,5 @@ services:
 
 secrets:
   speedtest_tracker_api:
+    name: speedtest_tracker_api
     environment: "SPEEDTEST_TRACKER_API"

@@ -59,4 +59,5 @@ services:
 
 secrets:
   tautulli_api:
+    name: tautulli_api
     environment: "TAUTULLI_API"

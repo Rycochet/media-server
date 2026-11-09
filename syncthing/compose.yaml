@@ -72,4 +72,5 @@ services:
 
 secrets:
   syncthing_api:
+    name: syncthing_api
     environment: "SYNCTHING_API"

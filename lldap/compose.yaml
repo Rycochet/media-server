@@ -47,4 +47,5 @@ services:
 
 secrets:
   lldap_ldap_user_pass:
+    name: lldap_ldap_user_pass
     environment: "LLDAP_LDAP_ADMIN_PASS"

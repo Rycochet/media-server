@@ -50,4 +50,5 @@ services:
 
 secrets:
   tracearr_api:
+    name: tracearr_api
     environment: "TRACEARR_API"

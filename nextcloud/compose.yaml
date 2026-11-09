@@ -152,10 +152,14 @@ services:
 
 secrets:
   nextcloud_admin_password:
+    name: nextcloud_admin_password
     environment: "NEXTCLOUD_ADMIN_PASSWORD"
   nextcloud_api:
+    name: nextcloud_api
     environment: "NEXTCLOUD_API"
   nextcloud_postgres_password:
+    name: nextcloud_postgres_password
     environment: "POSTGRES_PASSWORD"
   nextcloud_redis_password:
+    name: nextcloud_redis_password
     environment: "NEXTCLOUD_REDIS_PASSWORD"

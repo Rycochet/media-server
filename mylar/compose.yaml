@@ -55,4 +55,5 @@ services:
 
 secrets:
   mylar_api:
+    name: mylar_api
     environment: "MYLAR_API"

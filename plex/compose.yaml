@@ -75,4 +75,5 @@ services:
 
 secrets:
   plex_token:
+    name: plex_token
     environment: "PLEX_TOKEN"

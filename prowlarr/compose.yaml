@@ -56,4 +56,5 @@ services:
 
 secrets:
   prowlarr_api:
+    name: prowlarr_api
     environment: "PROWLARR_API"

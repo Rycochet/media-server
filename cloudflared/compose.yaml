@@ -47,10 +47,14 @@ services:
 
 secrets:
   cloudflared_api:
+    name: cloudflared_api
     environment: "CLOUDFLARED_API"
   cloudflared_account_id:
+    name: cloudflared_account_id
     environment: "CLOUDFLARED_ACCOUNT_ID"
   cloudflared_tunnel_id:
+    name: cloudflared_tunnel_id
     environment: "CLOUDFLARED_TUNNEL_ID"
   cloudflared_token:
+    name: cloudflared_token
     environment: "CLOUDFLARED_TOKEN"

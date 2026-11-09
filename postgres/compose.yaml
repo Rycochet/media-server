@@ -35,4 +35,5 @@ services:
 
 secrets:
   postgres_password:
+    name: postgres_password
     environment: "POSTGRES_PASSWORD"

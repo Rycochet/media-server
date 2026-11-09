@@ -58,4 +58,5 @@ services:
 
 secrets:
   sonarr_api:
+    name: sonarr_api
     environment: "SONARR_API"

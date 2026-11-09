@@ -107,4 +107,5 @@ services:
 
 secrets:
   cloudflare_dns_api:
+    name: cloudflare_dns_api
     environment: "CLOUDFLARE_DNS_API"

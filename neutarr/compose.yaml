@@ -62,4 +62,5 @@ services:
 
 secrets:
   neutarr_api:
+    name: neutarr_api
     environment: "NEUTARR_API"

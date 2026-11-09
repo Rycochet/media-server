@@ -8,4 +8,5 @@ services:
 
 secrets:
   tinyauth_github_client_secret:
+    name: tinyauth_github_client_secret
     environment: "TINYAUTH_GITHUB_CLIENT_SECRET"

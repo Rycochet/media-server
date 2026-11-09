@@ -57,4 +57,5 @@ services:
 
 secrets:
   audiobookshelf_api:
+    name: audiobookshelf_api
     environment: "AUDIOBOOKSHELF_API"

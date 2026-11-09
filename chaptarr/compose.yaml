@@ -58,4 +58,5 @@ services:
 
 secrets:
   chaptarr_api:
+    name: chaptarr_api
     environment: "CHAPTARR_API"

@@ -60,8 +60,11 @@ services:
 
 secrets:
   foundryvtt_admin_key:
+    name: foundryvtt_admin_key
     environment: "FOUNDRYVTT_ADMIN_KEY"
   foundryvtt_username:
+    name: foundryvtt_username
     environment: "FOUNDRYVTT_USERNAME"
   foundryvtt_password:
+    name: foundryvtt_password
     environment: "FOUNDRYVTT_PASSWORD"

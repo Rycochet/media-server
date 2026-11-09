@@ -61,8 +61,11 @@ services:
 
 secrets:
   pocketid_encryption:
+    name: pocketid_encryption
     environment: "POCKETID_ENCRYPTION_KEY"
   pocketid_maxmind:
+    name: pocketid_maxmind
     environment: "POCKETID_MAXMIND_KEY"
   pocketid_tinyauth_clientsecret:
+    name: pocketid_tinyauth_clientsecret
     environment: "POCKETID_TINYAUTH_CLIENTSECRET"

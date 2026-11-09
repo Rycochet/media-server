@@ -58,4 +58,5 @@ services:
 
 secrets:
   lidarr_api:
+    name: lidarr_api
     environment: "LIDARR_API"

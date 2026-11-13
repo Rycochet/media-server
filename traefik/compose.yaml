@@ -83,6 +83,7 @@ services:
     volumes:
       - "./config:/etc/traefik"
     labels:
+      com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "true"
       homepage.group: "Information"
       homepage.name: "Traefik"

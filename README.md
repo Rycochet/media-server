@@ -60,6 +60,8 @@ Duplicate the `.env.example` file as `.env`, all configuration needs to go in he
 
 Create an empty `compose.override.yaml` file, and copy the commented block of `include:` services into it, then to enable a service you can simply uncomment that line. For some services have a look for included template files that want copying into theit `config/` folders and renaming.
 
+If you start things with `docker compose up -d` yourself, run `./manage.sh secrets` first, and again after changing a secret in `.env`. Anything that is a password, key or token is passed to its container as a file rather than an environment variable, and these `.secret.<NAME>.txt` files (named after the `.env` value) are written into this folder from `.env` - `./manage.sh start` and `./update.sh` do this for you. They are files rather than Compose reading `.env` directly, as Compose copies those into a container when it is created, so anything that recreates a container (like Watchtower when updating) would lose them.
+
 ### Service scripts
 
 When a service is turned on with `manage.sh`, any `*.template` files in its folder are copied into place if they don't exist, with `__` meaning a folder - so `config__folder__my_file.ext.template` becomes `config/folder/my_file.ext`. Values in `.env.example` of `"<random>"` are filled with a random value, and `"<insert ...>"` are asked for.

@@ -59,4 +59,4 @@ services:
 secrets:
   bazarr_api:
     name: bazarr_api
-    environment: "BAZARR_API"
+    file: "../.secret.BAZARR_API.txt"

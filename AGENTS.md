@@ -21,6 +21,8 @@ Changes for this install only go here, as they are ignored by `.gitignore`:
   normally changed with `./manage.sh`), and settings for this install under
   `services:`.
 - `.env` - the settings and secrets for this install. Never print its values.
+- `.secret.*.txt` - the secrets from `.env`, written by `./manage.sh secrets` for
+  the compose files to mount. Never print their contents.
 - Subfolders of a service folder (`<folder>/*/*`), like `config/` or `data/`.
 
 Before relying on a path being ignored, check it with

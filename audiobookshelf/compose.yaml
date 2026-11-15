@@ -58,4 +58,4 @@ services:
 secrets:
   audiobookshelf_api:
     name: audiobookshelf_api
-    environment: "AUDIOBOOKSHELF_API"
+    file: "../.secret.AUDIOBOOKSHELF_API.txt"

@@ -57,4 +57,4 @@ services:
 secrets:
   seerr_api:
     name: seerr_api
-    environment: "SEERR_API"
+    file: "../.secret.SEERR_API.txt"

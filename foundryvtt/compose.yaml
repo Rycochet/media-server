@@ -45,7 +45,6 @@ services:
       FOUNDRY_USERNAME_FILE: "/run/secrets/foundryvtt_username"
       FOUNDRY_PASSWORD_FILE: "/run/secrets/foundryvtt_password"
     labels:
-      com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "true"
       homepage.group: "Games"
       homepage.name: "FoundryVTT"
@@ -62,10 +61,10 @@ services:
 secrets:
   foundryvtt_admin_key:
     name: foundryvtt_admin_key
-    environment: "FOUNDRYVTT_ADMIN_KEY"
+    file: "../.secret.FOUNDRYVTT_ADMIN_KEY.txt"
   foundryvtt_username:
     name: foundryvtt_username
-    environment: "FOUNDRYVTT_USERNAME"
+    file: "../.secret.FOUNDRYVTT_USERNAME.txt"
   foundryvtt_password:
     name: foundryvtt_password
-    environment: "FOUNDRYVTT_PASSWORD"
+    file: "../.secret.FOUNDRYVTT_PASSWORD.txt"

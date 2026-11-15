@@ -36,4 +36,4 @@ services:
 secrets:
   postgres_password:
     name: postgres_password
-    environment: "POSTGRES_PASSWORD"
+    file: "../.secret.POSTGRES_PASSWORD.txt"

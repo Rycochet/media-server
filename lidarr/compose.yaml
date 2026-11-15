@@ -59,4 +59,4 @@ services:
 secrets:
   lidarr_api:
     name: lidarr_api
-    environment: "LIDARR_API"
+    file: "../.secret.LIDARR_API.txt"

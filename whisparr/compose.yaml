@@ -58,4 +58,4 @@ services:
 secrets:
   whisparr_api:
     name: whisparr_api
-    environment: "WHISPARR_API"
+    file: "../.secret.WHISPARR_API.txt"

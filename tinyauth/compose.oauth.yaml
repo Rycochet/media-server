@@ -16,4 +16,4 @@ services:
 secrets:
   tinyauth_oauth_client_secret:
     name: tinyauth_oauth_client_secret
-    environment: "TINYAUTH_OAUTH_CLIENT_SECRET"
+    file: "../.secret.TINYAUTH_OAUTH_CLIENT_SECRET.txt"

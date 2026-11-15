@@ -76,4 +76,4 @@ services:
 secrets:
   plex_token:
     name: plex_token
-    environment: "PLEX_TOKEN"
+    file: "../.secret.PLEX_TOKEN.txt"

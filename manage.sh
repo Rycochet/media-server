@@ -61,6 +61,7 @@ Usage: $(basename "$0") [-y] [command]
   tools [service]       List the extra scripts for services
   run <service> <tool>  Run one of those scripts
   start                 Start everything that is turned on
+  secrets               Write the secret files, after changing them in .env
   update [options]      Get the latest version (see update.sh -h)
 
   -y    Don't ask, use the default answers
@@ -879,8 +880,52 @@ all_tools() {
     done
 }
 
+# Print the secrets used by the compose files that are turned on. A secret's
+# file is named after the .env value it holds, like "../.secret.PLEX_TOKEN.txt"
+secret_names() {
+    local file
+    {
+        echo compose.yaml
+        active_includes compose.yaml
+        [ ! -f "$OVERRIDE" ] || echo "$OVERRIDE"
+        [ ! -f "$OVERRIDE" ] || active_includes "$OVERRIDE"
+    } | sort -u | while read -r file; do
+        [ ! -f "$file" ] || sed -nE 's/^[ \t]+file:[ \t]*["\047]?(\.\.?\/)+\.secret\.([A-Za-z_][A-Za-z0-9_]*)\.txt["\047]?[ \t\r]*$/\2/p' "$file"
+    done | sort -u
+}
+
+# Write the secret files from the .env values. Compose can read secrets from
+# the environment itself, but copies them into the container when creating it,
+# so anything that recreates a container (like Watchtower) loses them. Files
+# are mounted instead, and survive that.
+write_secrets() {
+    local -a names
+    local env name value file
+    mapfile -t names < <(secret_names)
+    [ "${#names[@]}" -gt 0 ] || return 0
+    # Compose reads the .env file itself, so the values are exactly what it would use
+    env=$(docker compose config --environment) || {
+        warn "Could not read the settings for the secrets from docker compose."
+        return 1
+    }
+    for name in "${names[@]}"; do
+        file=".secret.$name.txt"
+        value=$(awk -v key="$name" 'index($0, key "=") == 1 { print substr($0, length(key) + 2); found = 1; exit } END { exit !found }' <<<"$env") ||
+            warn "$name isn't set in $ENV_FILE, so its secret is empty."
+        printf '%s' "$value" | cmp -s - "$file" 2>/dev/null && continue
+        # Written in place rather than replaced, so running containers see the change
+        [ -e "$file" ] || (umask 077 && : >"$file") || die "Could not create $file."
+        printf '%s' "$value" >"$file" || die "Could not write $file."
+        # Containers can run as any user, so they all need to be able to read it
+        chmod 644 "$file"
+        echo "Wrote $file"
+    done
+}
+
+# Writes the secret files first, as compose needs them
 check_compose() {
     docker_ready || return 0
+    write_secrets || return 1
     docker compose config --quiet >/dev/null 2>&1 && return 0
     warn "The docker compose settings have a problem:"
     docker compose config --quiet
@@ -1179,6 +1224,10 @@ main() {
     tools) list_tools "$@" ;;
     run) run_tool "$@" ;;
     start) start ;;
+    secrets)
+        check_docker
+        write_secrets
+        ;;
     update) update "$@" ;;
     help) usage ;;
     *)

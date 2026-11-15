@@ -59,4 +59,4 @@ services:
 secrets:
   radarr_api:
     name: radarr_api
-    environment: "RADARR_API"
+    file: "../.secret.RADARR_API.txt"

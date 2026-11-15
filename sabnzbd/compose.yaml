@@ -58,4 +58,4 @@ services:
 secrets:
   sabnzbd_api:
     name: sabnzbd_api
-    environment: "SABNZBD_API"
+    file: "../.secret.SABNZBD_API.txt"

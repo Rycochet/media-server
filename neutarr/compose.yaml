@@ -63,4 +63,4 @@ services:
 secrets:
   neutarr_api:
     name: neutarr_api
-    environment: "NEUTARR_API"
+    file: "../.secret.NEUTARR_API.txt"

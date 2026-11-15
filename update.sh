@@ -500,6 +500,8 @@ main() {
     merge_file compose.override.yaml compose.override.yaml.template awk_merge_compose
     [ ! -f compose.override.yaml ] || handle_removed_services compose.override.yaml
 
+    # The new version of manage.sh, as the secrets it needs may have changed
+    bash manage.sh secrets || exit 1
     check_compose || exit 1
     [ "$STASH_FAILED" -eq 0 ] || exit 1
 

@@ -19,7 +19,6 @@ services:
       TUNNEL_TOKEN_FILE: "/run/secrets/cloudflared_token"
       TUNNEL_LOGLEVEL: "info"
     labels:
-      com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "true"
       homepage.group: "Information"
       homepage.name: "Cloudflared"
@@ -48,13 +47,13 @@ services:
 secrets:
   cloudflared_api:
     name: cloudflared_api
-    environment: "CLOUDFLARED_API"
+    file: "../.secret.CLOUDFLARED_API.txt"
   cloudflared_account_id:
     name: cloudflared_account_id
-    environment: "CLOUDFLARED_ACCOUNT_ID"
+    file: "../.secret.CLOUDFLARED_ACCOUNT_ID.txt"
   cloudflared_tunnel_id:
     name: cloudflared_tunnel_id
-    environment: "CLOUDFLARED_TUNNEL_ID"
+    file: "../.secret.CLOUDFLARED_TUNNEL_ID.txt"
   cloudflared_token:
     name: cloudflared_token
-    environment: "CLOUDFLARED_TOKEN"
+    file: "../.secret.CLOUDFLARED_TOKEN.txt"

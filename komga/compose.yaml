@@ -57,4 +57,4 @@ services:
 secrets:
   komga_api:
     name: komga_api
-    environment: "KOMGA_API"
+    file: "../.secret.KOMGA_API.txt"

@@ -57,4 +57,4 @@ services:
 secrets:
   portainer_api:
     name: portainer_api
-    environment: "PORTAINER_API"
+    file: "../.secret.PORTAINER_API.txt"

@@ -56,4 +56,4 @@ services:
 secrets:
   mylar_api:
     name: mylar_api
-    environment: "MYLAR_API"
+    file: "../.secret.MYLAR_API.txt"

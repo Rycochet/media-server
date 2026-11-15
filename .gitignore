@@ -3,6 +3,8 @@
 /.env.keep-alive
 /compose.override.yaml
 /*.bak
+# Secret files written from .env by manage.sh
+/.secret.*
 
 # In case someone installs on a dedicaed partition
 /aquota.user

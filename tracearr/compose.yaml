@@ -54,4 +54,4 @@ services:
 secrets:
   tracearr_api:
     name: tracearr_api
-    environment: "TRACEARR_API"
+    file: "../.secret.TRACEARR_API.txt"

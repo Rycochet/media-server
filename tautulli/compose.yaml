@@ -60,4 +60,4 @@ services:
 secrets:
   tautulli_api:
     name: tautulli_api
-    environment: "TAUTULLI_API"
+    file: "../.secret.TAUTULLI_API.txt"

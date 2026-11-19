@@ -1,0 +1,13 @@
+# adguardhome config for the private Gatus
+
+endpoints:
+  - name: adguardhome
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/adguardhome/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

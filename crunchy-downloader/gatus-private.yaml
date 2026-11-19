@@ -1,0 +1,13 @@
+# crunchy-downloader config for the private Gatus
+
+endpoints:
+  - name: crunchy-downloader
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/crunchy-downloader/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

@@ -1,0 +1,13 @@
+# pocket-id config for the private Gatus
+
+endpoints:
+  - name: pocket-id
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/pocket-id/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

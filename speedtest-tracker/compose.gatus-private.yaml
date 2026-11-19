@@ -1,0 +1,6 @@
+# Reports speedtest-tracker's healthcheck to the private Gatus
+
+services:
+  gatus-private:
+    volumes:
+      - "./gatus-private.yaml:/config/gatus.speedtest-tracker.yaml:ro"

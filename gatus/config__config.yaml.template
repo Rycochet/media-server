@@ -1,0 +1,24 @@
+# connectivity:
+#   checker:
+#     target: 1.1.1.1:53
+#     interval: 60s
+
+storage:
+  type: sqlite
+  path: /data/data.db
+  caching: true
+  maximum-number-of-results: 300
+  maximum-number-of-events: 120
+
+ui:
+  title: "Status @ ${DOMAIN}"
+  description: "Status page for services hosted on ${DOMAIN}"
+  dashboard-heading: "Current Status: ${DOMAIN}"
+  dashboard-subheading: "Uptime over the past 30 days"
+  header: "${GATUS_SUBDOMAIN}.${DOMAIN}"
+  custom-css: ".mb-6{display:none;}"
+  default-sort-by: "group"
+# ui:
+#   buttons:
+#     - name: Plex
+#       link: https://plex.${DOMAIN}/web/index.html#!/

@@ -1,0 +1,34 @@
+# Private Gatus, only reachable through tinyauth. Other services add their own
+# "gatus.<name>.yaml" files to this folder with their compose.gatus-private.yaml
+#
+# Services inside the stack report to it directly on
+# http://gatus-private.internal:8080, which doesn't go through tinyauth.
+
+storage:
+  type: sqlite
+  path: /data/data.db
+  caching: true
+  maximum-number-of-results: 300
+
+ui:
+  title: "Private status @ ${DOMAIN}"
+  description: "Private status page for ${DOMAIN}"
+  dashboard-heading: "Private status: ${DOMAIN}"
+  dashboard-subheading: "Uptime over the past 30 days"
+  header: "${GATUS_PRIVATE_SUBDOMAIN}.${DOMAIN}"
+  custom-css: ".mb-6{display:none;}"
+  default-sort-by: "group"
+
+# Gatus won't start without at least one endpoint. The Gatus image has no shell
+# for a Docker healthcheck, so this checks its own health page instead.
+endpoints:
+  - name: gatus-private
+    group: Healthcheck
+    url: "http://localhost:8080/health"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].status == UP"
+    ui:
+      hide-hostname: true
+      hide-url: true

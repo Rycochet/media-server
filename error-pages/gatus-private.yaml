@@ -1,0 +1,13 @@
+# error-pages config for the private Gatus
+
+endpoints:
+  - name: error-pages
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/error-pages/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

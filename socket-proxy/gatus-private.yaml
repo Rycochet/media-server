@@ -1,0 +1,13 @@
+# socket-proxy config for the private Gatus
+
+endpoints:
+  - name: socket-proxy
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/socket-proxy/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

@@ -1,0 +1,13 @@
+# open-webui config for the private Gatus
+
+endpoints:
+  - name: open-webui
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/open-webui/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

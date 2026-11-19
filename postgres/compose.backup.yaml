@@ -1,0 +1,63 @@
+# Tested backups of everything in Postgres - see backup.sh for what is saved
+# and how it is tested, and manage.backup.sh to back up, test or restore by hand.
+
+services:
+  postgres-backup:
+    container_name: postgres-backup
+    # The same image as postgres, so pg_dump always matches the server
+    image: ${POSTGRES_IMAGE:-docker.io/postgres}:${POSTGRES_IMAGE_TAG:-18-alpine}
+    profiles: [ "${POSTGRES_PROFILE:-tools}" ]
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    user: "${PUID:-1000}:${PGID:-1000}"
+    entrypoint: [ "/bin/bash", "/usr/local/bin/postgres-backup" ]
+    command: [ "schedule" ]
+    secrets:
+      - postgres_password
+      - postgres_backup_gatus_token
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      PGHOST: "postgres.internal"
+      PGUSER: "postgres"
+      BACKUP_SCHEDULE: "${POSTGRES_BACKUP_SCHEDULE:-0 4 * * *}"
+      BACKUP_KEEP_DAILY: "${POSTGRES_BACKUP_KEEP_DAILY:-7}"
+      BACKUP_KEEP_WEEKLY: "${POSTGRES_BACKUP_KEEP_WEEKLY:-4}"
+      BACKUP_KEEP_MONTHLY: "${POSTGRES_BACKUP_KEEP_MONTHLY:-6}"
+      BACKUP_MAX_AGE: "${POSTGRES_BACKUP_MAX_AGE:-26}"
+      BACKUP_GATUS_URL: "${POSTGRES_BACKUP_GATUS_URL:-http://gatus-private.internal:8080}"
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/passwd:/etc/passwd:ro"
+      - "./backup.sh:/usr/local/bin/postgres-backup:ro"
+      - "./data:/pgdata:ro"
+      - "${POSTGRES_BACKUP_PATH:-./backup}:/backup"
+    labels:
+      com.centurylinklabs.watchtower.monitor-only: "true"
+      homepage.group: "Tools"
+      homepage.name: "Postgres Backup"
+      homepage.icon: "postgres.png"
+      homepage.description: "Tested backups of Postgres"
+      traefik.enable: "false"
+    # Unhealthy when there hasn't been a tested backup for BACKUP_MAX_AGE hours.
+    # Not restarted by deunhealth, as that wouldn't fix it.
+    healthcheck:
+      test: [ "CMD", "/bin/bash", "/usr/local/bin/postgres-backup", "health" ]
+      interval: "1m"
+      start_period: "1h"
+
+secrets:
+  postgres_backup_gatus_token:
+    name: postgres_backup_gatus_token
+    file: "../.secret.POSTGRES_BACKUP_GATUS_TOKEN.txt"

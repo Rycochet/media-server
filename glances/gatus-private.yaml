@@ -1,0 +1,13 @@
+# glances config for the private Gatus
+
+endpoints:
+  - name: glances
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/glances/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

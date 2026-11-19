@@ -1,0 +1,24 @@
+# nextcloud config for the private Gatus
+
+endpoints:
+  - name: nextcloud
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/nextcloud/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true
+
+  - name: nextcloud-redis
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/nextcloud-redis/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

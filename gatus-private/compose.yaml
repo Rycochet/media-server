@@ -1,0 +1,51 @@
+services:
+  gatus-private:
+    container_name: gatus-private
+    image: ${GATUS_PRIVATE_IMAGE:-ghcr.io/twin/gatus}:${GATUS_PRIVATE_IMAGE_TAG:-stable}
+    profiles: [ "${GATUS_PRIVATE_PROFILE:-information}" ]
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      socket-proxy:
+        condition: service_healthy
+        restart: false
+      traefik:
+        condition: service_started
+        restart: false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "3"
+    environment:
+      # Default
+      TZ: "${TZ:-Europe/London}"
+      # Image
+      # For the healthcheck endpoints, like "${DOCKER_HOST}/containers/plex/json"
+      DOCKER_HOST: "http://socket-proxy.internal:2375/v1.55"
+      DOMAIN: "${DOMAIN}"
+      GATUS_PRIVATE_SUBDOMAIN: "${GATUS_PRIVATE_SUBDOMAIN:-status-private}"
+      GATUS_CONFIG_PATH: "/config"
+      GATUS_LOG_LEVEL: "WARN" # DEBUG, INFO, WARN, ERROR, or FATAL
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./config:/config"
+      - "./data:/data"
+    labels:
+      deunhealth.restart.on.unhealthy: "true"
+      homepage.group: "Information"
+      homepage.name: "Gatus (private)"
+      homepage.icon: "gatus.png"
+      homepage.href: "https://${GATUS_PRIVATE_SUBDOMAIN:-status-private}.${DOMAIN}"
+      homepage.description: "Private status monitoring"
+      homepage.widget.type: "gatus"
+      homepage.widget.url: "http://gatus-private.internal:8080"
+      homepage.widget.fields: "[\"up\", \"down\", \"uptime\"]"
+      socket-proxy.allow.get: '/v1\.[0-9]+/containers/[^/]+/json'
+      traefik.enable: "true"
+      traefik.http.routers.gatus-private.rule: "Host(`${GATUS_PRIVATE_SUBDOMAIN:-status-private}.${DOMAIN}`)"
+      traefik.http.routers.gatus-private.middlewares: "${USE_CLOUDFLAREWARP:+cloudflarewarp,}${USE_CORS:+cors,}tinyauth,error-pages"
+      traefik.http.services.gatus-private.loadbalancer.server.port: "8080"
+    healthcheck:
+      start_period: "30s"

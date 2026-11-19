@@ -1,0 +1,6 @@
+# Reports uptime-kuma's healthcheck to the private Gatus
+
+services:
+  gatus-private:
+    volumes:
+      - "./gatus-private.yaml:/config/gatus.uptime-kuma.yaml:ro"

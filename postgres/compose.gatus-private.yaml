@@ -1,0 +1,10 @@
+# Reports postgres's healthcheck and the backups to the private Gatus. The
+# backups need postgres/compose.backup.yaml, and show as down without it.
+
+services:
+  gatus-private:
+    environment:
+      POSTGRES_BACKUP_GATUS_TOKEN: "${POSTGRES_BACKUP_GATUS_TOKEN:?Set POSTGRES_BACKUP_GATUS_TOKEN in .env}"
+      POSTGRES_BACKUP_MAX_AGE: "${POSTGRES_BACKUP_MAX_AGE:-26}"
+    volumes:
+      - "./gatus-private.yaml:/config/gatus.postgres.yaml:ro"

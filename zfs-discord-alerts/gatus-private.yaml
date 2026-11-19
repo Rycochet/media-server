@@ -1,0 +1,13 @@
+# zfs-discord-alerts config for the private Gatus
+
+endpoints:
+  - name: zfs-discord-alerts
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/zfs-discord-alerts/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

@@ -1,0 +1,6 @@
+# Reports the healthchecks of nextcloud and nextcloud-redis to the private Gatus
+
+services:
+  gatus-private:
+    volumes:
+      - "./gatus-private.yaml:/config/gatus.nextcloud.yaml:ro"

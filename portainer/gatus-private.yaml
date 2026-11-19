@@ -1,0 +1,13 @@
+# portainer config for the private Gatus
+
+endpoints:
+  - name: portainer
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/portainer/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

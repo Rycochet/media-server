@@ -88,6 +88,27 @@ Choose which apps to move, or name them like `./manage.sh run postgres migrate s
 
 It's safe to run again, apps already on Postgres are skipped. Once one has moved it offers to set `USE_POSTGRES=true`, so the *arr apps wait for Postgres when starting.
 
+### Backing up Postgres
+
+Turn on `postgres/compose.backup.yaml` and the `postgres-backup` container backs up everything in Postgres every day at 04:00 to `postgres/backup` (change these with `POSTGRES_BACKUP_SCHEDULE` and `POSTGRES_BACKUP_PATH`). That's every user with their password, and every database with its owner, settings and permissions, so a restored Postgres works for the apps without changing anything.
+
+Each backup is one file, like `2026-11-19_040000.tar`. The databases inside are compressed with zstd, so the `.tar` itself isn't compressed again. `backups.log` lists every tested backup with its checksum, which is checked before a backup is tested or restored.
+
+Each backup is tested before it's kept: the `.tar` is unpacked and restored into a throwaway Postgres, and the users, databases and the row count of every table have to match. It keeps the newest backup of each of the last 7 days, 4 weeks and 6 months. When the container starts it also backs up, if there isn't a tested backup for that day yet. The container shows as unhealthy in Homepage when there hasn't been a tested backup for 26 hours, and with `gatus-private` turned on each backup is reported there too, under "Backup", so a failed or missing backup shows as down.
+
+```bash
+./manage.sh run postgres backup now            # Back up and test now
+./manage.sh run postgres backup list           # Show the backups
+./manage.sh run postgres backup test [set]     # Test a backup again
+./manage.sh run postgres backup restore [set]  # Replace Postgres with a backup
+```
+
+Restoring moves the current data to `postgres/data.before-<date>`, starts an empty Postgres, restores into it and checks it matches. If anything fails the old data is put back. Restart the apps that use Postgres afterwards.
+
+### Private status page
+
+`gatus-private` is a second Gatus behind tinyauth, for things that shouldn't be on the public status page. Every service with a Docker healthcheck has a `compose.gatus-private.yaml` that shows it under "Healthcheck", and backups show under "Backup". These go on and off by themselves with `./manage.sh`: turning on a service while `gatus-private` is on (or turning on `gatus-private`) turns on its `compose.gatus-private.yaml` too, and turning either off turns it off. Services inside the stack report to it on `http://gatus-private.internal:8080`, which doesn't go through tinyauth.
+
 When `nextcloud` is turned on it asks for the API key (NC-Token) that the homepage widget uses, or makes a random one, and saves it as `NEXTCLOUD_API`. Nextcloud has to be running to be given the key, so once it has finished its first start run this to set it there too (also to change the key later):
 
 ```bash
@@ -182,6 +203,7 @@ Where "SUBDOMAIN" is a tick it uses the same as the service name.
 | `flaresolverr`           | `network`     | Cloudflare captcha bypasss | `8191` | ❌ |
 | `foundryvtt`             | `games`       | Foundry Virtual Tabletop for RPGs | `30000` | `rpg` |
 | `gatus`                  | `information` | Status and uptime monitoring | `8080` | `status` |
+| `gatus-private`          | `information` | Private status monitoring, behind tinyauth | `8080` | `status-private` |
 | `glances`                | `information` | Operating system status | `61208` | ✔️ |
 | `handbrake`              | `media`       | Video Transcoder | `5800` | ✔️ |
 | `homepage`               | `information` | Dashboard | `3000` | (*root*) |

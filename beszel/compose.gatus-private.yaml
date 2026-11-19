@@ -1,0 +1,6 @@
+# Reports the healthchecks of beszel and beszel-agent to the private Gatus
+
+services:
+  gatus-private:
+    volumes:
+      - "./gatus-private.yaml:/config/gatus.beszel.yaml:ro"

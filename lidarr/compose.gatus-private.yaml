@@ -1,0 +1,6 @@
+# Reports lidarr's healthcheck to the private Gatus
+
+services:
+  gatus-private:
+    volumes:
+      - "./gatus-private.yaml:/config/gatus.lidarr.yaml:ro"

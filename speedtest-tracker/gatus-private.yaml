@@ -1,0 +1,13 @@
+# speedtest-tracker config for the private Gatus
+
+endpoints:
+  - name: speedtest-tracker
+    group: Healthcheck
+    url: "${DOCKER_HOST}/containers/speedtest-tracker/json"
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].State.Health.Status == healthy"
+    ui:
+      hide-hostname: true
+      hide-url: true

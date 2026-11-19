@@ -33,6 +33,9 @@ ENV_EXAMPLE=.env.example
 OVERRIDE=compose.override.yaml
 OVERRIDE_TEMPLATE=compose.override.yaml.template
 AUTO_YES=${AUTO_YES:-0}
+# Add-ons for these go on and off by themselves, whenever both services are on,
+# like "plex/compose.gatus-private.yaml" with plex and gatus-private
+FOLLOW_EXTRAS=(gatus-private)
 IN_MENU=0
 TMP_FILE=""
 SCREEN_ACTIVE=0
@@ -518,6 +521,40 @@ item_needs() {
     done < <(compose_depends "$path")
 }
 
+# Exit 0 if an item's add-ons for it go on and off with it, without asking -
+# like "plex+gatus-private", which is on whenever plex and gatus-private are
+follows() {
+    local name=${ITEM_NAME[$1]} extra
+    [[ "$name" == *+* ]] || return 1
+    extra=${name#*+}
+    for name in "${FOLLOW_EXTRAS[@]}"; do
+        [ "$extra" != "$name" ] || return 0
+    done
+    return 1
+}
+
+# Exit 0 if a service is going to be on, or is always on
+will_be_on() {
+    local path=${ITEM_PATH[$1]:-}
+    if [ -n "$path" ]; then
+        [ -n "${PENDING[$path]:-}" ]
+    else
+        core_services | grep -qxF "$1"
+    fi
+}
+
+# Turn on the add-ons that follow an item, once both of their services are on
+turn_on_followers() {
+    local name=${ITEM_NAME[$1]} path dir extra
+    for path in "${ITEMS[@]}"; do
+        [ -z "${PENDING[$path]:-}" ] && follows "$path" || continue
+        dir=${path%%/*}
+        extra=${ITEM_NAME[$path]#*+}
+        [ "$dir" = "$name" ] || [ "$extra" = "$name" ] || continue
+        will_be_on "$dir" && will_be_on "$extra" && PENDING[$path]=1
+    done
+}
+
 turn_on() {
     local need
     [ -z "${PENDING[$1]:-}" ] || return 0
@@ -528,6 +565,7 @@ turn_on() {
             turn_on "$need"
         fi
     done 3< <(item_needs "$1")
+    turn_on_followers "$1"
 }
 
 turn_off() {
@@ -536,7 +574,7 @@ turn_off() {
     unset "PENDING[$1]"
     for path in "${!PENDING[@]}"; do
         item_needs "$path" | grep -qxF "$1" || continue
-        if ask "${ITEM_NAME[$path]} needs ${ITEM_NAME[$1]}, turn that off too?"; then
+        if follows "$path" || ask "${ITEM_NAME[$path]} needs ${ITEM_NAME[$1]}, turn that off too?"; then
             turn_off "$path"
         fi
     done

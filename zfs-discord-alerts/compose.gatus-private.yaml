@@ -1,0 +1,6 @@
+# Reports zfs-discord-alerts's healthcheck to the private Gatus
+
+services:
+  gatus-private:
+    volumes:
+      - "./gatus-private.yaml:/config/gatus.zfs-discord-alerts.yaml:ro"

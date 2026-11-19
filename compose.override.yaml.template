@@ -9,91 +9,159 @@ include:
   #                                         | PROFILE     | DESCRIPTION |
   #                                         | ----------- | ----------- |
   # - adguardhome/compose.yaml #            | network     | Ads & trackers blocking DNS server |
+  # - adguardhome/compose.gatus-private.yaml
   # - audiobookshelf/compose.yaml #         | library     | Audiobooks library |
+  # - audiobookshelf/compose.gatus-private.yaml
   # - bazarr/compose.yaml #                 | media       | Subtitles |
+  # - bazarr/compose.gatus-private.yaml
   # - beszel/compose.yaml #                 | information | System information |
+  # - beszel/compose.gatus-private.yaml
   # - chaptarr/compose.yaml #               | media       | Books / Audiobooks |
+  # - chaptarr/compose.gatus-private.yaml
   # - cleanuparr/compose.yaml #             | download    | Bad download handling |
+  # - cleanuparr/compose.gatus-private.yaml
+  # - cloudflared/compose.gatus-private.yaml
   # - crunchy-downloader/compose.yaml #     | download    | Crunchyroll (anime) downloader |
+  # - crunchy-downloader/compose.gatus-private.yaml
+  # - deunhealth/compose.gatus-private.yaml
   # - docker-discord-alerts/compose.yaml #  | tools       | Notify Discord when docker containers change |
   # - dozzle/compose.yaml #                 | information | Docker status |
+  # - dozzle/compose.gatus-private.yaml
   # - duc/compose.yaml #                    | tools       | Disk usage |
+  # - duc/compose.gatus-private.yaml
   # - emby/compose.yaml #                   | library     | Media library |
   # - emby/compose.gatus.yaml
+  # - emby/compose.gatus-private.yaml
+  # - error-pages/compose.gatus-private.yaml
   # - flaresolverr/compose.yaml #           | network     | Cloudflare captcha bypasss |
+  # - flaresolverr/compose.gatus-private.yaml
   # - foundryvtt/compose.yaml #             | games       | Foundry Virtual Tabletop for RPGs |
   # - gatus/compose.yaml #                  | information | Status and uptime monitoring |
+  # - gatus-private/compose.yaml #          | information | Private status monitoring, behind tinyauth |
   # - glances/compose.yaml #                | information | Operating system status |
+  # - glances/compose.gatus-private.yaml
   # - handbrake/compose.yaml #              | media       | Video Transcoder |
   # - homepage/compose.yaml #               | information | Dashboard |
+  # - homepage/compose.gatus-private.yaml
   # - i2p/compose.yaml #                    | network     | I2P Client |
   # - imagemaid/compose.yaml #              | quality     | Cleanup Plex image cache |
   # - jellyfin/compose.yaml #               | library     | Open source media library |
   # - jellyfin/compose.gatus.yaml
+  # - jellyfin/compose.gatus-private.yaml
   # - kapowarr/compose.yaml #               | library     | Comics |
+  # - kapowarr/compose.gatus-private.yaml
   # - kometa/compose.yaml #                 | quality     | Poster overlays, collections, playlists for Plex |
   # - komga/compose.yaml #                  | library     | Comic library |
+  # - komga/compose.gatus-private.yaml
   # - libretranslate/compose.yaml #         | tools       | Translation |
   # - lidarr/compose.yaml #                 | media       | Music |
+  # - lidarr/compose.gatus-private.yaml
   # - lingarr/compose.yaml #                | quality     | Subtitle translation |
+  # - lingarr/compose.gatus-private.yaml
   # - lldap/compose.yaml #                  | network     | LDAP server |
   # - lldap/compose.pocket-id.yaml
   # - lldap/compose.tinyauth.yaml
+  # - lldap/compose.gatus-private.yaml
   # - manyfold/compose.yaml #               | library     | 3d models library |
+  # - manyfold/compose.gatus-private.yaml
   # - minecraft/compose.yaml #              | games       | Minecraft |
+  # - minecraft/compose.gatus-private.yaml
   # - mylar/compose.yaml #                  | media       | Comics |
+  # - mylar/compose.gatus-private.yaml
   # - neutarr/compose.yaml #                | download    | Missing media search |
   # - nextcloud/compose.yaml #              | tools       | Personal cloud storage |
+  # - nextcloud/compose.gatus-private.yaml
   # - notifiarr/compose.yaml #              | tools       | System notifications |
+  # - notifiarr/compose.gatus-private.yaml
   # - nutcase/compose.yaml #                | information | Network UPS Tools |
+  # - nutcase/compose.gatus-private.yaml
   # - onlyfans/compose.yaml #               | download    | Download all subscriptions |
   # - openspeedtest/compose.yaml #          | network     | Bandwidth test to server |
+  # - openspeedtest/compose.gatus-private.yaml
   # - open-webui/compose.yaml #             | tools       | AI chat with bundled Ollama |
+  # - open-webui/compose.gatus-private.yaml
   # - owntone/compose.yaml #                | library     | iTunes media server |
+  # - owntone/compose.gatus-private.yaml
   # - peanut/compose.yaml #                 | information | Network UPS Tools |
   # - pgadmin/compose.yaml #                | tools       | Database admin |
+  # - pgadmin/compose.gatus-private.yaml
   # - plex/compose.yaml #                   | library     | Media library |
   # - plex/compose.gatus.yaml
+  # - plex/compose.gatus-private.yaml
   # - plex-find-mismatch/compose.yaml #     | quality     | Finds mismatches between tvdb/tmdb/imdb and Plex |
   # - pocket-id/compose.yaml #              | tools       | Passkey authentication server |
   # - pocket-id/compose.tinyauth.yaml
+  # - pocket-id/compose.gatus-private.yaml
   # - portainer/compose.yaml #              | information | Container management |
+  # - portainer/compose.gatus-private.yaml
   # - postfix/compose.yaml #                | tools       | Internal SMTP email relay |
   # - postfix/compose.lldap.yaml
   # - postfix/compose.nextcloud.yaml
   # - postfix/compose.pocket-id.yaml
+  # - postfix/compose.gatus-private.yaml
   # - postgres/compose.yaml #               | tools       | Database |
+  # - postgres/compose.backup.yaml
+  # - postgres/compose.gatus-private.yaml
   # - posterizarr/compose.yaml #            | tools       | Automated poster maker |
+  # - posterizarr/compose.gatus-private.yaml
   # - prowlarr/compose.yaml #               | download    | Torrent / NNTP search proxy |
+  # - prowlarr/compose.gatus-private.yaml
   # - qbittorrent/compose.yaml #            | download    | Torrent downloader |
+  # - qbittorrent/compose.gatus-private.yaml
   # - radarr/compose.yaml #                 | media       | Movies |
+  # - radarr/compose.gatus-private.yaml
   # - sabnzbd/compose.yaml #                | download    | NNTP downloader |
+  # - sabnzbd/compose.gatus-private.yaml
   # - scrutiny/compose.yaml #               | information | S.M.A.R.T. information |
+  # - scrutiny/compose.gatus-private.yaml
   # - seerr/compose.yaml #                  | information | Media requests and issue tracking |
   # - seerr/compose.gatus.yaml
+  # - seerr/compose.gatus-private.yaml
+  # - socket-proxy/compose.gatus-private.yaml
   # - sonarr/compose.yaml #                 | media       | TV Shows |
+  # - sonarr/compose.gatus-private.yaml
   # - sonarr_youtubedl/compose.yaml #       | disabled    | Download from Youtube |
   # - speedtest-tracker/compose.yaml #      | information | Speedtest with history |
+  # - speedtest-tracker/compose.gatus-private.yaml
   # - stash/compose.yaml #                  | tools       | Porn database |
+  # - stash/compose.gatus-private.yaml
   # - subgen/compose.yaml #                 | quality     | Audio transription |
   # - syncthing/compose.yaml #              | download    | Remote data synchronisation |
+  # - syncthing/compose.gatus-private.yaml
   # - tautulli/compose.yaml #               | information | Plex stats |
+  # - tautulli/compose.gatus-private.yaml
   # - tdarr/compose.yaml #                  | quality     | Transcoding / format shifting / audio normalisation |
+  # - tdarr/compose.gatus-private.yaml
   # - tdarr_inform/compose.yaml #           | quality     | Notifications from sonarr / radarr / etc to tdarr |
+  # - tdarr_inform/compose.gatus-private.yaml
   # - tdarr-node/compose.yaml #             | quality     | Transcoding node for tdarr |
+  # - tdarr-node/compose.gatus-private.yaml
   # - tinyauth/compose.foundryvtt.yaml
   # - tinyauth/compose.github.yaml
   # - tinyauth/compose.google.yaml
   # - tinyauth/compose.oauth.yaml
   # - tinyauth/compose.open-webui.yaml
+  # - tinyauth/compose.gatus-private.yaml
   # - titlecardmaker/compose.yaml #         | quality     | Episode thumbnails for Plex |
+  # - titlecardmaker/compose.gatus-private.yaml
   # - tracearr/compose.yaml #               | library     | Plex & Emby monitoring |
+  # - tracearr/compose.gatus-private.yaml
+  # - traefik/compose.gatus-private.yaml
   # - ubooquity/compose.yaml #              | media       | Comics |
+  # - ubooquity/compose.gatus-private.yaml
   # - uptime-kuma/compose.yaml #            | information | Status and uptime monitoring |
+  # - uptime-kuma/compose.gatus-private.yaml
+  # - vpn/compose.gatus-private.yaml
   # - watchstate/compose.yaml #             | tools       | Sync media library watch state |
+  # - watchstate/compose.gatus-private.yaml
+  # - watchtower/compose.gatus-private.yaml
   # - webtop/compose.yaml #                 | desktop     | Linux desktop |
+  # - webtop/compose.gatus-private.yaml
   # - whisparr/compose.yaml #               | media       | Porn |
+  # - whisparr/compose.gatus-private.yaml
   # - whoami/compose.yaml #                 | network     | Who... Am... I...? |
   # - windows/compose.yaml #                | desktop     | Windows desktop |
   # - zfdash/compose.yaml #                 | information | ZFS administration |
+  # - zfdash/compose.gatus-private.yaml
   # - zfs-discord-alerts/compose.yaml #     | tools       | Notify Discord when there are zfs problems |
+  # - zfs-discord-alerts/compose.gatus-private.yaml

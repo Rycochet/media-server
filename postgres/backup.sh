@@ -437,7 +437,8 @@ schedule() {
     rm -rf "$BACKUP_DIR"/.partial-* "$TEST_DIR"/postgres-test.*
     log "Backing up on \"$SCHEDULE\" to $BACKUP_DIR, keeping $KEEP_DAILY daily, $KEEP_WEEKLY weekly and $KEEP_MONTHLY monthly"
     # Only one when starting up, so restarts don't each make another
-    if ! list_sets | grep -q "^$(date +%Y-%m-%d)_"; then
+    # Not "grep -q", which stops reading early and fails the pipe with pipefail
+    if [ -z "$(list_sets | grep "^$(date +%Y-%m-%d)_")" ]; then
         log "No tested backup for today yet, so backing up now"
         backup
     fi

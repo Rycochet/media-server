@@ -1,0 +1,20 @@
+name: Whisparr StashID Matcher
+description: Match scenes to StashDB using the {stashid-<uuid>} that Whisparr puts in folder names
+version: 0.1
+exec:
+  - whisparr-stashid.js
+interface: js
+errLog: error
+
+hooks:
+  - name: Match scene
+    description: Match a scanned or updated scene using the StashDB ID in its path
+    triggeredBy:
+      - Scene.Create.Post
+      - Scene.Update.Post
+
+tasks:
+  - name: Match all unmatched scenes
+    description: Match every scene with a {stashid-...} path that has no StashDB ID yet
+    defaultArgs:
+      mode: all

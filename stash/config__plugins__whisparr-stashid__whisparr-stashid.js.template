@@ -1,0 +1,203 @@
+// Match scenes to StashDB using the {stashid-<uuid>} that Whisparr adds to folder names.
+// StashDB returns the exact scene when it is searched by its UUID, so this works
+// even when the file's fingerprints are not known to StashDB.
+
+var STASHID_RE = /\{stashid-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\}/i;
+var GENDERS = ["MALE", "FEMALE", "TRANSGENDER_MALE", "TRANSGENDER_FEMALE", "INTERSEX", "NON_BINARY"];
+var DELAY_MS = 500; // between StashDB lookups in the batch task
+
+function getEndpoint() {
+  var res = gql.Do("query { configuration { general { stashBoxes { endpoint } } } }");
+  var boxes = res.configuration.general.stashBoxes || [];
+  for (var i = 0; i < boxes.length; i++) {
+    if (boxes[i].endpoint.indexOf("stashdb.org") !== -1) return boxes[i].endpoint;
+  }
+  throw "StashDB is not set up under Settings > Metadata Providers";
+}
+
+function findStashId(scene) {
+  var files = scene.files || [];
+  for (var i = 0; i < files.length; i++) {
+    var m = STASHID_RE.exec(files[i].path);
+    if (m) return m[1].toLowerCase();
+  }
+  return null;
+}
+
+function hasEndpoint(scene, endpoint) {
+  var ids = scene.stash_ids || [];
+  for (var i = 0; i < ids.length; i++) {
+    if (ids[i].endpoint === endpoint) return true;
+  }
+  return false;
+}
+
+var SCENE_FIELDS = "id files { path } stash_ids { endpoint stash_id } performers { id } tags { id }";
+
+function getScene(id) {
+  return gql.Do("query($id: ID!) { findScene(id: $id) { " + SCENE_FIELDS + " } }", { id: id }).findScene;
+}
+
+function scrape(endpoint, stashId) {
+  var q =
+    "query($source: ScraperSourceInput!, $input: ScrapeSingleSceneInput!) {" +
+    " scrapeSingleScene(source: $source, input: $input) {" +
+    "  title code details director urls date image remote_site_id" +
+    "  studio { stored_id name urls image remote_site_id parent { stored_id name urls image remote_site_id } }" +
+    "  tags { stored_id name }" +
+    "  performers { stored_id name disambiguation gender images remote_site_id }" +
+    " } }";
+  var res = gql.Do(q, { source: { stash_box_endpoint: endpoint }, input: { query: stashId } });
+  var list = res.scrapeSingleScene || [];
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].remote_site_id === stashId) return list[i];
+  }
+  return null;
+}
+
+// Create something, or find it by exact name if it already exists
+function createOrFind(kind, input) {
+  var cap = kind.charAt(0).toUpperCase() + kind.slice(1);
+  try {
+    var m = "mutation($input: " + cap + "CreateInput!) { " + kind + "Create(input: $input) { id } }";
+    return gql.Do(m, { input: input })[kind + "Create"].id;
+  } catch (e) {
+    var q = "query($f: " + cap + "FilterType) { find" + cap + "s(" + kind + "_filter: $f, filter: { per_page: 1 }) { " +
+      kind + "s { id } } }";
+    var found = gql.Do(q, { f: { name: { value: input.name, modifier: "EQUALS" } } })["find" + cap + "s"][kind + "s"];
+    if (found.length) return found[0].id;
+    throw "Could not create " + kind + " " + input.name + ": " + e;
+  }
+}
+
+function studioId(studio, endpoint) {
+  if (!studio) return null;
+  if (studio.stored_id) return studio.stored_id;
+  var input = { name: studio.name, urls: studio.urls || [] };
+  if (studio.image) input.image = studio.image;
+  if (studio.remote_site_id) input.stash_ids = [{ endpoint: endpoint, stash_id: studio.remote_site_id }];
+  var parent = studioId(studio.parent, endpoint);
+  if (parent) input.parent_id = parent;
+  log.Info("Creating studio " + studio.name);
+  return createOrFind("studio", input);
+}
+
+function performerId(p, endpoint) {
+  if (p.stored_id) return p.stored_id;
+  var input = { name: p.name };
+  if (p.disambiguation) input.disambiguation = p.disambiguation;
+  if (p.gender && GENDERS.indexOf(p.gender.toUpperCase()) !== -1) input.gender = p.gender.toUpperCase();
+  if (p.images && p.images.length) input.image = p.images[0];
+  if (p.remote_site_id) input.stash_ids = [{ endpoint: endpoint, stash_id: p.remote_site_id }];
+  log.Info("Creating performer " + p.name);
+  return createOrFind("performer", input);
+}
+
+function tagId(t) {
+  if (t.stored_id) return t.stored_id;
+  log.Info("Creating tag " + t.name);
+  return createOrFind("tag", { name: t.name });
+}
+
+function addUnique(list, id) {
+  if (id && list.indexOf(id) === -1) list.push(id);
+}
+
+function matchScene(scene, endpoint) {
+  var stashId = findStashId(scene);
+  if (!stashId) return "skipped (no stashid in path)";
+  if (hasEndpoint(scene, endpoint)) return "skipped (already has a StashDB ID)";
+
+  var s = scrape(endpoint, stashId);
+  if (!s) {
+    log.Warn("Scene " + scene.id + ": StashDB has no scene " + stashId);
+    return "missing";
+  }
+
+  var performerIds = [];
+  var tagIds = [];
+  var i;
+  for (i = 0; i < scene.performers.length; i++) addUnique(performerIds, scene.performers[i].id);
+  for (i = 0; i < scene.tags.length; i++) addUnique(tagIds, scene.tags[i].id);
+  for (i = 0; i < (s.performers || []).length; i++) addUnique(performerIds, performerId(s.performers[i], endpoint));
+  for (i = 0; i < (s.tags || []).length; i++) addUnique(tagIds, tagId(s.tags[i]));
+
+  var stashIds = [];
+  for (i = 0; i < scene.stash_ids.length; i++) {
+    stashIds.push({ endpoint: scene.stash_ids[i].endpoint, stash_id: scene.stash_ids[i].stash_id });
+  }
+  stashIds.push({ endpoint: endpoint, stash_id: stashId });
+
+  var input = {
+    id: scene.id,
+    performer_ids: performerIds,
+    tag_ids: tagIds,
+    stash_ids: stashIds
+  };
+  if (s.title) input.title = s.title;
+  if (s.code) input.code = s.code;
+  if (s.details) input.details = s.details;
+  if (s.director) input.director = s.director;
+  if (s.date) input.date = s.date;
+  if (s.urls && s.urls.length) input.urls = s.urls;
+  if (s.image) input.cover_image = s.image;
+  var sid = studioId(s.studio, endpoint);
+  if (sid) input.studio_id = sid;
+
+  gql.Do("mutation($input: SceneUpdateInput!) { sceneUpdate(input: $input) { id } }", { input: input });
+  log.Info("Scene " + scene.id + " matched to " + (s.title || stashId));
+  return "matched";
+}
+
+function runHook(hookContext, endpoint) {
+  var id = hookContext.id || hookContext.ID;
+  var scene = getScene(id);
+  if (!scene) return "Scene " + id + " not found";
+  var result = matchScene(scene, endpoint);
+  log.Debug("Scene " + id + ": " + result);
+  return "Scene " + id + ": " + result;
+}
+
+function runAll(endpoint) {
+  var q =
+    "query($f: SceneFilterType) { findScenes(scene_filter: $f, filter: { per_page: -1 }) { scenes { " +
+    SCENE_FIELDS + " } } }";
+  var f = {
+    path: { value: "{stashid-", modifier: "INCLUDES" },
+    stash_id_endpoint: { endpoint: endpoint, modifier: "IS_NULL" }
+  };
+  var scenes = gql.Do(q, { f: f }).findScenes.scenes;
+  log.Info("Found " + scenes.length + " scenes to match");
+
+  var counts = { matched: 0, missing: 0, skipped: 0, failed: 0 };
+  for (var i = 0; i < scenes.length; i++) {
+    log.Progress(i / scenes.length);
+    try {
+      counts[matchScene(scenes[i], endpoint).split(" ")[0]]++;
+    } catch (e) {
+      counts.failed++;
+      log.Error("Scene " + scenes[i].id + ": " + e);
+    }
+    util.Sleep(DELAY_MS);
+  }
+  log.Progress(1);
+  var summary = "Matched " + counts.matched + ", not on StashDB " + counts.missing +
+    ", skipped " + counts.skipped + ", failed " + counts.failed;
+  log.Info(summary);
+  return summary;
+}
+
+function main() {
+  try {
+    var args = input.Args || {};
+    var endpoint = getEndpoint();
+    var hookContext = args.hookContext;
+    var out = hookContext ? runHook(hookContext, endpoint) : runAll(endpoint);
+    return { Output: out };
+  } catch (e) {
+    log.Error(String(e));
+    return { Error: String(e) };
+  }
+}
+
+main();

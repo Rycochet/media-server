@@ -40,6 +40,7 @@ services:
       traefik.http.routers.posterizarr.rule: "Host(`${POSTERIZARR_SUBDOMAIN:-posterizarr}.${DOMAIN}`)"
       traefik.http.routers.posterizarr.middlewares: "tinyauth,error-pages"
       traefik.http.services.posterizarr.loadbalancer.server.port: "8000"
+      ups-power.pause: "true"
     healthcheck:
       start_period: "30s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8000/"

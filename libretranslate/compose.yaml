@@ -38,3 +38,4 @@ services:
       traefik.http.routers.libretranslate.rule: "Host(`${LIBRETRANSLATE_SUBDOMAIN:-translate}.${DOMAIN}`)"
       traefik.http.routers.libretranslate.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.libretranslate.loadbalancer.server.port: "5000"
+      ups-power.pause: "true"

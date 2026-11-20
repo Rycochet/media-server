@@ -115,6 +115,10 @@ When `nextcloud` is turned on it asks for the API key (NC-Token) that the homepa
 ./manage.sh run nextcloud api-key
 ```
 
+### Riding out power cuts
+
+`ups-power` watches a UPS through NUT. On battery it pauses the containers that use the most power, hibernates the server before the battery runs out, and unpauses them once the power has been back for a while. It runs on the host itself rather than in Docker. See [ups-power/README.md](ups-power/README.md) for setting it up and a plan for testing it.
+
 ### Updating
 
 Run `bash update.sh` to pull the latest version. Anything new in the example files is added to your `.env`, `.env.keep-alive` and `compose.override.yaml` without changing what is already there, and new services are always added commented out. A `.bak` copy is kept of any file that gets changed.

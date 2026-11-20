@@ -46,6 +46,7 @@ services:
       traefik.http.routers.open-webui.rule: "Host(`${OPEN_WEBUI_SUBDOMAIN:-open-webui}.${DOMAIN}`)"
       traefik.http.routers.open-webui.middlewares: "tinyauth,error-pages"
       traefik.http.services.open-webui.loadbalancer.server.port: "8080"
+      ups-power.pause: "true"
     healthcheck:
       start_period: "300s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8080/health && curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:11434/api/version"

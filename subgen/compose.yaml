@@ -50,3 +50,4 @@ services:
       homepage.icon: "/images/subgen.png"
       homepage.description: "Audio transcription"
       traefik.enable: "false"
+      ups-power.pause: "true"

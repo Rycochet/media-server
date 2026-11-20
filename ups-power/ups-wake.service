@@ -1,0 +1,23 @@
+# For the machine the UPS is plugged into, to wake the server after an outage.
+#
+#   sudo cp ups-wake.sh /usr/local/bin/ups-wake.sh
+#   sudo cp ups-wake.service /etc/systemd/system/ups-wake.service
+#   printf 'UPS_WAKE_MAC=08:bf:b8:04:ff:b0\nUPS_WAKE_HOST=192.168.0.2\n' | sudo tee /etc/default/ups-wake
+#   sudo systemctl daemon-reload && sudo systemctl enable --now ups-wake
+#   journalctl -u ups-wake -f
+#
+# Use your server's MAC and address. It needs upsc (nut-client) and one of
+# wakeonlan, etherwake or python3.
+[Unit]
+Description=Wake the server after a power outage
+After=network-online.target nut-server.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/local/bin/ups-wake.sh
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

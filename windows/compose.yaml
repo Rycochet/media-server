@@ -57,3 +57,4 @@ services:
       traefik.http.routers.windows.rule: "Host(`${WINDOWS_SUBDOMAIN:-windows}.${DOMAIN}`)"
       traefik.http.routers.windows.middlewares: "tinyauth,error-pages"
       traefik.http.services.windows.loadbalancer.server.port: "8006"
+      ups-power.pause: "true"

@@ -1,0 +1,14 @@
+# Installed by "./manage.sh run ups-power install", which fills in @DIR@
+[Unit]
+Description=Pause containers and hibernate on UPS battery
+After=docker.service network-online.target
+Wants=docker.service network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash @DIR@/ups-power.sh run
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

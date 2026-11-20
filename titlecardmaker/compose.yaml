@@ -42,3 +42,4 @@ services:
       traefik.http.routers.titlecardmaker.rule: "Host(`${TITLECARDMAKER_SUBDOMAIN:-titlecardmaker}.${DOMAIN}`)"
       traefik.http.routers.titlecardmaker.middlewares: "tinyauth,error-pages"
       traefik.http.services.titlecardmaker.loadbalancer.server.port: "4242"
+      ups-power.pause: "true"

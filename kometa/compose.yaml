@@ -37,3 +37,4 @@ services:
     labels:
       deunhealth.restart.on.unhealthy: "false"
       traefik.enable: "false"
+      ups-power.pause: "true"

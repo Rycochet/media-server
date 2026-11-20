@@ -40,6 +40,7 @@ services:
       com.centurylinklabs.watchtower.monitor-only: "true"
       com.centurylinklabs.watchtower.depends-on: "tdarr"
       deunhealth.restart.on.unhealthy: "false"
+      ups-power.pause: "true"
     healthcheck:
       start_period: "150s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://tdarr.internal:8266/api/v2/get-nodes | grep -q \"$$nodeName\""

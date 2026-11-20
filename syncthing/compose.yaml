@@ -60,6 +60,7 @@ services:
       traefik.http.routers.syncthing.rule: "Host(`${SYNCTHING_SUBDOMAIN:-syncthing}.${DOMAIN}`)"
       traefik.http.routers.syncthing.middlewares: "${USE_CORS:+cors,}tinyauth,error-pages"
       traefik.http.services.syncthing.loadbalancer.server.port: "8384"
+      ups-power.pause: "true"
     healthcheck:
       start_period: "30s"
       test: "curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1"

@@ -41,3 +41,4 @@ services:
       traefik.http.routers.handbrake.middlewares: "tinyauth,error-pages"
       traefik.http.services.handbrake.loadbalancer.server.port: "5800"
       traefik.http.services.handbrake.loadbalancer.server.scheme: "http"
+      ups-power.pause: "true"

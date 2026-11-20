@@ -61,6 +61,7 @@ services:
       traefik.http.routers.tdarr.middlewares: "${USE_CORS:+cors,tdarr-cors,}tinyauth,error-pages"
       traefik.http.services.tdarr.loadbalancer.server.port: "8265"
       traefik.http.middlewares.tdarr-cors.headers.accessControlAllowHeaders: "content-type"
+      ups-power.pause: "true"
     healthcheck:
       start_period: "150s"
       test: "curl --connect-timeout 5 --silent --show-error --fail http://127.0.0.1:8265/"

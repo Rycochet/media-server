@@ -38,6 +38,7 @@ services:
       - "./config/glances.conf:/glances/conf/glances.conf"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${GLANCES_SUBDOMAIN:-glances}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Glances"
       homepage.icon: "glances.png"

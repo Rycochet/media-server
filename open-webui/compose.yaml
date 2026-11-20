@@ -37,6 +37,7 @@ services:
       - "./ollama:/root/.ollama"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${OPEN_WEBUI_SUBDOMAIN:-open-webui}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Open WebUI"
       homepage.icon: "open-webui.png"

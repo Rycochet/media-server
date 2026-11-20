@@ -30,6 +30,7 @@ services:
       - "./config/tracearr:/data/tracearr"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${TRACEARR_SUBDOMAIN:-tracearr}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Tracearr"
       homepage.icon: "tracearr.png"

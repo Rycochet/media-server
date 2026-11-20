@@ -38,6 +38,7 @@ services:
       - "$PATH_TV:/data/tv"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${SYNCTHING_SUBDOMAIN:-syncthing}.${DOMAIN}/"
       homepage.group: "Download"
       homepage.name: "Syncthing"
       homepage.icon: "syncthing.png"

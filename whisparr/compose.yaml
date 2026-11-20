@@ -33,6 +33,7 @@ services:
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${WHISPARR_SUBDOMAIN:-whisparr}.${DOMAIN}/"
       homepage.group: "Media"
       homepage.name: "Whisparr"
       homepage.icon: "whisparr.png"

@@ -31,6 +31,7 @@ services:
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${KAPOWARR_SUBDOMAIN:-kapowarr}.${DOMAIN}/"
 
       homepage.group: "Libraries"
       homepage.name: "Kapowarr"

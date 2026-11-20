@@ -24,6 +24,7 @@ services:
       - "./config/influxdb:/opt/config/influxdb"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${SCRUTINY_SUBDOMAIN:-scrutiny}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Scrutiny"
       homepage.icon: "scrutiny.png"

@@ -21,6 +21,7 @@ services:
       SET_USER: "${PUID:-1000}"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${OPENSPEEDTEST_SUBDOMAIN:-openspeedtest}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "OpenSpeedTest"
       homepage.icon: "openspeedtest.png"

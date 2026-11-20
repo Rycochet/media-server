@@ -31,6 +31,7 @@ services:
       - "./backup:/config/backups"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${NEUTARR_SUBDOMAIN:-neutarr}.${DOMAIN}/"
       homepage.group: "Download"
       homepage.name: "Neutarr"
       homepage.icon: "/images/neutarr.png"

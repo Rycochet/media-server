@@ -55,6 +55,7 @@ services:
       - "$PATH_TV:/data/tv:ro"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${NOTIFIARR_SUBDOMAIN:-notifiarr}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Notifiarr"
       homepage.icon: "notifiarr.png"

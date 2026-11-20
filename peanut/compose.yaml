@@ -26,6 +26,7 @@ services:
       - "./config:/config"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${PEANUT_SUBDOMAIN:-peanut}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Peanut"
       homepage.icon: "peanut.png"

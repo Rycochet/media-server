@@ -16,6 +16,7 @@ services:
       TEMPLATE_NAME: "lost-in-space"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${ERROR_PAGES_SUBDOMAIN:-error-pages}.${DOMAIN}/"
       traefik.enable: "true"
       traefik.http.services.error-pages.loadbalancer.server.port: "8080"
       # use as "fallback" for any NON-registered services (with priority below normal)

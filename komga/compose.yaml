@@ -32,6 +32,7 @@ services:
       - "$PATH_COMICS:/data/comics"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${KOMGA_SUBDOMAIN:-komga}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Komga"
       homepage.icon: "komga.png"

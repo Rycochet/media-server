@@ -24,6 +24,7 @@ services:
       - "./logs:/config/logs"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${WATCHSTATE_SUBDOMAIN:-watchstate}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Watchstate"
       homepage.icon: "/images/watchstate.png"

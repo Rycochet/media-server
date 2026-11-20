@@ -84,6 +84,7 @@ services:
       - "./config:/etc/traefik"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${TRAEFIK_SUBDOMAIN:-traefik}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Traefik"
       homepage.icon: "traefik.png"

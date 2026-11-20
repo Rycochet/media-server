@@ -30,6 +30,7 @@ services:
       - "./config:/data"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${TINYAUTH_SUBDOMAIN:-tinyauth}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Tinyauth"
       homepage.icon: "tinyauth.png"

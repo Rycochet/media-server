@@ -31,6 +31,7 @@ services:
       - "$PATH_COMICS:/comics:ro"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${UBOOQUITY_SUBDOMAIN:-ubooquity}.${DOMAIN}/"
       homepage.group: "Media"
       homepage.name: "Ubooquity"
       homepage.icon: "ubooquity.png"

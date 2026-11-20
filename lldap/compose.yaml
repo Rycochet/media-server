@@ -34,6 +34,7 @@ services:
       - "./config:/data"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${LLDAP_SUBDOMAIN:-lldap}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "LLDAP"
       homepage.icon: "lldap.png"

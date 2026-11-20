@@ -29,6 +29,7 @@ services:
       - "./config:/app/data"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${UPTIME_KUMA_SUBDOMAIN:-status}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Uptime Kuma"
       homepage.icon: "uptime-kuma.png"

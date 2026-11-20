@@ -37,6 +37,7 @@ services:
       - "$PATH_TV:/data/tv:ro"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${EMBY_SUBDOMAIN:-emby}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Emby"
       homepage.icon: "emby.png"

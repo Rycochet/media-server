@@ -40,6 +40,7 @@ services:
       MAXMIND_LICENSE_KEY_FILE: "/run/secrets/pocketid_maxmind"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${POCKETID_SUBDOMAIN:-auth}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "PocketID"
       homepage.icon: "pocket-id.png"

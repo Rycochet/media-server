@@ -35,6 +35,7 @@ services:
       - "./config:/config"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${SPEEDTEST_TRACKER_SUBDOMAIN:-speedtest-tracker}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Speedtest-tracker"
       homepage.icon: "speedtest-tracker.png"

@@ -59,6 +59,7 @@ services:
       - "${PATH_NEXTCLOUD:-./data}:/var/www/html/data"
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
+      dev.dozzle.url: "https://${NEXTCLOUD_SUBDOMAIN:-nextcloud}.${DOMAIN}/"
       # No deunhealth label, status.php is an error during upgrades and restarting would break them
       homepage.group: "Tools"
       homepage.name: "Nextcloud"

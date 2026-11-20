@@ -41,6 +41,7 @@ services:
       - "./tmp:/opt/adguardhome/work"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${ADGUARDHOME_SUBDOMAIN:-adguardhome}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "AdguardHome"
       homepage.icon: "adguard-home.png"

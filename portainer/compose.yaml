@@ -26,6 +26,7 @@ services:
       - "./config:/data"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${PORTAINER_SUBDOMAIN:-portainer}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Portainer"
       homepage.icon: "portainer.png"

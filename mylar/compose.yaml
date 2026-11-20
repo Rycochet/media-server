@@ -31,6 +31,7 @@ services:
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${MYLAR_SUBDOMAIN:-mylar}.${DOMAIN}/"
       homepage.group: "Media"
       homepage.name: "Mylar"
       homepage.icon: "mylar.png"

@@ -18,6 +18,7 @@ services:
         restart: false
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${WHOAMI_SUBDOMAIN:-whoami}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "WhoAmI"
       homepage.icon: "double-take.png"

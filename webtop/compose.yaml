@@ -44,6 +44,7 @@ services:
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${WEBTOP_SUBDOMAIN:-webtop}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Webtop"
       homepage.icon: "webtop.png"

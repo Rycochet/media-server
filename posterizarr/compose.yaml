@@ -31,6 +31,7 @@ services:
       - "./logs:/config/logs"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${POSTERIZARR_SUBDOMAIN:-posterizarr}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Posterizarr"
       homepage.icon: "posterizarr.png"

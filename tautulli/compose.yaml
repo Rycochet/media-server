@@ -30,6 +30,7 @@ services:
       - "./logs:/config/logs"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${TAUTULLI_SUBDOMAIN:-tautulli}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Tautulli"
       homepage.icon: "tautulli.png"

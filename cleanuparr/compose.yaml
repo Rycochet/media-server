@@ -30,6 +30,7 @@ services:
       - "./backup:/config/backups"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${CLEANUPARR_SUBDOMAIN:-cleanuparr}.${DOMAIN}/"
       homepage.group: "Download"
       homepage.name: "Cleanuparr"
       homepage.icon: "cleanuperr.png"

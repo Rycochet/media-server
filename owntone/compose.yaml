@@ -36,6 +36,7 @@ services:
       - "$PATH_MUSIC:/data/music:ro"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${OWNTONE_SUBDOMAIN:-owntone}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Owntone"
       homepage.icon: "owntone.png"

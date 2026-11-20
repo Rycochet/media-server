@@ -44,6 +44,7 @@ services:
       - "$PATH_TV:/data/tv:ro"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${JELLYFIN_SUBDOMAIN:-jellyfin}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Jellyfin"
       homepage.icon: "jellyfin.png"

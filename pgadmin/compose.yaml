@@ -28,6 +28,7 @@ services:
       - "./config:/var/lib/pgadmin"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${PGADMIN_SUBDOMAIN:-pgadmin}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "PGAdmin"
       homepage.icon: "pgadmin.png"

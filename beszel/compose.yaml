@@ -32,6 +32,7 @@ services:
       - "./config:/beszel_socket"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${BESZEL_SUBDOMAIN:-beszel}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Beszel"
       homepage.icon: "beszel.png"

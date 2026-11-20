@@ -28,6 +28,7 @@ services:
       - "./config:/opt/zfdash/data"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${ZFDASH_SUBDOMAIN:-zfdash}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "ZFDash"
       homepage.icon: "sh-openzfs.png"

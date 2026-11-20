@@ -29,6 +29,7 @@ services:
       - "./config:/home/libretranslate/.local"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${LIBRETRANSLATE_SUBDOMAIN:-translate}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Libretranslate"
       homepage.icon: "google-translate.png"

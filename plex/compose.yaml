@@ -42,6 +42,7 @@ services:
       - "$PATH_TV:/data/tv:ro"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${PLEX_SUBDOMAIN:-plex}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Plex"
       homepage.icon: "plex.png"

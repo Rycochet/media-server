@@ -21,6 +21,7 @@ services:
       - "$PATH_TV:/host/tv:ro"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${DUC_SUBDOMAIN:-duc}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "DUC"
       homepage.icon: "qdirstat.png"

@@ -36,6 +36,7 @@ services:
       - "./config:/data"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${MINECRAFT_SUBDOMAIN:-minecraft}.${DOMAIN}/"
       homepage.group: "Games"
       homepage.name: "Minecraft"
       homepage.icon: "minecraft.png"

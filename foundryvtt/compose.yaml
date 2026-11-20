@@ -46,6 +46,7 @@ services:
       FOUNDRY_PASSWORD_FILE: "/run/secrets/foundryvtt_password"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${FOUNDRYVTT_SUBDOMAIN:-rpg}.${DOMAIN}/"
       homepage.group: "Games"
       homepage.name: "FoundryVTT"
       homepage.icon: "foundry-vtt.png"

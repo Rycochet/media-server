@@ -24,6 +24,7 @@ services:
       - "./config:/config"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${TDARR_INFORM_SUBDOMAIN:-tdarr-inform}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Tdarr-inform"
       homepage.icon: "tdarr.png"

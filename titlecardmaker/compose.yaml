@@ -33,6 +33,7 @@ services:
       - "$PATH_TV:/data/tv"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${TITLECARDMAKER_SUBDOMAIN:-titlecardmaker}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "TitleCardMaker"
       homepage.icon: "/images/titlecardmaker.png"

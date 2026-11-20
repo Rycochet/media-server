@@ -34,6 +34,7 @@ services:
       - "$PATH_TV:/data/tv"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${BAZARR_SUBDOMAIN:-bazarr}.${DOMAIN}/"
       homepage.group: "Media"
       homepage.name: "Bazarr"
       homepage.icon: "bazarr.png"

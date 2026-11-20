@@ -29,6 +29,7 @@ services:
       - "./config:/config"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${NUTCASE_SUBDOMAIN:-nutcase}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Nutcase"
       homepage.icon: "network-ups-tools.png"

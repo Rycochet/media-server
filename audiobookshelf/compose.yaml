@@ -33,6 +33,7 @@ services:
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${AUDIOBOOKSHELF_SUBDOMAIN:-audiobookshelf}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Audiobookshelf"
       homepage.icon: "audiobookshelf.png"

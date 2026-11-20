@@ -31,6 +31,7 @@ services:
       - "$PATH_3D:/data/models"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${MANYFOLD_SUBDOMAIN:-manyfold}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Manyfold"
       homepage.icon: "manyfold.png"

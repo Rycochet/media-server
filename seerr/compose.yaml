@@ -31,6 +31,7 @@ services:
       - "./tmp:/run/seerr-temp"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${SEERR_SUBDOMAIN:-ask}.${DOMAIN}/"
       homepage.group: "Libraries"
       homepage.name: "Seerr"
       homepage.icon: "seerr.png"

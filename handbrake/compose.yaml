@@ -31,6 +31,7 @@ services:
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${HANDBRAKE_SUBDOMAIN:-handbrake}.${DOMAIN}/"
       homepage.group: "Media"
       homepage.name: "Handbrake"
       homepage.icon: "handbrake.png"

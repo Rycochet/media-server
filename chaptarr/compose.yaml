@@ -34,6 +34,7 @@ services:
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${CHAPTARR_SUBDOMAIN:-chaptarr}.${DOMAIN}/"
       homepage.group: "Media"
       homepage.name: "Chaptarr"
       homepage.icon: "readarr.png"

@@ -35,6 +35,7 @@ services:
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${CRUNCHY_DOWNLOADER_SUBDOMAIN:-crunchy-downloader}.${DOMAIN}/"
       homepage.group: "Download"
       homepage.name: "Crunchy-downloader"
       homepage.icon: "crunchyroll.png"

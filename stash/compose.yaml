@@ -33,6 +33,7 @@ services:
       - "$PATH_ADULT/scenes:/data/adult/scenes:ro" # Stash doesn't handle movies
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${STASH_SUBDOMAIN:-stash}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "Stash"
       homepage.icon: "stash.png"

@@ -25,6 +25,7 @@ services:
       - "$PATH_DOWNLOADS/i2ptorrents:/i2psnark"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${I2P_SUBDOMAIN:-i2p}.${DOMAIN}/"
       homepage.group: "Tools"
       homepage.name: "I2P"
       homepage.icon: "i2p.png"

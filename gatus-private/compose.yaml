@@ -34,6 +34,7 @@ services:
       - "./data:/data"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${GATUS_PRIVATE_SUBDOMAIN:-status-private}.${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Gatus (private)"
       homepage.icon: "gatus.png"

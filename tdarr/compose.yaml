@@ -49,6 +49,7 @@ services:
     labels:
       com.centurylinklabs.watchtower.monitor-only: "true"
       deunhealth.restart.on.unhealthy: "false"
+      dev.dozzle.url: "https://${TDARR_SUBDOMAIN:-tdarr}.${DOMAIN}/"
       homepage.group: "Media"
       homepage.name: "Tdarr"
       homepage.icon: "tdarr.png"

@@ -40,6 +40,7 @@ services:
       - "$PATH_TV:/data/tv:ro"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${DOMAIN}/"
       homepage.group: "Information"
       homepage.name: "Homepage"
       homepage.weight: "-1"

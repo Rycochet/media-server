@@ -32,6 +32,7 @@ services:
       - "$PATH_DOWNLOADS:/data/Downloads"
     labels:
       deunhealth.restart.on.unhealthy: "true"
+      dev.dozzle.url: "https://${PROWLARR_SUBDOMAIN:-prowlarr}.${DOMAIN}/"
       homepage.group: "Download"
       homepage.name: "Prowlarr"
       homepage.icon: "prowlarr.png"
